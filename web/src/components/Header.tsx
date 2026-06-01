@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { phasePageHref, PHASE_SECTIONS, useHashRoute, type PhaseSectionId } from '../hooks/useHashRoute';
+import { NO_SECTIONS, useScrollSpy } from '../hooks/useScrollSpy';
 
 const PHASE_LINKS = [
   { phaseId: 'phase-i', label: 'Phase I' },
@@ -18,6 +19,9 @@ const HOME_SECTIONS = [
   { id: 'tools', label: 'Tools' },
   { id: 'roadmap', label: 'Roadmap' },
 ] as const;
+
+const HOME_SECTION_IDS = HOME_SECTIONS.map(({ id }) => id);
+const PHASE_SECTION_IDS = PHASE_SECTIONS.map(({ id }) => id);
 
 const GITHUB_URL = 'https://github.com/amne51ac/project-midas';
 
@@ -77,10 +81,19 @@ export function Header() {
   const isPhaseActive = (phaseId: string) =>
     route.type === 'phase' && route.phaseId === phaseId;
 
-  const isSectionActive = (id: string) => route.type === 'home' && route.section === id;
+  const homeActiveSection = useScrollSpy(isHome ? HOME_SECTION_IDS : NO_SECTIONS, {
+    initialId: route.type === 'home' ? route.section : undefined,
+  });
+
+  const phaseActiveSection = useScrollSpy(isPhase ? PHASE_SECTION_IDS : NO_SECTIONS, {
+    elementPrefix: 'phase-',
+    initialId: route.type === 'phase' ? route.section : undefined,
+  });
+
+  const isSectionActive = (id: string) => isHome && homeActiveSection === id;
 
   const isPhaseSectionActive = (id: PhaseSectionId) =>
-    route.type === 'phase' && route.section === id;
+    isPhase && phaseActiveSection === id;
 
   return (
     <header className={`site-header${isHome || isPhase ? ' site-header--home' : ''}`}>
