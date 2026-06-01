@@ -7,6 +7,7 @@ import {
   type AgeIsochrone,
   type IsoPoint,
 } from '../data/isochrones';
+import { PARSEC_ISOCHRONE_AGES, PARSEC_SOURCE } from '../data/parsecIsochrones';
 import type { Star } from '../data/types';
 
 const AGE_COLORS: Record<number, string> = {
@@ -18,17 +19,25 @@ const AGE_COLORS: Record<number, string> = {
   1.0: '#8878a8',
 };
 
+const PARSEC_COLOR = '#67c4e8';
+
 interface Props {
   stars: Star[];
 }
 
 export function IsochroneExplorer({ stars }: Props) {
   const [selected, setSelected] = useState<number[]>([0.1, 0.2, 0.4, 0.6]);
+  const [showParsec, setShowParsec] = useState(true);
   const svgRef = useRef<SVGSVGElement>(null);
 
   const activeIsochrones = useMemo(
     () => ISOCHRONE_AGES.filter((a) => selected.includes(a.ageGyr)),
     [selected],
+  );
+
+  const activeParsec = useMemo(
+    () => (showParsec ? PARSEC_ISOCHRONE_AGES.filter((a) => selected.includes(a.ageGyr)) : []),
+    [selected, showParsec],
   );
 
   useEffect(() => {
@@ -92,7 +101,23 @@ export function IsochroneExplorer({ stars }: Props) {
         .attr('stroke-dasharray', isBest ? null : '5 4')
         .attr('opacity', isBest ? 1 : 0.8)
         .attr('d', line);
+    });
 
+    activeParsec.forEach((iso) => {
+      const isBest = iso.ageGyr === M34_AGE_GYR;
+      g.append('path')
+        .datum(iso.points)
+        .attr('fill', 'none')
+        .attr('stroke', PARSEC_COLOR)
+        .attr('stroke-width', isBest ? 2.2 : 1.4)
+        .attr('stroke-dasharray', '3 3')
+        .attr('opacity', isBest ? 0.95 : 0.65)
+        .attr('d', line);
+    });
+
+    activeIsochrones.forEach((iso) => {
+      const color = AGE_COLORS[iso.ageGyr] ?? '#888';
+      const isBest = iso.ageGyr === M34_AGE_GYR;
       const to = turnoffPoint(iso.points);
       g.append('circle')
         .attr('cx', x(to.bv))
@@ -132,7 +157,24 @@ export function IsochroneExplorer({ stars }: Props) {
         .text(iso.shortLabel);
       legendY += 14;
     });
-  }, [stars, activeIsochrones]);
+
+    if (showParsec) {
+      g.append('line')
+        .attr('x1', legendX - 48)
+        .attr('x2', legendX - 28)
+        .attr('y1', legendY)
+        .attr('y2', legendY)
+        .attr('stroke', PARSEC_COLOR)
+        .attr('stroke-width', 1.5)
+        .attr('stroke-dasharray', '3 3');
+      g.append('text')
+        .attr('x', legendX - 24)
+        .attr('y', legendY + 3)
+        .attr('fill', '#9aa8c4')
+        .attr('font-size', 9)
+        .text('PARSEC');
+    }
+  }, [stars, activeIsochrones, activeParsec, showParsec]);
 
   const toggleAge = (ageGyr: number) => {
     setSelected((prev) => {
@@ -148,11 +190,20 @@ export function IsochroneExplorer({ stars }: Props) {
       <div className="iso-explorer__header">
         <h3 className="iso-explorer__title">Isochrone gallery</h3>
         <p className="iso-explorer__intro">
-          Toggle ages to see how the Yonsei–Yale model shifts on the HR diagram. Open clusters of
-          different ages share the same chemistry but different turnoffs — the bend where stars leave
-          the main sequence. M34 matches the <strong>200 Myr</strong> track (gold).
+          Solid curves: legacy Yonsei–Yale tracks from Midas ISO.csv. Dashed cyan: PARSEC v1.2S (
+          {PARSEC_SOURCE}). At 200 Myr the turnoff differs by ~0.5 mag — worth checking when tuning
+          binary cuts. M34 best fit: <strong>YY gold</strong> vs <strong>PARSEC cyan</strong>.
         </p>
       </div>
+
+      <label className="hr-filters__item iso-explorer__parsec-toggle">
+        <input
+          type="checkbox"
+          checked={showParsec}
+          onChange={(e) => setShowParsec(e.target.checked)}
+        />
+        Overlay PARSEC v1.2S (dashed)
+      </label>
 
       <div className="iso-explorer__chips" role="group" aria-label="Select isochrone ages">
         {ISOCHRONE_AGES.map((iso) => {
@@ -178,15 +229,31 @@ export function IsochroneExplorer({ stars }: Props) {
 
       <div className="iso-explorer__cards">
         {activeIsochrones.map((iso) => (
-          <IsoCard key={iso.ageGyr} iso={iso} isBest={iso.ageGyr === M34_AGE_GYR} />
+          <IsoCard
+            key={iso.ageGyr}
+            iso={iso}
+            isBest={iso.ageGyr === M34_AGE_GYR}
+            parsec={
+              showParsec ? PARSEC_ISOCHRONE_AGES.find((p) => p.ageGyr === iso.ageGyr) : undefined
+            }
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function IsoCard({ iso, isBest }: { iso: AgeIsochrone; isBest: boolean }) {
+function IsoCard({
+  iso,
+  isBest,
+  parsec,
+}: {
+  iso: AgeIsochrone;
+  isBest: boolean;
+  parsec?: AgeIsochrone;
+}) {
   const to = turnoffPoint(iso.points);
+  const pto = parsec ? turnoffPoint(parsec.points) : null;
   return (
     <article className={`iso-explorer__card${isBest ? ' iso-explorer__card--best' : ''}`}>
       <header>
@@ -198,13 +265,25 @@ function IsoCard({ iso, isBest }: { iso: AgeIsochrone; isBest: boolean }) {
       <p>{iso.note}</p>
       <dl className="iso-explorer__stats">
         <div>
-          <dt>Turnoff Mv</dt>
+          <dt>YY Mv</dt>
           <dd>{to.mv.toFixed(2)}</dd>
         </div>
         <div>
-          <dt>Turnoff B−V</dt>
+          <dt>YY B−V</dt>
           <dd>{to.bv.toFixed(2)}</dd>
         </div>
+        {pto && (
+          <>
+            <div>
+              <dt>PARSEC Mv</dt>
+              <dd style={{ color: PARSEC_COLOR }}>{pto.mv.toFixed(2)}</dd>
+            </div>
+            <div>
+              <dt>PARSEC B−V</dt>
+              <dd style={{ color: PARSEC_COLOR }}>{pto.bv.toFixed(2)}</dd>
+            </div>
+          </>
+        )}
       </dl>
     </article>
   );

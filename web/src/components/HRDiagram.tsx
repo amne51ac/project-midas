@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import type { Star } from '../data/types';
 import type { AgeIsochrone, IsoPoint } from '../data/isochrones';
+import { PARSEC_COMPARE_AGES, PARSEC_M34 } from '../data/parsecIsochrones';
 import { turnoffPoint } from '../data/isochrones';
 
 export type HRDiagramMode =
@@ -29,6 +30,8 @@ const AGE_COLORS: Record<number, string> = {
   0.6: '#a8886a',
   1.0: '#8878a8',
 };
+
+const PARSEC_COLOR = '#67c4e8';
 
 export function HRDiagram({
   stars,
@@ -135,6 +138,22 @@ export function HRDiagram({
             .attr('stroke-width', 1.2);
         }
       });
+
+      const parsecSet =
+        mode === 'age-compare'
+          ? PARSEC_COMPARE_AGES.filter((p) => compareSet.some((c) => c.ageGyr === p.ageGyr))
+          : [PARSEC_M34];
+
+      parsecSet.forEach((ageIso) => {
+        const isPrimary = mode === 'age-fit';
+        drawIso(
+          ageIso.points,
+          PARSEC_COLOR,
+          isPrimary ? 2.2 : 1.4,
+          '4 3',
+          isPrimary ? 0.9 : 0.55,
+        );
+      });
     } else if (mode !== 'stars') {
       drawIso(primaryIso, '#e8c547', mode === 'isochrone-intro' ? 2 : 2.5);
     }
@@ -166,7 +185,24 @@ export function HRDiagram({
         .attr('font-family', 'Libre Franklin, sans-serif')
         .attr('font-size', 9)
         .attr('fill', '#e8c547')
-        .text('turnoff ~2 M☉');
+        .text('turnoff ~2 M☉ (YY)');
+
+      const pTurnoff = turnoffPoint(PARSEC_M34.points);
+      g.append('circle')
+        .attr('cx', x(pTurnoff.bv))
+        .attr('cy', y(pTurnoff.mv))
+        .attr('r', 4)
+        .attr('fill', 'none')
+        .attr('stroke', PARSEC_COLOR)
+        .attr('stroke-width', 1.5)
+        .attr('stroke-dasharray', '3 2');
+      g.append('text')
+        .attr('x', x(pTurnoff.bv) + 10)
+        .attr('y', y(pTurnoff.mv) - 6)
+        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-size', 9)
+        .attr('fill', PARSEC_COLOR)
+        .text('PARSEC turnoff');
     }
 
     if (mode === 'binary') {
@@ -183,10 +219,17 @@ export function HRDiagram({
         .text('equal-mass binary track');
     }
 
+    const hasExcelFlags = stars.some((s) => s.excelBinary || s.excelSingle);
     const filtered =
       highlight === 'all'
         ? stars
-        : stars.filter((_, i) => (highlight === 'binary' ? i % 5 === 0 : i % 5 !== 0));
+        : highlight === 'binary'
+          ? hasExcelFlags
+            ? stars.filter((s) => s.excelBinary)
+            : stars.filter((_, i) => i % 5 === 0)
+          : hasExcelFlags
+            ? stars.filter((s) => s.excelSingle)
+            : stars.filter((_, i) => i % 5 !== 0);
 
     const tip = tooltipRef.current!;
 
@@ -196,12 +239,19 @@ export function HRDiagram({
       .attr('cx', (d) => x(d.bv))
       .attr('cy', (d) => y(d.mv))
       .attr('r', 3)
-      .attr('fill', '#eef2ff')
-      .attr('opacity', 0.45)
+      .attr('fill', (d) => (d.excelBinary ? '#d4a72c' : d.cgMember === false ? '#666' : '#f0f0f0'))
+      .attr('opacity', (d) => (d.cgMember === false ? 0.2 : 0.45))
       .on('mouseenter', (event, d) => {
         d3.select(event.currentTarget as SVGCircleElement).attr('opacity', 1).attr('r', 5);
         tip.style.opacity = '1';
-        tip.innerHTML = `V = ${d.v.toFixed(2)} · B−V = ${d.bv.toFixed(2)}<br/>Mv = ${d.mv.toFixed(2)}`;
+        const lines = [
+          `V = ${d.v.toFixed(2)} · B−V = ${d.bv.toFixed(2)}`,
+          `Mv = ${d.mv.toFixed(2)}`,
+        ];
+        if (d.cgProba != null) lines.push(`P(member) = ${d.cgProba.toFixed(2)}`);
+        if (d.excelBinary) lines.push('Excel binary candidate');
+        if (d.excelSingle) lines.push('Excel single-star accept');
+        tip.innerHTML = lines.join('<br/>');
         tip.style.left = `${event.offsetX + 12}px`;
         tip.style.top = `${event.offsetY - 8}px`;
       })
@@ -231,6 +281,21 @@ export function HRDiagram({
           .text(ageIso.shortLabel);
         legendY += 16;
       });
+      g.append('line')
+        .attr('x1', legendX - 36)
+        .attr('x2', legendX - 14)
+        .attr('y1', legendY)
+        .attr('y2', legendY)
+        .attr('stroke', PARSEC_COLOR)
+        .attr('stroke-width', 1.5)
+        .attr('stroke-dasharray', '4 3');
+      g.append('text')
+        .attr('x', legendX - 10)
+        .attr('y', legendY + 3)
+        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-size', 9)
+        .attr('fill', '#9aa8c4')
+        .text('PARSEC');
     }
 
     if (mode === 'binary') {

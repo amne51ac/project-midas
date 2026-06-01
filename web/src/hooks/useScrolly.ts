@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
+function scrollyRootMargin(): string {
+  if (typeof window === 'undefined') return '-40% 0px -40% 0px';
+  return window.matchMedia('(max-width: 768px)').matches
+    ? '-20% 0px -35% 0px'
+    : '-40% 0px -40% 0px';
+}
+
 /** Highlight the scrolly step whose center is nearest the viewport center. */
 export function useScrolly(stepCount: number) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,7 +26,7 @@ export function useScrolly(stepCount: number) {
           if (!Number.isNaN(idx)) setActiveIndex(idx);
         }
       },
-      { rootMargin: '-40% 0px -40% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] },
+      { rootMargin: scrollyRootMargin(), threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
     steps.forEach((el) => observer.observe(el));

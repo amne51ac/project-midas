@@ -16,6 +16,8 @@ function layerOpacity(id: string, active: Set<string>) {
 function pointRadius(layer: CatalogLayer) {
   if (layer.id === 'gaia_field') return 1.8;
   if (layer.id === 'midas') return 2.8;
+  if (layer.id === 'malofeeva') return 3.4;
+  if (layer.id === 'wocs') return 3.6;
   return 3.2;
 }
 
@@ -103,8 +105,10 @@ export function DataExplorer({ bundle }: Props) {
       const rank: Record<string, number> = {
         gaia_field: 0,
         jones_prosser: 1,
-        gaia_members: 2,
-        midas: 3,
+        wocs: 2,
+        cantat_gaudin: 3,
+        malofeeva: 4,
+        midas: 5,
       };
       return (rank[a.id] ?? 1) - (rank[b.id] ?? 1);
     });
@@ -257,6 +261,55 @@ export function DataExplorer({ bundle }: Props) {
                     π {hover.pt.plx.toFixed(2)} mas
                   </>
                 )}
+                {hover.pt.prob != null && (
+                  <>
+                    <br />
+                    P(member) {hover.pt.prob.toFixed(2)}
+                    {hover.pt.cgMember != null && (hover.pt.cgMember ? ' · member' : ' · non-member')}
+                  </>
+                )}
+                {hover.pt.gaiaId && (
+                  <>
+                    <br />
+                    Gaia {hover.pt.gaiaId}
+                  </>
+                )}
+                {hover.pt.excelBinary && (
+                  <>
+                    <br />
+                    Excel binary
+                  </>
+                )}
+                {hover.pt.excelSingle && (
+                  <>
+                    <br />
+                    Excel single
+                  </>
+                )}
+                {hover.pt.malofeeva && (
+                  <>
+                    <br />
+                    Malofeeva IR
+                  </>
+                )}
+                {hover.pt.wocs && (
+                  <>
+                    <br />
+                    WOCS target
+                  </>
+                )}
+                {hover.pt.period != null && (
+                  <>
+                    <br />
+                    P_rot {hover.pt.period.toFixed(2)} d
+                  </>
+                )}
+                {hover.pt.rv != null && (
+                  <>
+                    <br />
+                    RV {hover.pt.rv.toFixed(1)} km/s
+                  </>
+                )}
               </>
             )}
           </div>
@@ -290,6 +343,57 @@ export function DataExplorer({ bundle }: Props) {
                     <dd>{hover.pt.mem}</dd>
                   </div>
                 )}
+                {hover.pt.mv0 != null && (
+                  <div>
+                    <dt>Mv₀</dt>
+                    <dd>{hover.pt.mv0.toFixed(2)}</dd>
+                  </div>
+                )}
+                {hover.pt.bv0 != null && (
+                  <div>
+                    <dt>(B−V)₀</dt>
+                    <dd>{hover.pt.bv0.toFixed(3)}</dd>
+                  </div>
+                )}
+                {hover.pt.gaiaId && (
+                  <div>
+                    <dt>Gaia</dt>
+                    <dd>{hover.pt.gaiaId}</dd>
+                  </div>
+                )}
+                {hover.pt.prob != null && (
+                  <div>
+                    <dt>P(member)</dt>
+                    <dd>
+                      {hover.pt.prob.toFixed(3)}
+                      {hover.pt.cgMember != null && (hover.pt.cgMember ? ' · member' : ' · field')}
+                    </dd>
+                  </div>
+                )}
+                {hover.pt.period != null && (
+                  <div>
+                    <dt>Rotation</dt>
+                    <dd>{hover.pt.period.toFixed(2)} d</dd>
+                  </div>
+                )}
+                {hover.pt.rv != null && (
+                  <div>
+                    <dt>Radial vel.</dt>
+                    <dd>{hover.pt.rv.toFixed(1)} km/s</dd>
+                  </div>
+                )}
+                {hover.pt.rotSeq && (
+                  <div>
+                    <dt>Rot. sequence</dt>
+                    <dd>{hover.pt.rotSeq}</dd>
+                  </div>
+                )}
+                {hover.pt.hw2w1 != null && (
+                  <div>
+                    <dt>(H−W2)−W1</dt>
+                    <dd>{hover.pt.hw2w1.toFixed(2)}</dd>
+                  </div>
+                )}
               </dl>
             </div>
           ) : (
@@ -299,24 +403,28 @@ export function DataExplorer({ bundle }: Props) {
             </p>
           )}
 
-          <h4 className="data-explorer__aside-heading">Published catalogs (pending ingest)</h4>
-          <ul className="data-explorer__published">
-            {bundle.published.map((pub) => (
-              <li key={pub.id}>
-                <div className="data-explorer__pub-row">
-                  <span>{pub.name}</span>
-                  <span>{pub.totalCount.toLocaleString()}</span>
-                </div>
-                <div className="data-explorer__pub-bar-wrap">
-                  <div
-                    className="data-explorer__pub-bar"
-                    style={{ width: `${(pub.totalCount / maxPublished) * 100}%` }}
-                  />
-                </div>
-                <p className="data-explorer__pub-note">{pub.note}</p>
-              </li>
-            ))}
-          </ul>
+          {bundle.published.length > 0 && (
+            <>
+              <h4 className="data-explorer__aside-heading">Related archives</h4>
+              <ul className="data-explorer__published">
+                {bundle.published.map((pub) => (
+                  <li key={pub.id}>
+                    <div className="data-explorer__pub-row">
+                      <span>{pub.name}</span>
+                      <span>{pub.totalCount.toLocaleString()}</span>
+                    </div>
+                    <div className="data-explorer__pub-bar-wrap">
+                      <div
+                        className="data-explorer__pub-bar"
+                        style={{ width: `${(pub.totalCount / maxPublished) * 100}%` }}
+                      />
+                    </div>
+                    <p className="data-explorer__pub-note">{pub.note}</p>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </aside>
       </div>
     </div>

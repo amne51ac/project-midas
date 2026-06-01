@@ -47,7 +47,12 @@ export function ImageCompare({ before, after, initialPosition = 50 }: Props) {
         role="img"
         aria-label={`Comparison: ${before.label} versus ${after.label}`}
       >
-        <img className="image-compare__img image-compare__img--after" src={after.src} alt="" draggable={false} />
+        <img
+          className="image-compare__img image-compare__img--after"
+          src={after.src}
+          alt=""
+          draggable={false}
+        />
         <div className="image-compare__before" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}>
           <img className="image-compare__img" src={before.src} alt="" draggable={false} />
         </div>

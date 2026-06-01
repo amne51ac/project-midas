@@ -7,7 +7,7 @@ const COMPARISONS: { id: string; title: string; note: string; before: CompareIma
   {
     id: 'plates',
     title: 'Photographic plates → digital survey',
-    note: 'Both images are visible light. The left is a digitized Palomar Sky Survey plate from the 1950s; the right is a true-color BVR composite from Kitt Peak (1996).',
+    note: 'Both frames are pulled from NASA SkyView with identical pointing and scale (0.58° field, 800×800 px). The left is a digitized POSS-I red plate (~1950s); the right is SDSS g-band CCD photometry (~2000s). Stars stay fixed as you slide.',
     before: {
       src: `${base}images/m34-dss1-1950s.jpg`,
       label: 'DSS1 · ~1950s plate',
@@ -15,21 +15,21 @@ const COMPARISONS: { id: string; title: string; note: string; before: CompareIma
       credit: 'NASA/GSFC SkyView · DSS1 · STScI/AURA',
     },
     after: {
-      src: `${base}images/m34-noirlab-1996.jpg`,
-      label: 'NOIRLab · 1996 BVR',
-      caption: 'Burrell Schmidt telescope, Kitt Peak — approximately true-color CCD photometry across a 35′ field, matching the scale of the cluster.',
-      credit: 'REU program / NOIRLab / NSF / AURA',
+      src: `${base}images/m34-sdss-g.jpg`,
+      label: 'SDSS · g band',
+      caption: 'Sloan Digital Sky Survey CCD imaging — sharper, deeper, and uniformly calibrated across the same field as the plate.',
+      credit: 'NASA/GSFC SkyView · SDSS',
     },
   },
   {
     id: 'optical-ir',
     title: 'Visible light → infrared',
-    note: 'Webb has not observed M34. This pair shows what changes when you leave the visible band: 2MASS near-infrared reveals cooler stars and different contrast — the same principle Webb uses, at lower resolution.',
+    note: 'Webb has not observed M34. This pair uses the same SkyView geometry: SDSS g (optical) versus WISE 22 µm (mid-infrared). Cooler stars and dust stand out in IR without shifting the star positions.',
     before: {
-      src: `${base}images/m34-noirlab-1996.jpg`,
-      label: 'Optical · visible',
-      caption: 'Human-eye wavelengths (B, V, R). Bright blue stars dominate; many cluster members look similar at this age.',
-      credit: 'REU program / NOIRLab / NSF / AURA',
+      src: `${base}images/m34-sdss-g.jpg`,
+      label: 'SDSS · g band',
+      caption: 'Optical light near 480 nm. Bright blue main-sequence stars dominate; cluster members at ~200 Myr look similar in color.',
+      credit: 'NASA/GSFC SkyView · SDSS',
     },
     after: {
       src: `${base}images/m34-wise-ir.jpg`,
@@ -40,19 +40,19 @@ const COMPARISONS: { id: string; title: string; note: string; before: CompareIma
   },
   {
     id: 'amateur',
-    title: 'Survey camera → modern astrophotography',
-    note: 'Amateur and professional wide-field imagers still target M34 because it is bright, large, and resolved into individual stars.',
+    title: 'First-generation → second-generation survey',
+    note: 'DSS2 red-digitized plates (1990s) versus SDSS g (2000s CCD). Same astrometric grid — compare how survey technology changed while the star field stays locked in place.',
     before: {
       src: `${base}images/m34-dss2-1990s.jpg`,
       label: 'DSS2 · 1990s survey',
-      caption: 'Second-generation Palomar Sky Survey digitization — sharper plates, better photometry than DSS1, still survey-grade.',
+      caption: 'Second-generation Palomar Sky Survey digitization — sharper plates and better photometry than DSS1, still survey-grade.',
       credit: 'NASA/GSFC SkyView · DSS2 · STScI/AURA',
     },
     after: {
-      src: `${base}images/m34-ccd-2005.jpg`,
-      label: 'CCD · 2005',
-      caption: 'Dedicated amateur CCD stack (Ole Nielsen). Longer exposure, higher resolution, and deliberate color balance.',
-      credit: 'Ole Nielsen / CC BY-SA 2.5 via Wikimedia Commons',
+      src: `${base}images/m34-sdss-g.jpg`,
+      label: 'SDSS · g band',
+      caption: 'Modern CCD survey photometry on the identical field. Dedicated amateur stacks (like Ole Nielsen\'s M34 image) reach similar depth but use independent plate solutions — harder to align in a slider.',
+      credit: 'NASA/GSFC SkyView · SDSS',
     },
   },
 ];

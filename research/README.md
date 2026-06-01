@@ -17,11 +17,13 @@ research/
 
 | Source | Location | Notes |
 |--------|----------|-------|
-| Midas photometry | `../Midas/Midas Raw Data.csv` | 5,749 stars, BVR(I) |
-| Jones–Prosser members | `../Midas/Members.csv` | 630 stars |
-| Yonsei–Yale isochrones | `../Midas/ISO.csv` | Multiple ages |
+| Midas photometry | `data/raw/Midas Raw Data.csv` | 5,749 stars, BVR(I) |
+| Jones–Prosser members | `data/raw/Members.csv` | 630 stars |
+| Yonsei–Yale isochrones | `data/raw/ISO.csv` | Multiple ages |
 | Gaia DR3 | Query via `scripts/gaia_cone.py` | Parallax, PM, photometry |
-| Cantat-Gaudin members | VizieR J/A+A/640/A1 | Membership probabilities |
+| Cantat-Gaudin members | VizieR J/A+A/640/A1 (NGC_1039) | UPMASK membership probabilities |
+| Malofeeva et al. (2023) | VizieR J/AJ/165/45/fig9 | IR two-index binary sample |
+| WOCS / Meibom (2011) | VizieR J/ApJ/733/115/table2 | Rotation periods + RV (120 stars) |
 
 Copy or symlink legacy files into `data/raw/` for self-contained clones:
 
@@ -31,6 +33,57 @@ cp "../Midas/Midas Raw Data.csv" research/data/raw/
 cp "../Midas/Members.csv" research/data/raw/
 cp "../Midas/ISO.csv" research/data/raw/
 ```
+
+All scripts resolve paths through `midas.paths` (`data/raw/` first, then sibling `Midas/`).
+
+See [`DATA_DICTIONARY.md`](DATA_DICTIONARY.md) for column definitions.
+
+### `scripts/run_midas_pipeline.py`
+
+Python 3 port of legacy `Midas.py` core logic (Mv, Q-value, J&P mating):
+
+```bash
+python scripts/run_midas_pipeline.py
+# → data/processed/midas_pipeline.csv
+```
+
+### `scripts/cross_match.py`
+
+Unified join table — Midas ↔ Gaia ↔ Cantat-Gaudin ↔ Malofeeva ↔ WOCS ↔ Jones–Prosser, plus `cg_member`, `bv0`, `mv0`:
+
+```bash
+python scripts/cross_match.py
+# → data/processed/m34_join.csv
+```
+
+### `scripts/verify_wocs_ingest.py`
+
+Confirms 120 VizieR WOCS targets and 118 Midas matches:
+
+```bash
+python scripts/verify_wocs_ingest.py
+```
+
+### `scripts/fetch_parsec_isochrones.py`
+
+Download PARSEC v1.2S isochrones (Padova CMD 3.9) for website ages:
+
+```bash
+python scripts/fetch_parsec_isochrones.py
+python scripts/build_parsec_isochrones.py
+```
+
+Cached table: `data/raw/parsec_cmd_isochrones.dat` → `web/src/data/parsecIsochrones.ts`
+
+### `scripts/reproduce_excel_counts.py`
+
+Regression test against Excel Control sheet (187 singles / 171 binaries):
+
+```bash
+python scripts/reproduce_excel_counts.py
+```
+
+Optional dev dependency for inspecting workbooks: `pip install -r requirements-dev.txt`
 
 ## Scripts
 
@@ -55,10 +108,13 @@ python scripts/gaia_cone.py --radius-deg 0.5 --out data/processed/gaia_m34.csv
 
 ```bash
 python scripts/build_web_sample.py
-# writes ../web/src/data/m34_sample.json
+# reads m34_join.csv → ../web/src/data/m34_sample.json
+
+python scripts/fetch_published_catalogs.py
+# downloads Cantat-Gaudin, Malofeeva, WOCS tables from VizieR
 
 python scripts/build_web_catalogs.py
-# requires research/data/processed/gaia_m34.csv (see below)
+# requires research/data/processed/*.csv (see below)
 # writes ../web/src/data/m34_catalogs.json
 ```
 
@@ -83,11 +139,44 @@ python scripts/build_web_catalogs.py
 
 ## Environment
 
+Create a virtual environment **inside `research/`** (already gitignored):
+
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install numpy pandas astroquery
+cd research
+python3 -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
 ```
+
+Run scripts from the `research/` directory:
+
+```bash
+# Gaia DR3 cone around M34 (needs network; may take a few minutes)
+python scripts/gaia_cone.py --radius-deg 0.5 --out data/processed/gaia_m34.csv
+
+python scripts/build_web_catalogs.py
+python scripts/build_web_sample.py
+```
+
+From the repo root, prefix paths with `research/`:
+
+```bash
+python research/scripts/build_web_catalogs.py
+python research/scripts/cross_match.py
+```
+
+### Cross-match join table
+
+After Gaia and published catalogs are in `data/processed/`:
+
+```bash
+python scripts/cross_match.py
+# → data/processed/m34_join.csv
+```
+
+One row per Midas star with Gaia `source_id`, Cantat-Gaudin membership probability,
+Malofeeva / WOCS / Jones–Prosser flags. Tune match radius with `--max-sep` (Gaia)
+and `--catalog-sep` (catalog fallbacks).
 
 ## Open questions (research targets)
 

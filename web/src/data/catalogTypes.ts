@@ -10,6 +10,21 @@ export interface CatalogPoint {
   plx?: number;
   pmra?: number;
   pmdec?: number;
+  prob?: number;
+  cgMember?: boolean;
+  gaiaId?: string;
+  excelSingle?: boolean;
+  excelBinary?: boolean;
+  malofeeva?: boolean;
+  wocs?: boolean;
+  bv0?: number;
+  mv0?: number;
+  period?: number;
+  rv?: number;
+  rvProb?: number;
+  rotSeq?: string;
+  w2bpk?: number;
+  hw2w1?: number;
   mem?: string;
 }
 
@@ -38,5 +53,10 @@ export interface CatalogBundle {
   radiusDeg: number;
   layers: CatalogLayer[];
   published: PublishedCatalog[];
-  meta: { distance_pc: number; built_from: (string | null)[] };
+  meta: {
+    distance_pc: number;
+    ebv?: number;
+    cg_member_threshold?: number;
+    built_from: (string | null)[];
+  };
 }
