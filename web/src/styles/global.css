@@ -32,7 +32,8 @@
   color-scheme: dark;
 }
 
-html.is-home-route {
+html.is-home-route,
+html.is-phase-route {
   --header-offset: calc(var(--nav-primary-h) + var(--nav-sub-h));
 }
 
@@ -2708,6 +2709,11 @@ code {
   background: var(--bg-alt);
   border: 1px solid var(--rule);
   border-radius: 2px;
+  scroll-margin-top: calc(var(--header-offset) + 0.5rem);
+}
+
+.phase-page [id^='phase-'] {
+  scroll-margin-top: calc(var(--header-offset) + 0.75rem);
 }
 
 .phase-page__title {

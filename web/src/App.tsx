@@ -6,7 +6,7 @@ export default function App() {
   const route = useHashRoute();
 
   if (route.type === 'phase') {
-    return <PhasePage phaseId={route.phaseId} />;
+    return <PhasePage phaseId={route.phaseId} scrollTo={route.section} />;
   }
 
   return <HomePage scrollTo={route.section} />;

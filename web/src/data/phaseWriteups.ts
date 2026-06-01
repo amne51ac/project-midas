@@ -409,6 +409,120 @@ mv0 = V0 − 5 log₁₀(470/10)          # absolute V, corrected`,
       { label: 'Phase completed', value: '1 Jun 2026' },
     ],
   },
+  'phase-iii': {
+    phaseId: 'phase-iii',
+    overview: [
+      'Phase III asks whether the legacy Midas Q-value heuristic recovers binaries that independent surveys already flagged — IR-color cuts (Malofeeva), WOCS radial-velocity variability, and Gaia astrometric quality (RUWE).',
+      'All comparisons run on CG members (P ≥ 0.7) with Q values from the Python 3 pipeline at E(B−V) = 0.07. Results land in validation_summary.json and the q_threshold_calibration notebook.',
+    ],
+    steps: [
+      {
+        id: 'malofeeva',
+        title: 'Q vs Malofeeva IR binaries',
+        paragraphs: [
+          'Malofeeva et al. (2023) flags 248 Midas overlaps via Gaia+WISE pseudocolors — independent of the isochrone track offset. Among 263 Cantat-Gaudin members, 242 carry the Malofeeva flag; we treat those as positive class for a first completeness check.',
+          'Default legacy cut (0 < Q ≤ 1, excluding |Δ(B−V)| < 0.05 singles) yields high precision (0.92) but low recall (0.19) vs Malofeeva — most IR-flagged stars sit above the binary track in B−V space without a high Q-value.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'CG members · Malofeeva truth',
+            body: 'N=263 · TP=47 FP=4 · Precision=0.92 · Recall=0.19 · F1=0.32',
+          },
+          {
+            kind: 'command',
+            label: 'Run',
+            body: 'python scripts/validate_phase3.py --only malofeeva',
+          },
+        ],
+        homeHref: homeSectionHref('compare'),
+        homeLabel: 'Compare chapter',
+      },
+      {
+        id: 'wocs',
+        title: 'Q vs WOCS RV variability',
+        paragraphs: [
+          'WOCS publishes a probability PRV that a star\'s radial velocity is variable — our binary truth uses PRV ≥ 90%. Only 23 of 118 Midas-matched WOCS targets have PRV measurements in the VizieR table; the rest lack RV follow-up.',
+          'On that subset the default Q cut finds no PRV-high stars (TP=0) — expected at ~200 Myr where many WOCS binaries are resolved or rotate, not unresolved equal-mass pairs.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'WOCS with PRV',
+            body: 'N=23 with PRV · truth PRV≥90% · TP=0 FP=3 TN=20',
+          },
+          {
+            kind: 'command',
+            label: 'Verify WOCS ingest',
+            body: 'python scripts/verify_wocs_ingest.py',
+          },
+        ],
+        homeHref: homeSectionHref('data'),
+        homeLabel: 'WOCS layer',
+      },
+      {
+        id: 'ruwe',
+        title: 'Gaia RUWE astrometric screen',
+        paragraphs: [
+          'Gaia DR3 RUWE > 1.4 flags astrometric solutions inconsistent with a single star — a third binary diagnostic orthogonal to B−V and IR colors.',
+          'Among CG members with RUWE, the Q-value picks up 7 of 23 high-RUWE stars (recall 0.30) at the cost of 44 false positives — astrometric and photometric binary channels overlap partially but are not identical.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'RUWE > 1.4 vs Q',
+            body: 'N=263 · TP=7 FP=44 · Precision=0.14 · Recall=0.30 · F1=0.19',
+          },
+        ],
+        homeHref: homeSectionHref('data'),
+        homeLabel: 'Gaia layer',
+      },
+      {
+        id: 'roc',
+        title: 'ROC and magnitude-binned completeness',
+        paragraphs: [
+          'ROC curves treat Q as a continuous score (higher = more binary-like) against Malofeeva positives. Bootstrap resampling by absolute magnitude bin estimates recall uncertainty — completeness rises toward faint magnitudes (Mv 8–14: recall ≈ 0.37) where unresolved pairs dominate.',
+          'Output includes 264 ROC points and per-bin 95% CI on recall for planning Phase IV mass-stratified fractions.',
+        ],
+        examples: [
+          {
+            kind: 'command',
+            label: 'Full validation report',
+            body: 'python scripts/validate_phase3.py --refresh-pipeline --ebv 0.07\n# → data/processed/validation_summary.json',
+          },
+          {
+            kind: 'note',
+            label: 'Mv bin recall (Malofeeva)',
+            body: 'Mv 0–2: 0.09 · 2–4: 0.14 · 4–6: 0.16 · 6–8: 0.07 · 8–14: 0.37',
+          },
+        ],
+      },
+      {
+        id: 'calibrate',
+        title: 'Q threshold calibration notebook',
+        paragraphs: [
+          'research/notebooks/q_threshold_calibration.ipynb sweeps (q_low, q_high) bounds and plots ROC + F1 heatmaps. The default (0, 1] interval already maximizes F1 vs Malofeeva among tested grids — tightening q_high below 0.9 only hurts recall.',
+          'Next tuning should joint-optimize bvdev_single_max and Q bounds, and compare Excel-binary vs Q paths as separate predictors.',
+        ],
+        examples: [
+          {
+            kind: 'command',
+            label: 'Threshold grid only',
+            body: 'python scripts/validate_phase3.py --only calibrate',
+          },
+        ],
+        homeHref: homeSectionHref('code'),
+        homeLabel: 'Code chapter',
+      },
+    ],
+    outcomes: [
+      { label: 'Validation module', value: 'research/midas/validation.py' },
+      { label: 'Malofeeva F1 (CG)', value: '0.32 @ Q∈(0,1]' },
+      { label: 'WOCS PRV subset', value: '23 / 118' },
+      { label: 'RUWE recall', value: '0.30' },
+      { label: 'Status', value: 'Active — IR fetch remains' },
+    ],
+  },
 };
 
 export function getPhaseWriteup(phaseId: string): PhaseWriteup | undefined {

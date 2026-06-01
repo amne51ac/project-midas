@@ -73,6 +73,7 @@ def load_join_table(path: Path | None = None) -> list[dict]:
                 "wocs_seq": row.get("wocs_seq", "").strip(),
                 "wocs_prot": _float(row.get("wocs_prot", "")),
                 "wocs_rv": _float(row.get("wocs_rv", "")),
+                "wocs_rv_prob": _float(row.get("wocs_rv_prob", "")),
                 "jp_member": row.get("jp_member", "").strip(),
                 "excel_single": _int(row.get("excel_single", "")) or 0,
                 "excel_binary": _int(row.get("excel_binary", "")) or 0,

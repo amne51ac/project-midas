@@ -150,6 +150,7 @@ research/midas/
   wocs.py        — WOCS/Meibom VizieR table loader
   join_table.py  — load m34_join.csv for web builders
   pipeline.py    — Mv, Q-value, derived columns + CSV export
+  validation.py  — Phase III confusion matrices, ROC, bootstrap completeness
 ```
 
 Run:
@@ -157,6 +158,7 @@ Run:
 ```bash
 python scripts/cross_match.py          # → m34_join.csv (Gaia + catalogs + bv0/mv0)
 python scripts/verify_wocs_ingest.py     # 120 targets, 118 Midas matches
+python scripts/validate_phase3.py       # → validation_summary.json
 python scripts/build_web_sample.py     # HR sample from join table
 python scripts/build_web_catalogs.py   # catalog explorer JSON
 

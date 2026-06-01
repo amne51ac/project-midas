@@ -1,2 +1,5 @@
 # Optional — Excel regression verification (scripts/reproduce_excel_counts.py)
 openpyxl>=3.1
+# Notebooks (Phase III calibration)
+matplotlib>=3.8
+pandas>=2.1

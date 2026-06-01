@@ -1,14 +1,25 @@
 import { useEffect, useState } from 'react';
 
+export const PHASE_SECTIONS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'writeup', label: 'What we did' },
+  { id: 'tracker', label: 'Task tracker' },
+  { id: 'explorations', label: 'Explorations' },
+] as const;
+
+export type PhaseSectionId = (typeof PHASE_SECTIONS)[number]['id'];
+
 export type AppRoute =
   | { type: 'home'; section?: string }
-  | { type: 'phase'; phaseId: string };
+  | { type: 'phase'; phaseId: string; section?: PhaseSectionId };
 
 function parseHash(): AppRoute {
   const raw = window.location.hash.replace(/^#/, '').trim();
   if (raw.startsWith('/phases/')) {
-    const phaseId = raw.slice('/phases/'.length).split(/[/?]/)[0];
-    if (phaseId) return { type: 'phase', phaseId };
+    const parts = raw.slice('/phases/'.length).split('/').filter(Boolean);
+    const phaseId = parts[0];
+    const section = parts[1] as PhaseSectionId | undefined;
+    if (phaseId) return { type: 'phase', phaseId, section };
   }
   if (raw === '' || raw === '/') return { type: 'home' };
   if (raw.startsWith('/')) return { type: 'home' };
@@ -27,8 +38,8 @@ export function useHashRoute(): AppRoute {
   return route;
 }
 
-export function phasePageHref(phaseId: string): string {
-  return `#/phases/${phaseId}`;
+export function phasePageHref(phaseId: string, sectionId?: PhaseSectionId): string {
+  return sectionId ? `#/phases/${phaseId}/${sectionId}` : `#/phases/${phaseId}`;
 }
 
 export function homeSectionHref(sectionId: string): string {

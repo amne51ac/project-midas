@@ -178,6 +178,24 @@ One row per Midas star with Gaia `source_id`, Cantat-Gaudin membership probabili
 Malofeeva / WOCS / Jones–Prosser flags. Tune match radius with `--max-sep` (Gaia)
 and `--catalog-sep` (catalog fallbacks).
 
+## Phase III validation
+
+Compare legacy Python Q-value binary picks to external truth sets on `m34_join.csv`:
+
+```bash
+python scripts/validate_phase3.py --refresh-pipeline --ebv 0.07
+# → prints confusion matrices + writes data/processed/validation_summary.json
+
+python scripts/validate_phase3.py --only malofeeva wocs ruwe roc completeness calibrate
+```
+
+Notebook: `notebooks/q_threshold_calibration.ipynb` — ROC plot and Q threshold grid vs Malofeeva.
+
+Truth sets:
+- **Malofeeva** — IR two-index binary flags (248 Midas overlap)
+- **WOCS** — RV variability probability PRV ≥ 90% (118 matched targets)
+- **Gaia RUWE** — astrometric anomaly RUWE > 1.4
+
 ## Open questions (research targets)
 
 1. Q-value completeness vs. Malofeeva IR binary diagram  

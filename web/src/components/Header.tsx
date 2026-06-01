@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { phasePageHref, useHashRoute } from '../hooks/useHashRoute';
+import { phasePageHref, PHASE_SECTIONS, useHashRoute, type PhaseSectionId } from '../hooks/useHashRoute';
 
 const PHASE_LINKS = [
   { phaseId: 'phase-i', label: 'Phase I' },
@@ -47,11 +47,16 @@ export function Header() {
   const route = useHashRoute();
   const [menuOpen, setMenuOpen] = useState(false);
   const isHome = route.type === 'home';
+  const isPhase = route.type === 'phase';
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-home-route', isHome);
-    return () => document.documentElement.classList.remove('is-home-route');
-  }, [isHome]);
+    document.documentElement.classList.toggle('is-phase-route', isPhase);
+    return () => {
+      document.documentElement.classList.remove('is-home-route');
+      document.documentElement.classList.remove('is-phase-route');
+    };
+  }, [isHome, isPhase]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -74,8 +79,11 @@ export function Header() {
 
   const isSectionActive = (id: string) => route.type === 'home' && route.section === id;
 
+  const isPhaseSectionActive = (id: PhaseSectionId) =>
+    route.type === 'phase' && route.section === id;
+
   return (
-    <header className={`site-header${isHome ? ' site-header--home' : ''}`}>
+    <header className={`site-header${isHome || isPhase ? ' site-header--home' : ''}`}>
       <div className="site-header__bar">
         <a className="site-header__brand" href="#/" onClick={closeMenu}>
           Project Midas
@@ -141,6 +149,22 @@ export function Header() {
         </nav>
       )}
 
+      {isPhase && (
+        <nav className="site-header__subnav" aria-label="Phase sections">
+          {PHASE_SECTIONS.map(({ id, label }) => (
+            <a
+              key={id}
+              href={phasePageHref(route.phaseId, id)}
+              className={navLinkClass(isPhaseSectionActive(id))}
+              aria-current={isPhaseSectionActive(id) ? 'location' : undefined}
+              onClick={closeMenu}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      )}
+
       <div
         id="site-nav-drawer"
         className={`site-header__drawer${menuOpen ? ' is-open' : ''}`}
@@ -168,6 +192,21 @@ export function Header() {
                 key={id}
                 href={`#${id}`}
                 className={navLinkClass(isSectionActive(id))}
+                onClick={closeMenu}
+              >
+                {label}
+              </a>
+            ))}
+          </>
+        )}
+        {isPhase && (
+          <>
+            <p className="site-header__drawer-label">On this phase</p>
+            {PHASE_SECTIONS.map(({ id, label }) => (
+              <a
+                key={id}
+                href={phasePageHref(route.phaseId, id)}
+                className={navLinkClass(isPhaseSectionActive(id))}
                 onClick={closeMenu}
               >
                 {label}

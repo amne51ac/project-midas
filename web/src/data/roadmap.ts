@@ -259,7 +259,7 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
     title: 'Validation',
     summary:
       'Compare Q-value candidates to Malofeeva IR binaries, WOCS RV binaries, and Gaia astrometric anomalies; quantify completeness.',
-    status: 'upcoming',
+    status: 'active',
     explorations: [
       {
         id: 'q-demo',
@@ -278,6 +278,7 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
         id: 'wocs-truth',
         title: 'WOCS RV truth set',
         summary: '118 matched spectroscopic/rotation targets for gold-standard binary confirmation.',
+        homeHref: '#data',
         stat: '118 matched',
       },
       {
@@ -291,32 +292,37 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
       {
         id: 'q-malofeeva',
         title: 'Join Q-value candidates to Malofeeva TID diagram',
-        status: 'planned',
-        detail: 'Confusion matrix for photometric vs. IR two-index binary detection.',
+        status: 'done',
+        completedDate: '2026-06-01',
+        detail: 'midas/validation.py + validate_phase3.py — confusion matrix vs 248 Malofeeva overlaps.',
       },
       {
         id: 'wocs-rv',
         title: 'Cross-match WOCS spectroscopic binaries to Midas IDs',
-        status: 'planned',
-        detail: 'Gold-standard RV truth set for completeness estimates.',
+        status: 'done',
+        completedDate: '2026-06-01',
+        detail: '118 WOCS matches; PRV≥90% as RV binary truth in validate_phase3.py.',
       },
       {
         id: 'gaia-astro',
         title: 'Gaia RUWE / astrometric anomaly screen',
-        status: 'planned',
-        detail: 'Flag unresolved astrometric binaries independent of B−V offset.',
+        status: 'done',
+        completedDate: '2026-06-01',
+        detail: 'RUWE>1.4 vs Q binary picks on CG members with Gaia astrometry.',
       },
       {
         id: 'roc',
         title: 'ROC curves & completeness / contamination stats',
-        status: 'planned',
-        detail: 'Bootstrap validation framework with magnitude bins.',
+        status: 'done',
+        completedDate: '2026-06-01',
+        detail: 'ROC vs Malofeeva + bootstrap recall by Mv bin in validation.py.',
       },
       {
         id: 'q-calibrate',
         title: 'Q-value threshold calibration notebook',
-        status: 'planned',
-        detail: 'Tune ΔM_V and B−V deviation cuts against external truth sets.',
+        status: 'done',
+        completedDate: '2026-06-01',
+        detail: 'research/notebooks/q_threshold_calibration.ipynb — Q grid + ROC plots.',
       },
       {
         id: 'ir-fetch',

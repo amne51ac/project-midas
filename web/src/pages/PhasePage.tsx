@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { PhaseWriteup } from '../components/PhaseWriteup';
@@ -8,14 +9,23 @@ import {
   ROADMAP_PHASES,
   type PhaseExploration,
 } from '../data/roadmap';
-import { homeSectionHref, phasePageHref } from '../hooks/useHashRoute';
+import { homeSectionHref, phasePageHref, type PhaseSectionId } from '../hooks/useHashRoute';
 
 interface Props {
   phaseId: string;
+  scrollTo?: PhaseSectionId;
 }
 
-export function PhasePage({ phaseId }: Props) {
+export function PhasePage({ phaseId, scrollTo }: Props) {
   const phase = getPhaseById(phaseId);
+
+  useEffect(() => {
+    if (!scrollTo) return;
+    const el = document.getElementById(`phase-${scrollTo}`);
+    if (el) {
+      requestAnimationFrame(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
+  }, [scrollTo, phaseId]);
 
   if (!phase) {
     return (
@@ -43,7 +53,7 @@ export function PhasePage({ phaseId }: Props) {
           <span>{phase.label}</span>
         </nav>
 
-        <header className={`phase-page__header ${PHASE_STATUS_CLASS[phase.status]}`}>
+        <header id="phase-overview" className={`phase-page__header ${PHASE_STATUS_CLASS[phase.status]}`}>
           <div>
             <p className="section__label">{phase.label}</p>
             <h1 className="phase-page__title">{phase.title}</h1>
@@ -59,13 +69,15 @@ export function PhasePage({ phaseId }: Props) {
           <p className="lead">{phase.summary}</p>
         </div>
 
-        <PhaseWriteup phaseId={phase.id} />
+        <div id="phase-writeup">
+          <PhaseWriteup phaseId={phase.id} />
+        </div>
 
-        <h2 className="section__subhead">Task tracker</h2>
+        <h2 id="phase-tracker" className="section__subhead">Task tracker</h2>
         <StatusLegend />
         <PhaseDetailTracker phase={phase} />
 
-        <h2 className="section__subhead">Explorations</h2>
+        <h2 id="phase-explorations" className="section__subhead">Explorations</h2>
         <p className="section__prose phase-page__explore-intro">
           Phase-specific entry points — interactive sections on the main site and pipeline milestones.
         </p>
