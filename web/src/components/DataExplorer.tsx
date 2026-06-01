@@ -59,8 +59,9 @@ export function DataExplorer({ bundle }: Props) {
     let yDomain: [number, number];
 
     if (plateMode && midasLayer) {
-      const xs = midasLayer.points.map((p) => p.x!);
-      const ys = midasLayer.points.map((p) => p.y!);
+      const platePts = midasLayer.points.filter((p) => p.x != null && p.y != null);
+      const xs = platePts.map((p) => p.x!);
+      const ys = platePts.map((p) => p.y!);
       xDomain = padDomainTuple(d3.extent(xs) as [number, number], { fraction: 0.08, minPad: 48 });
       yDomain = padDomainTuple(d3.extent(ys) as [number, number], { fraction: 0.08, minPad: 48 });
     } else {
@@ -91,10 +92,13 @@ export function DataExplorer({ bundle }: Props) {
         .attr('stroke-width', 1)
         .attr('stroke-dasharray', '5 4')
         .attr('opacity', 0.35);
-    } else {
+    } else if (plateMode && midasLayer) {
+      const platePts = midasLayer.points.filter((p) => p.x != null && p.y != null);
+      const cx = d3.mean(platePts, (p) => p.x!) ?? 895;
+      const cy = d3.mean(platePts, (p) => p.y!) ?? 650;
       g.append('circle')
-        .attr('cx', x(895))
-        .attr('cy', y(650))
+        .attr('cx', x(cx))
+        .attr('cy', y(cy))
         .attr('r', 80)
         .attr('fill', 'none')
         .attr('stroke', '#e8c547')

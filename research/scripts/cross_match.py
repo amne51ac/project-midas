@@ -93,6 +93,20 @@ def _float(v: str | None) -> float | None:
         return None
 
 
+def _plate_coord(v: str | None) -> float | None:
+    """Plate X/Y in arcsec — can be hundreds; do not apply magnitude sentinels."""
+    if v is None:
+        return None
+    v = str(v).strip()
+    if not v or v in {"...", "⋅⋅⋅"}:
+        return None
+    try:
+        x = float(v)
+        return x if x == x else None
+    except ValueError:
+        return None
+
+
 def parse_hms_ra(s: str) -> float | None:
     s = s.strip()
     if not s:
@@ -148,8 +162,8 @@ def load_midas(path: Path) -> list[dict]:
                     "midas_id": midas_id,
                     "ra": ra,
                     "dec": dec,
-                    "x": _float(row.get("X Position")),
-                    "y": _float(row.get("Y Position")),
+                    "x": _plate_coord(row.get("X Position")),
+                    "y": _plate_coord(row.get("Y Position")),
                     "B": b,
                     "V": v,
                     "R": r,

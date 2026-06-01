@@ -93,12 +93,14 @@ def load_midas_from_join() -> tuple[list[dict], int]:
             "id": row["midas_id"],
             "ra": round(row["ra"], 4),
             "dec": round(row["dec"], 4),
-            "x": round(row["x"] or 0, 1),
-            "y": round(row["y"] or 0, 1),
             "mag": round(v, 3),
             "bv": round(bv, 3),
             "mv": round(mv, 3),
         }
+        if row.get("x") is not None:
+            pt["x"] = round(row["x"], 1)
+        if row.get("y") is not None:
+            pt["y"] = round(row["y"], 1)
         if row.get("bv0") is not None:
             pt["bv0"] = round(row["bv0"], 3)
         if row.get("mv0") is not None:
