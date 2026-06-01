@@ -1,0 +1,2 @@
+# Optional — Excel regression verification (scripts/reproduce_excel_counts.py)
+openpyxl>=3.1

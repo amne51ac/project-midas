@@ -1,0 +1,6 @@
+# Research pipeline — install inside research/.venv
+astroquery>=0.4.7
+astropy>=6.0
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
