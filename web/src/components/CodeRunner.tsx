@@ -181,7 +181,7 @@ export function CodeDemoGallery({ demos }: { demos: CodeDemo[] }) {
 
   const jumpTo = useCallback((id: string) => {
     setOpenId(id);
-    window.history.replaceState(null, '', `#demo-${id}`);
+    window.history.replaceState(null, '', `${window.location.pathname}#demo-${id}`);
     requestAnimationFrame(() => {
       document.getElementById(`demo-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });

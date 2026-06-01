@@ -5,7 +5,7 @@ import {
   phaseProgress,
   ROADMAP_PHASES,
 } from '../data/roadmap';
-import { phasePageHref } from '../hooks/useHashRoute';
+import { phasePageHref } from '../routing/appRoute';
 import { PHASE_STATUS_CLASS, PhaseTrack } from './roadmapShared';
 
 function RoadmapSummary() {

@@ -325,8 +325,8 @@ export default function HomePage({ scrollTo }: HomePageProps) {
           </p>
           <p>
             Excel binary candidates appear in gold on the final HR scrolly step in{' '}
-            <a href="#science">Chapter 3</a>; catalog layers and join flags are in{' '}
-            <a href="#data">Chapter 4</a>. Pipeline details live in{' '}
+            <a href="/science">Chapter 3</a>; catalog layers and join flags are in{' '}
+            <a href="/data">Chapter 4</a>. Pipeline details live in{' '}
             <code>research/scripts/cross_match.py</code> and the Phase I–II writeups.
           </p>
         </div>

@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { absoluteUrl, SITE, type PageMeta } from '../config/siteMeta';
+import { canonicalUrl } from '../seo/prerenderRoutes';
+import type { AppRoute } from '../routing/appRoute';
 
 function setNamedMeta(name: string, content: string) {
   let el = document.querySelector(`meta[name="${name}"]`);
@@ -21,16 +23,25 @@ function setPropertyMeta(property: string, content: string) {
   el.setAttribute('content', content);
 }
 
-/** Sync document title and social meta tags when the hash route changes. */
-export function usePageMeta(meta: PageMeta) {
+function setCanonical(url: string) {
+  let el = document.querySelector('link[rel="canonical"]');
+  if (!el) {
+    el = document.createElement('link');
+    el.setAttribute('rel', 'canonical');
+    document.head.appendChild(el);
+  }
+  el.setAttribute('href', url);
+}
+
+/** Sync document title and social meta tags when the route changes. */
+export function usePageMeta(meta: PageMeta, route: AppRoute) {
   useEffect(() => {
     const ogImage = absoluteUrl(meta.ogImagePath ?? SITE.ogImagePath);
     const ogImageAlt = meta.ogImageAlt ?? SITE.ogImageAlt;
-    const pageUrl = window.location.hash
-      ? `${SITE.url.replace(/\/$/, '')}${window.location.hash}`
-      : `${SITE.url.replace(/\/$/, '')}/`;
+    const pageUrl = canonicalUrl(route, SITE.url);
 
     document.title = meta.title;
+    setCanonical(pageUrl);
 
     setNamedMeta('description', meta.description);
     setNamedMeta('twitter:card', SITE.twitterCard);
@@ -47,5 +58,5 @@ export function usePageMeta(meta: PageMeta) {
     setPropertyMeta('og:locale', SITE.locale);
     setPropertyMeta('og:image', ogImage);
     setPropertyMeta('og:image:alt', ogImageAlt);
-  }, [meta.title, meta.description, meta.ogImagePath, meta.ogImageAlt]);
+  }, [meta.title, meta.description, meta.ogImagePath, meta.ogImageAlt, route]);
 }

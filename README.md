@@ -52,6 +52,8 @@ VITE_BASE_PATH=/project-midas/ npm run build
 4. Configure DNS at your registrar (see below).
 5. Push to `main`. Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) builds `web/` with `VITE_BASE_PATH=/` and deploys.
 
+The build prerenders **37 route-specific HTML shells** (home sections, phase pages, phase subnav) with unique Open Graph / canonical URLs, plus `404.html` for GitHub Pages SPA fallback. Live stats and JSON-LD are injected from `m34_sample.json` at build time. See [`web/src/seo/`](web/src/seo/).
+
 The built site includes `CNAME` from [`web/public/CNAME`](web/public/CNAME).
 
 #### DNS for midasastronomy.com

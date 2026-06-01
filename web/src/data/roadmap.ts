@@ -15,7 +15,7 @@ export interface PhaseExploration {
   id: string;
   title: string;
   summary: string;
-  /** Hash link on the main scrolly site, e.g. `#code` */
+  /** Path on the main site, e.g. `/code` */
   homeHref?: string;
   /** Highlight stat or metric shown on the card */
   stat?: string;
@@ -67,28 +67,28 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
         id: 'hr-scrolly',
         title: 'HR diagram walkthrough',
         summary: 'Scroll from raw photometry through isochrones to the binary track that defines Midas.',
-        homeHref: '#science',
+        homeHref: '/science',
         stat: '7 scrolly steps',
       },
       {
         id: 'pyodide',
         title: 'Try the arithmetic',
         summary: 'Eight browser Python demos — distance modulus, Q-value, proper motion checks.',
-        homeHref: '#code',
+        homeHref: '/code',
         stat: '8 demos',
       },
       {
         id: 'excel',
         title: 'Excel Control reproduction',
         summary: 'Python 3 reproduces 187 accepted singles and 171 binaries from the original workbook.',
-        homeHref: '#compare',
+        homeHref: '/compare',
         stat: '187 / 171',
       },
       {
         id: 'tools',
         title: 'Toolchain inventory',
         summary: 'Legacy archive vs Python 3 port — provenance, DATA_DICTIONARY.md, CI, and open gaps.',
-        homeHref: '#tools',
+        homeHref: '/tools',
       },
     ],
     tasks: [
@@ -163,35 +163,35 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
         id: 'catalog-map',
         title: 'Multi-catalog sky map',
         summary: 'Gaia DR3 field (15,211 sources) plus Midas, Cantat-Gaudin, Malofeeva, and WOCS layers.',
-        homeHref: '#data',
+        homeHref: '/data',
         stat: '6 layers',
       },
       {
         id: 'hr-filters',
         title: 'Membership, reddening & PARSEC',
         summary: 'De-reddened HR view, Cantat-Gaudin member filter, and PARSEC vs YY isochrone overlay.',
-        homeHref: '#science',
+        homeHref: '/science',
         stat: 'E(B−V)=0.07',
       },
       {
         id: 'join',
         title: 'Unified join table',
         summary: 'm34_join.csv links 3,760 Midas stars to Gaia and catalog flags — 99.4% Gaia match rate.',
-        homeHref: '#compare',
+        homeHref: '/compare',
         stat: '3,738 Gaia',
       },
       {
         id: 'cross-match',
         title: 'Cross-match pipeline',
         summary: 'research/scripts/cross_match.py — positional joins with Excel singles/binaries flags.',
-        homeHref: '#data',
+        homeHref: '/data',
         stat: '263 CG',
       },
       {
         id: 'compare',
         title: 'Joining the layers',
         summary: 'How we avoid double-counting when merging photometric, IR, and RV binary diagnostics.',
-        homeHref: '#compare',
+        homeHref: '/compare',
       },
     ],
     tasks: [
@@ -266,34 +266,34 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
         id: 'q-demo',
         title: 'Q-value arithmetic',
         summary: 'Interactive Pyodide demo for the equal-mass binary track offset heuristic.',
-        homeHref: '#code',
+        homeHref: '/code',
       },
       {
         id: 'malofeeva-layer',
         title: 'Malofeeva IR sample',
         summary: '553 stars with Gaia+WISE pseudocolors — primary external check on B−V completeness.',
-        homeHref: '#data',
+        homeHref: '/data',
         stat: '553 stars',
       },
       {
         id: 'wocs-truth',
         title: 'WOCS RV truth set',
         summary: '118 matched spectroscopic/rotation targets for gold-standard binary confirmation.',
-        homeHref: '#data',
+        homeHref: '/data',
         stat: '118 matched',
       },
       {
         id: 'ir-field',
         title: '2MASS + AllWISE field cache',
         summary: 'VizieR cone fetch for independent IR color diagrams — 3,383 + 6,985 sources.',
-        homeHref: '#tools',
+        homeHref: '/tools',
         stat: '0.35° cone',
       },
       {
         id: 'questions',
         title: 'Open validation questions',
         summary: 'Which Midas candidates confirm in Malofeeva, WOCS RV, or Gaia astrometry?',
-        homeHref: '#roadmap',
+        homeHref: '/roadmap',
       },
     ],
     tasks: [

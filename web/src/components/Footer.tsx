@@ -9,7 +9,7 @@ export function Footer() {
         {' · '}
         <a href="https://gitlab.com">GitLab</a>
         {' · '}
-        <a href="#roadmap">Research repo</a>
+        <a href="/roadmap">Research repo</a>
       </div>
     </footer>
   );

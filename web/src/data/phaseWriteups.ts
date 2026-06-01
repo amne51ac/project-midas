@@ -1,4 +1,4 @@
-import { homeSectionHref } from '../hooks/useHashRoute';
+import { homeSectionHref } from '../routing/appRoute';
 
 export interface PhaseExample {
   kind: 'code' | 'command' | 'stats' | 'note';

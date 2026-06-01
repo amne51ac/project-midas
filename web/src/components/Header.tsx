@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { phasePageHref, PHASE_SECTIONS, useHashRoute, type PhaseSectionId } from '../hooks/useHashRoute';
+import {
+  phasePageHref,
+  PHASE_SECTIONS,
+  useAppRoute,
+  type PhaseSectionId,
+} from '../routing/appRoute';
 import { NO_SECTIONS, useScrollSpy } from '../hooks/useScrollSpy';
 
 const PHASE_LINKS = [
@@ -48,7 +53,7 @@ function navLinkClass(active: boolean): string {
 }
 
 export function Header() {
-  const route = useHashRoute();
+  const route = useAppRoute();
   const [menuOpen, setMenuOpen] = useState(false);
   const isHome = route.type === 'home';
   const isPhase = route.type === 'phase';
@@ -98,13 +103,13 @@ export function Header() {
   return (
     <header className={`site-header${isHome || isPhase ? ' site-header--home' : ''}`}>
       <div className="site-header__bar">
-        <a className="site-header__brand" href="#/" onClick={closeMenu}>
+        <a className="site-header__brand" href="/" onClick={closeMenu}>
           Project Midas
         </a>
 
         <nav className="site-header__primary" aria-label="Project phases">
           <a
-            href="#/"
+            href="/"
             className={navLinkClass(isHome)}
             aria-current={isHome ? 'page' : undefined}
             onClick={closeMenu}
@@ -151,7 +156,7 @@ export function Header() {
           {HOME_SECTIONS.map(({ id, label }) => (
             <a
               key={id}
-              href={`#${id}`}
+              href={`/${id}`}
               className={navLinkClass(isSectionActive(id))}
               aria-current={isSectionActive(id) ? 'location' : undefined}
               onClick={closeMenu}
@@ -184,7 +189,7 @@ export function Header() {
         aria-hidden={!menuOpen}
       >
         <p className="site-header__drawer-label">Phases</p>
-        <a href="#/" className={navLinkClass(isHome)} onClick={closeMenu}>
+        <a href="/" className={navLinkClass(isHome)} onClick={closeMenu}>
           Home
         </a>
         {PHASE_LINKS.map(({ phaseId, label }) => (
@@ -203,7 +208,7 @@ export function Header() {
             {HOME_SECTIONS.map(({ id, label }) => (
               <a
                 key={id}
-                href={`#${id}`}
+                href={`/${id}`}
                 className={navLinkClass(isSectionActive(id))}
                 onClick={closeMenu}
               >

@@ -1,7 +1,8 @@
 import sampleBundle from '../data/m34_sample.json';
 import catalogBundle from '../data/m34_catalogs.json';
 import { ROADMAP_PHASES, overallProgress, type RoadmapPhase } from '../data/roadmap';
-import type { AppRoute } from '../hooks/useHashRoute';
+import type { AppRoute } from '../routing/appRoute';
+import { canonicalUrl, getAllRoutes, routeToPath } from './prerenderRoutes';
 
 export const SITE = {
   name: 'Project Midas',
@@ -242,7 +243,7 @@ export function buildJsonLd(stats = getSiteStats()): object[] {
         position: index + 1,
         name: `${phase.label}: ${phase.title}`,
         description: phase.summary,
-        url: `${SITE.url}/#/phases/${phase.id}`,
+        url: `${SITE.url}${routeToPath({ type: 'phase', phaseId: phase.id })}`,
       })),
     },
   ];
@@ -251,7 +252,7 @@ export function buildJsonLd(stats = getSiteStats()): object[] {
 export function buildLlmsTxt(stats = getSiteStats()): string {
   const phaseLines = ROADMAP_PHASES.map(
     (p) =>
-      `- [${p.label}: ${p.title}](${SITE.url}/#/phases/${p.id}) — ${p.status}; ${p.tasks.filter((t) => t.status === 'done').length}/${p.tasks.length} tasks`,
+      `- [${p.label}: ${p.title}](${SITE.url}${routeToPath({ type: 'phase', phaseId: p.id })}) — ${p.status}; ${p.tasks.filter((t) => t.status === 'done').length}/${p.tasks.length} tasks`,
   );
 
   return `# ${SITE.name}
@@ -277,14 +278,14 @@ ${SITE.github}
 - Catalog layers in explorer: ${stats.catalogLayers}
 
 ## Main sections
-- [History](${SITE.url}/#history)
-- [Sky / finder chart](${SITE.url}/#sky)
-- [Science / HR diagram](${SITE.url}/#science)
-- [Data explorer](${SITE.url}/#data)
-- [Catalog comparison](${SITE.url}/#compare)
-- [Code demos](${SITE.url}/#code)
-- [Tools inventory](${SITE.url}/#tools)
-- [Roadmap](${SITE.url}/#roadmap)
+- [History](${SITE.url}/history)
+- [Sky / finder chart](${SITE.url}/sky)
+- [Science / HR diagram](${SITE.url}/science)
+- [Data explorer](${SITE.url}/data)
+- [Catalog comparison](${SITE.url}/compare)
+- [Code demos](${SITE.url}/code)
+- [Tools inventory](${SITE.url}/tools)
+- [Roadmap](${SITE.url}/roadmap)
 
 ## Research phases
 ${phaseLines.join('\n')}
@@ -295,26 +296,18 @@ Project Midas revival (${SITE.url}). M34 (NGC 1039) photometric binary census.
 }
 
 export function buildSitemapXml(): string {
-  const urls = [
-    { loc: `${SITE.url}/`, priority: '1.0', changefreq: 'weekly' },
-    ...Object.keys(HOME_SECTIONS).map((id) => ({
-      loc: `${SITE.url}/#${id}`,
-      priority: '0.8',
-      changefreq: 'monthly',
-    })),
-    ...ROADMAP_PHASES.flatMap((phase) => [
-      {
-        loc: `${SITE.url}/#/phases/${phase.id}`,
-        priority: '0.85',
-        changefreq: 'monthly',
-      },
-      ...(['overview', 'writeup', 'tracker', 'explorations'] as const).map((section) => ({
-        loc: `${SITE.url}/#/phases/${phase.id}/${section}`,
-        priority: '0.75',
-        changefreq: 'monthly',
-      })),
-    ]),
-  ];
+  const urls = getAllRoutes().map((route) => ({
+    loc: canonicalUrl(route, SITE.url),
+    priority:
+      route.type === 'home' && !route.section
+        ? '1.0'
+        : route.type === 'phase' && !route.section
+          ? '0.85'
+          : route.type === 'home'
+            ? '0.8'
+            : '0.75',
+    changefreq: route.type === 'home' && !route.section ? 'weekly' : 'monthly',
+  }));
 
   const body = urls
     .map(
@@ -334,6 +327,54 @@ ${body}
 }
 
 export function injectSeoHtml(html: string, stats = getSiteStats()): string {
+  return injectRouteHtml(html, { type: 'home' }, stats);
+}
+
+function escapeAttr(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;');
+}
+
+/** Inject route-specific title, canonical URL, and social tags into a built HTML shell. */
+export function injectRouteHtml(html: string, route: AppRoute, stats = getSiteStats()): string {
+  const base = injectSeoHtmlPlaceholders(html, stats);
+  const meta = getPageMeta(route);
+  const canonical = canonicalUrl(route, SITE.url);
+  const ogImage = absoluteUrl(meta.ogImagePath ?? SITE.ogImagePath);
+  const title = escapeAttr(meta.title);
+  const description = escapeAttr(meta.description);
+  const ogImageAlt = escapeAttr(meta.ogImageAlt ?? SITE.ogImageAlt);
+
+  return base
+    .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta name="description" content="[^"]*" \/>/, `<meta name="description" content="${description}" />`)
+    .replace(/<link rel="canonical" href="[^"]*" \/>/, `<link rel="canonical" href="${canonical}" />`)
+    .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${canonical}" />`)
+    .replace(/<meta property="og:title" content="[^"]*" \/>/, `<meta property="og:title" content="${title}" />`)
+    .replace(
+      /<meta property="og:description" content="[^"]*" \/>/,
+      `<meta property="og:description" content="${description}" />`,
+    )
+    .replace(/<meta property="og:image" content="[^"]*" \/>/, `<meta property="og:image" content="${ogImage}" />`)
+    .replace(
+      /<meta property="og:image:alt" content="[^"]*" \/>/,
+      `<meta property="og:image:alt" content="${ogImageAlt}" />`,
+    )
+    .replace(/<meta name="twitter:title" content="[^"]*" \/>/, `<meta name="twitter:title" content="${title}" />`)
+    .replace(
+      /<meta name="twitter:description" content="[^"]*" \/>/,
+      `<meta name="twitter:description" content="${description}" />`,
+    )
+    .replace(/<meta name="twitter:image" content="[^"]*" \/>/, `<meta name="twitter:image" content="${ogImage}" />`)
+    .replace(
+      /<meta name="twitter:image:alt" content="[^"]*" \/>/,
+      `<meta name="twitter:image:alt" content="${ogImageAlt}" />`,
+    );
+}
+
+function injectSeoHtmlPlaceholders(html: string, stats = getSiteStats()): string {
   const description = buildDefaultDescription(stats);
   const keywords = buildKeywords(stats);
   const ogImage = absoluteUrl(SITE.ogImagePath);

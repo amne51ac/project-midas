@@ -435,7 +435,7 @@ code {
   }
   .scrolly__graphic {
     order: -1;
-    min-height: 360px;
+    min-height: 0;
   }
   .scrolly__step {
     min-height: 55vh;
@@ -2419,16 +2419,29 @@ code {
 
   .scrolly {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
-    padding: 1rem 1.25rem 2.5rem;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem 2rem;
   }
 
   .scrolly__graphic {
     order: -1;
     position: sticky;
     top: var(--header-offset);
-    min-height: min(52vw, 320px);
+    min-height: 0;
     z-index: 2;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.35), inset 0 0 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .scrolly__graphic .chart-svg {
+    min-height: 0;
+    height: clamp(150px, 38vw, 200px);
+    max-height: 200px;
+  }
+
+  .scrolly__caption {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.65rem;
+    line-height: 1.35;
   }
 
   .scrolly__steps {
@@ -2437,11 +2450,16 @@ code {
 
   .scrolly__step {
     min-height: auto;
-    padding: 1.5rem 0;
+    padding: 1.25rem 0;
   }
 
   .scrolly__step h3 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .scrolly__step p {
+    font-size: 0.95rem;
   }
 
   .chart-svg {

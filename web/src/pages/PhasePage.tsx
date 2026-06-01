@@ -9,7 +9,7 @@ import {
   ROADMAP_PHASES,
   type PhaseExploration,
 } from '../data/roadmap';
-import { homeSectionHref, phasePageHref, type PhaseSectionId } from '../hooks/useHashRoute';
+import { homeSectionHref, phasePageHref, type PhaseSectionId } from '../routing/appRoute';
 
 interface Props {
   phaseId: string;
