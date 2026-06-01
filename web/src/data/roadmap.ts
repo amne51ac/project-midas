@@ -259,7 +259,8 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
     title: 'Validation',
     summary:
       'Compare Q-value candidates to Malofeeva IR binaries, WOCS RV binaries, and Gaia astrometric anomalies; quantify completeness.',
-    status: 'active',
+    status: 'complete',
+    completedDate: '2026-06-01',
     explorations: [
       {
         id: 'q-demo',
@@ -280,6 +281,13 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
         summary: '118 matched spectroscopic/rotation targets for gold-standard binary confirmation.',
         homeHref: '#data',
         stat: '118 matched',
+      },
+      {
+        id: 'ir-field',
+        title: '2MASS + AllWISE field cache',
+        summary: 'VizieR cone fetch for independent IR color diagrams — 3,383 + 6,985 sources.',
+        homeHref: '#tools',
+        stat: '0.35° cone',
       },
       {
         id: 'questions',
@@ -327,8 +335,9 @@ export const ROADMAP_PHASES: RoadmapPhase[] = [
       {
         id: 'ir-fetch',
         title: '2MASS + AllWISE field photometry cache',
-        status: 'planned',
-        detail: 'Cone-fetch near-IR colors for independent binary diagrams.',
+        status: 'done',
+        completedDate: '2026-06-01',
+        detail: 'fetch_ir_photometry.py — VizieR II/246 + II/328 cones; twomass_m34.csv (3,383) + allwise_m34.csv (6,985).',
       },
     ],
   },

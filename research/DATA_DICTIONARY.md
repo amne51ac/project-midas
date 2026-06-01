@@ -123,6 +123,8 @@ Output of `scripts/cross_match.py` — Midas photometry joined to Gaia and publi
 | `cantat_gaudin.csv` | `RA_ICRS`, `DE_ICRS`, `Gmag`, `Plx`, `proba`, `GaiaDR2` |
 | `malofeeva.csv` | `Gaia`, `RAGaia`, `DEGaia`, `W2BPKs`, `HW2W1` |
 | `wocs_meibom.csv` | `Seq`, `RAJ2000`, `DEJ2000`, `Prot`, `V0mag`, `(B-V)0`, `RVel`, `PRV`, `Mm`, `Rot` |
+| `twomass_m34.csv` | `twomass_id`, `ra`, `dec`, `J/H/K` mag + errors, `qflg` (VizieR II/246 cone) |
+| `allwise_m34.csv` | `wise_id`, `ra`, `dec`, `W1`–`W4` mag + errors, embedded 2MASS JHK |
 
 Regenerate web JSON: `python scripts/build_web_catalogs.py` → `web/src/data/m34_catalogs.json`.
 
@@ -159,6 +161,7 @@ Run:
 python scripts/cross_match.py          # → m34_join.csv (Gaia + catalogs + bv0/mv0)
 python scripts/verify_wocs_ingest.py     # 120 targets, 118 Midas matches
 python scripts/validate_phase3.py       # → validation_summary.json
+python scripts/fetch_ir_photometry.py   # → twomass_m34.csv, allwise_m34.csv
 python scripts/build_web_sample.py     # HR sample from join table
 python scripts/build_web_catalogs.py   # catalog explorer JSON
 

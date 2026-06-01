@@ -514,13 +514,35 @@ mv0 = V0 − 5 log₁₀(470/10)          # absolute V, corrected`,
         homeHref: homeSectionHref('code'),
         homeLabel: 'Code chapter',
       },
+      {
+        id: 'ir-fetch',
+        title: 'Cache 2MASS + AllWISE field photometry',
+        paragraphs: [
+          'Malofeeva et al. publish pre-selected IR-binary candidates; Phase III also needs a field-wide near-IR cache to build independent color diagrams (W1−W2, J−K, and W2−BP after Gaia cross-match) without relying on their figure-9 table alone.',
+          'fetch_ir_photometry.py queries VizieR II/246 (2MASS PSC) and II/328 (AllWISE) in a 0.35° cone around M34. Positional matching finds 2,061 Midas stars with 2MASS and 2,109 with AllWISE within 2″.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'Field cache',
+            body: '2MASS: 3,383 sources · AllWISE: 6,985 · Midas overlap ≤2″: 2,061 / 2,109',
+          },
+          {
+            kind: 'command',
+            label: 'Fetch IR cones',
+            body: 'python scripts/fetch_ir_photometry.py --verify',
+          },
+        ],
+        homeHref: homeSectionHref('tools'),
+        homeLabel: 'Tools inventory',
+      },
     ],
     outcomes: [
       { label: 'Validation module', value: 'research/midas/validation.py' },
       { label: 'Malofeeva F1 (CG)', value: '0.32 @ Q∈(0,1]' },
-      { label: 'WOCS PRV subset', value: '23 / 118' },
-      { label: 'RUWE recall', value: '0.30' },
-      { label: 'Status', value: 'Active — IR fetch remains' },
+      { label: '2MASS / AllWISE cache', value: '3,383 / 6,985' },
+      { label: 'Midas IR overlap', value: '2,061 / 2,109' },
+      { label: 'Phase completed', value: '1 Jun 2026' },
     ],
   },
 };

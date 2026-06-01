@@ -196,6 +196,13 @@ Truth sets:
 - **WOCS** — RV variability probability PRV ≥ 90% (118 matched targets)
 - **Gaia RUWE** — astrometric anomaly RUWE > 1.4
 
+Near-IR field cache (independent color diagrams):
+
+```bash
+python scripts/fetch_ir_photometry.py --verify
+# → data/processed/twomass_m34.csv, allwise_m34.csv
+```
+
 ## Open questions (research targets)
 
 1. Q-value completeness vs. Malofeeva IR binary diagram  

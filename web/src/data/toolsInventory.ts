@@ -134,11 +134,11 @@ export const TOOL_CATEGORIES: ToolCategory[] = [
       {
         id: 'ir-surveys',
         name: '2MASS + AllWISE photometry',
-        status: 'partial',
-        exists: 'Accessible via IRSA/VizieR and astroquery; used implicitly by Malofeeva method.',
-        fit: 'Required to reproduce IR-excess binary diagrams independent of Midas B−V.',
-        gap: 'No cached M34 field tables; no pipeline script in repo.',
-        action: 'Cone-fetch near-IR photometry for Gaia members; store alongside Midas colors.',
+        status: 'ready',
+        exists: 'fetch_ir_photometry.py — twomass_m34.csv (3,383) + allwise_m34.csv (6,985) in 0.35° cone.',
+        fit: 'Field IR cache for W1−W2 / J−K diagrams independent of published Malofeeva table.',
+        gap: 'Not yet merged into m34_join.csv or web explorer.',
+        action: 'Cross-match to Gaia BP for Malofeeva-style W2−BP cuts on all members.',
         phase: 'Phase III',
       },
       {
