@@ -1,0 +1,40 @@
+# Project Midas
+
+> Project Midas — photometric search for unresolved binaries in M34 (NGC 1039). 3,760 legacy BVR stars, 3,738 Gaia DR3 matches, 263 high-confidence members, 6-catalog explorer. 3/4 research phases complete (85%). Interactive HR diagrams, isochrone gallery, Q-value validation, open pipelines.
+
+## Primary URL
+https://midasastronomy.com
+
+## Repository
+https://github.com/amne51ac/project-midas
+
+## Cluster
+- Object: M34 / NGC 1039 (open cluster, Perseus)
+- Distance: ~470 pc
+- Reddening: E(B−V) = 0.07
+
+## Data on this site
+- Midas photometry: 3,760 stars (800 plotted in HR sample)
+- Gaia DR3 matches: 3,738
+- Cantat-Gaudin members (P ≥ 0.7): 263
+- Gaia field cone: 15,211 sources
+- Catalog layers in explorer: 6
+
+## Main sections
+- [History](https://midasastronomy.com/#history)
+- [Sky / finder chart](https://midasastronomy.com/#sky)
+- [Science / HR diagram](https://midasastronomy.com/#science)
+- [Data explorer](https://midasastronomy.com/#data)
+- [Catalog comparison](https://midasastronomy.com/#compare)
+- [Code demos](https://midasastronomy.com/#code)
+- [Tools inventory](https://midasastronomy.com/#tools)
+- [Roadmap](https://midasastronomy.com/#roadmap)
+
+## Research phases
+- [Phase I: Archaeology & reproducibility](https://midasastronomy.com/#/phases/phase-i) — complete; 8/8 tasks
+- [Phase II: Gaia integration](https://midasastronomy.com/#/phases/phase-ii) — complete; 8/8 tasks
+- [Phase III: Validation](https://midasastronomy.com/#/phases/phase-iii) — complete; 6/6 tasks
+- [Phase IV: Synthesis](https://midasastronomy.com/#/phases/phase-iv) — upcoming; 0/4 tasks
+
+## Citation
+Project Midas revival (https://midasastronomy.com). M34 (NGC 1039) photometric binary census.

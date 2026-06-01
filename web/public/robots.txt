@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://midasastronomy.com/sitemap.xml
+
+# Structured site summary for LLM / research crawlers
+# https://midasastronomy.com/llms.txt
