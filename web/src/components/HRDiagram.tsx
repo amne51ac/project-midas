@@ -4,6 +4,7 @@ import type { Star } from '../data/types';
 import type { AgeIsochrone, IsoPoint } from '../data/isochrones';
 import { PARSEC_COMPARE_AGES, PARSEC_M34 } from '../data/parsecIsochrones';
 import { turnoffPoint } from '../data/isochrones';
+import { finiteValues, hrDomains } from '../utils/chartScales';
 
 export type HRDiagramMode =
   | 'stars'
@@ -51,12 +52,42 @@ export function HRDiagram({
 
     const width = svgRef.current!.clientWidth || 520;
     const height = 420;
-    const margin = { top: 28, right: 24, bottom: 48, left: 56 };
+    const margin = { top: 32, right: 28, bottom: 52, left: 60 };
 
     svg.attr('viewBox', `0 0 ${width} ${height}`);
 
-    const x = d3.scaleLinear().domain([-0.1, 1.4]).range([margin.left, width - margin.right]);
-    const y = d3.scaleLinear().domain([13, 2]).range([height - margin.bottom, margin.top]);
+    const showAgeCompare = mode === 'age-compare' || mode === 'age-fit';
+    const compareSet = compareAges ?? ageIsochrones;
+    const primaryIso =
+      ageIsochrones.find((a) => a.ageGyr === 0.2)?.points ?? isochrone;
+
+    const isoPoints: IsoPoint[] = [...isochrone, ...primaryIso];
+    if (showAgeCompare && compareSet.length) {
+      isoPoints.push(...compareSet.flatMap((a) => a.points));
+      const parsecSet =
+        mode === 'age-compare'
+          ? PARSEC_COMPARE_AGES.filter((p) => compareSet.some((c) => c.ageGyr === p.ageGyr))
+          : [PARSEC_M34];
+      isoPoints.push(...parsecSet.flatMap((a) => a.points));
+    } else if (mode !== 'stars') {
+      isoPoints.push(...primaryIso);
+    }
+
+    const mvForDomain = [
+      ...finiteValues(stars.map((s) => s.mv)),
+      ...finiteValues(isoPoints.map((p) => p.mv)),
+    ];
+    if (mode === 'binary') {
+      mvForDomain.push(...isoPoints.map((p) => p.mv - 0.75));
+    }
+
+    const { xDomain, yDomain } = hrDomains(
+      [...finiteValues(stars.map((s) => s.bv)), ...finiteValues(isoPoints.map((p) => p.bv))],
+      mvForDomain,
+    );
+
+    const x = d3.scaleLinear().domain(xDomain).nice().range([margin.left, width - margin.right]);
+    const y = d3.scaleLinear().domain(yDomain).nice().range([height - margin.bottom, margin.top]);
 
     const g = svg.append('g');
 
@@ -110,11 +141,6 @@ export function HRDiagram({
         .attr('opacity', opacity)
         .attr('d', isoLine);
     };
-
-    const showAgeCompare = mode === 'age-compare' || mode === 'age-fit';
-    const compareSet = compareAges ?? ageIsochrones;
-    const primaryIso =
-      ageIsochrones.find((a) => a.ageGyr === 0.2)?.points ?? isochrone;
 
     if (showAgeCompare && compareSet.length) {
       compareSet.forEach((ageIso) => {

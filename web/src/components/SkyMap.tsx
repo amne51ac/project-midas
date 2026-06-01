@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import type { Star } from '../data/types';
+import { padDomainTuple } from '../utils/chartScales';
 
 interface Props {
   stars: Star[];
@@ -18,12 +19,18 @@ export function SkyMap({ stars, colorBy = 'mv' }: Props) {
 
     const width = svgRef.current!.clientWidth || 520;
     const height = 420;
-    const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+    const margin = { top: 24, right: 24, bottom: 44, left: 54 };
 
     svg.attr('viewBox', `0 0 ${width} ${height}`);
 
-    const xExtent = d3.extent(stars, (d) => d.x) as [number, number];
-    const yExtent = d3.extent(stars, (d) => d.y) as [number, number];
+    const xExtent = padDomainTuple(d3.extent(stars, (d) => d.x) as [number, number], {
+      fraction: 0.08,
+      minPad: 48,
+    });
+    const yExtent = padDomainTuple(d3.extent(stars, (d) => d.y) as [number, number], {
+      fraction: 0.08,
+      minPad: 48,
+    });
 
     const x = d3.scaleLinear().domain(xExtent).nice().range([margin.left, width - margin.right]);
     const y = d3.scaleLinear().domain(yExtent).nice().range([height - margin.bottom, margin.top]);

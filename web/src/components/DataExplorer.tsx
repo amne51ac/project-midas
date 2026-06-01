@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import type { CatalogBundle, CatalogLayer, CatalogPoint } from '../data/catalogTypes';
+import { padDomainTuple } from '../utils/chartScales';
 
 type ViewMode = 'sky' | 'plate';
 
@@ -48,7 +49,7 @@ export function DataExplorer({ bundle }: Props) {
 
     const width = svgRef.current!.clientWidth || 640;
     const height = 440;
-    const margin = { top: 20, right: 16, bottom: 44, left: 48 };
+    const margin = { top: 24, right: 20, bottom: 48, left: 52 };
     svg.attr('viewBox', `0 0 ${width} ${height}`);
 
     const plateMode = view === 'plate';
@@ -60,16 +61,18 @@ export function DataExplorer({ bundle }: Props) {
     if (plateMode && midasLayer) {
       const xs = midasLayer.points.map((p) => p.x!);
       const ys = midasLayer.points.map((p) => p.y!);
-      xDomain = d3.extent(xs) as [number, number];
-      yDomain = d3.extent(ys) as [number, number];
+      xDomain = padDomainTuple(d3.extent(xs) as [number, number], { fraction: 0.08, minPad: 48 });
+      yDomain = padDomainTuple(d3.extent(ys) as [number, number], { fraction: 0.08, minPad: 48 });
     } else {
       const all = activeLayers.flatMap((l) => l.points);
-      xDomain = d3.extent(all, (p) => p.ra) as [number, number];
-      yDomain = d3.extent(all, (p) => p.dec) as [number, number];
-      const padRa = (xDomain[1] - xDomain[0]) * 0.04 || 0.05;
-      const padDec = (yDomain[1] - yDomain[0]) * 0.04 || 0.05;
-      xDomain = [xDomain[0] - padRa, xDomain[1] + padRa];
-      yDomain = [yDomain[0] - padDec, yDomain[1] + padDec];
+      xDomain = padDomainTuple(d3.extent(all, (p) => p.ra) as [number, number], {
+        fraction: 0.08,
+        minPad: 0.04,
+      });
+      yDomain = padDomainTuple(d3.extent(all, (p) => p.dec) as [number, number], {
+        fraction: 0.08,
+        minPad: 0.04,
+      });
     }
 
     const x = d3.scaleLinear().domain(xDomain).nice().range([margin.left, width - margin.right]);

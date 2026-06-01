@@ -9,6 +9,7 @@ import {
 } from '../data/isochrones';
 import { PARSEC_ISOCHRONE_AGES, PARSEC_SOURCE } from '../data/parsecIsochrones';
 import type { Star } from '../data/types';
+import { finiteValues, hrDomains } from '../utils/chartScales';
 
 const AGE_COLORS: Record<number, string> = {
   0.08: '#6b7c9e',
@@ -47,12 +48,21 @@ export function IsochroneExplorer({ stars }: Props) {
 
     const width = svgRef.current!.clientWidth || 640;
     const height = 380;
-    const margin = { top: 24, right: 20, bottom: 44, left: 52 };
+    const margin = { top: 28, right: 24, bottom: 48, left: 56 };
 
     svg.attr('viewBox', `0 0 ${width} ${height}`);
 
-    const x = d3.scaleLinear().domain([-0.05, 1.45]).range([margin.left, width - margin.right]);
-    const y = d3.scaleLinear().domain([12.5, 0.5]).range([height - margin.bottom, margin.top]);
+    const isoPoints = [
+      ...activeIsochrones.flatMap((a) => a.points),
+      ...activeParsec.flatMap((a) => a.points),
+    ];
+    const { xDomain, yDomain } = hrDomains(
+      [...finiteValues(stars.map((s) => s.bv)), ...finiteValues(isoPoints.map((p) => p.bv))],
+      [...finiteValues(stars.map((s) => s.mv)), ...finiteValues(isoPoints.map((p) => p.mv))],
+    );
+
+    const x = d3.scaleLinear().domain(xDomain).nice().range([margin.left, width - margin.right]);
+    const y = d3.scaleLinear().domain(yDomain).nice().range([height - margin.bottom, margin.top]);
 
     const g = svg.append('g');
 
