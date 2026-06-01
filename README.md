@@ -33,7 +33,8 @@ Both hosts serve project sites from a subpath unless you use a custom domain:
 
 | Host | Typical URL | `VITE_BASE_PATH` |
 |------|-------------|------------------|
-| GitHub Pages | `https://<user>.github.io/project-midas/` | `/project-midas/` |
+| GitHub Pages (custom domain) | `https://midasastronomy.com/` | `/` |
+| GitHub Pages (project URL) | `https://<user>.github.io/project-midas/` | `/project-midas/` |
 | GitLab Pages | `https://<group>.gitlab.io/project-midas/` | `/project-midas/` |
 | Custom domain | `https://midas.example.org/` | `/` |
 
@@ -43,13 +44,29 @@ VITE_BASE_PATH=/project-midas/ npm run build
 
 ## Deployment
 
-### GitHub Pages
+### GitHub Pages (production: [midasastronomy.com](https://midasastronomy.com))
 
 1. Push this repo to GitHub.
 2. **Settings → Pages → Build and deployment → Source:** GitHub Actions.
-3. Push to `main` (or `master`). Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) builds `web/` and deploys.
+3. **Settings → Pages → Custom domain:** `midasastronomy.com` (Enforce HTTPS once DNS is verified).
+4. Configure DNS at your registrar (see below).
+5. Push to `main`. Workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) builds `web/` with `VITE_BASE_PATH=/` and deploys.
 
-First deploy may require enabling Pages in repository settings.
+The built site includes `CNAME` from [`web/public/CNAME`](web/public/CNAME).
+
+#### DNS for midasastronomy.com
+
+| Type | Name | Value |
+|------|------|--------|
+| `A` | `@` | `185.199.108.153` |
+| `A` | `@` | `185.199.109.153` |
+| `A` | `@` | `185.199.110.153` |
+| `A` | `@` | `185.199.111.153` |
+| `CNAME` | `www` | `amne51ac.github.io` |
+
+Optional: add `www.midasastronomy.com` as a second custom domain in GitHub Pages and redirect apex ↔ www in registrar settings if you prefer.
+
+Fallback URL (before DNS propagates): `https://amne51ac.github.io/project-midas/` — requires `VITE_BASE_PATH=/project-midas/`; production uses `/` for the custom domain.
 
 ### GitLab Pages
 

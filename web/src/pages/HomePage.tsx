@@ -392,9 +392,9 @@ export default function HomePage({ scrollTo }: HomePageProps) {
             sibling archive and will be linked as provenance.
           </p>
           <p>
-            <strong>Hosting:</strong> Static build deploys to GitHub Pages and GitLab Pages from CI.
-            Set <code>VITE_BASE_PATH</code> to your repo path (e.g. <code>/project-midas/</code>) or{' '}
-            <code>/</code> for a custom domain.
+            <strong>Hosting:</strong> Static build deploys to GitHub Pages at{' '}
+            <a href="https://midasastronomy.com">midasastronomy.com</a> (CI sets{' '}
+            <code>VITE_BASE_PATH=/</code>).
           </p>
         </div>
       </section>
