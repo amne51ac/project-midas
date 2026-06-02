@@ -20,6 +20,8 @@ export function getAllRoutes(): AppRoute[] {
     }
   }
 
+  routes.push({ type: 'findings' });
+
   return routes;
 }
 

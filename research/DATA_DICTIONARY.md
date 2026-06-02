@@ -115,6 +115,23 @@ Output of `scripts/cross_match.py` — Midas photometry joined to Gaia and publi
 
 ---
 
+## Processed: `m34_join_ir.csv`
+
+Output of `scripts/merge_ir_photometry.py` — `m34_join.csv` plus near-IR photometry from Phase III field caches.
+
+| Column | Description |
+|--------|-------------|
+| *(all `m34_join.csv` columns)* | Inherited from cross-match join |
+| `j_mag`, `h_mag`, `k_mag` | 2MASS PSC photometry (nearest ≤ 2″) |
+| `twomass_sep_arcsec` | Midas→2MASS match separation |
+| `w1_mag`, `w2_mag` | AllWISE W1/W2 (nearest ≤ 2″) |
+| `wise_sep_arcsec` | Midas→AllWISE match separation |
+| `phot_bp_mean_mag` | Gaia DR3 BP from join (for pseudocolors) |
+| `w2_bp` | W2 − BP (Malofeeva-style IR excess index) |
+| `h_w1` | H − W1 |
+
+---
+
 ## Processed: catalog tables
 
 | File | Key columns |
@@ -153,6 +170,9 @@ research/midas/
   join_table.py  — load m34_join.csv for web builders
   pipeline.py    — Mv, Q-value, derived columns + CSV export
   validation.py  — Phase III confusion matrices, ROC, bootstrap completeness
+  mass.py        — Mv → M☉ via YY isochrone (Phase IV mass bins)
+  synthesis.py   — Phase IV deduplicated binary union + f(M) bootstrap
+  white_dwarfs.py — Rubin et al. LAWDS ingest + Gaia astrometry check
 ```
 
 Run:
@@ -161,6 +181,14 @@ Run:
 python scripts/cross_match.py          # → m34_join.csv (Gaia + catalogs + bv0/mv0)
 python scripts/verify_wocs_ingest.py     # 120 targets, 118 Midas matches
 python scripts/validate_phase3.py       # → validation_summary.json
+python scripts/run_phase4_synthesis.py  # → synthesis_summary.json
+python scripts/build_web_synthesis.py   # → synthesisSummary.json + methodCompareDiagram.json
+python scripts/fetch_rubin_wd.py        # → data/raw/rubin_lawds_m34.csv
+python scripts/validate_wd_check.py     # → wd_check_summary.json
+python scripts/build_web_wd_check.py    # → web/src/data/wdCheckSummary.json
+python scripts/run_reproduction.py      # orchestrated pipeline (all stages)
+python scripts/build_web_all.py         # web JSON bundle
+python scripts/merge_ir_photometry.py   # → m34_join_ir.csv (2MASS + AllWISE)
 python scripts/fetch_ir_photometry.py   # → twomass_m34.csv, allwise_m34.csv
 python scripts/build_web_sample.py     # HR sample from join table
 python scripts/build_web_catalogs.py   # catalog explorer JSON

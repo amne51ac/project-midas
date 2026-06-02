@@ -1,4 +1,4 @@
-import { ECOSYSTEM_TOOLS, STATUS_LABELS, TOOL_CATEGORIES, type ToolStatus } from '../data/toolsInventory';
+import { ECOSYSTEM_TOOLS, STATUS_LABELS, TOOL_CATEGORIES, repoBlobUrl, type ToolStatus } from '../data/toolsInventory';
 
 const STATUS_CLASS: Record<ToolStatus, string> = {
   ready: 'tool-card__status--ready',
@@ -26,9 +26,10 @@ export function ToolsInventory() {
     <div className="tools-inventory">
       <div className="section__prose tools-inventory__intro">
         <p className="lead">
-          Completing Project Midas is not one program — it is a toolchain. Some pieces already exist in
-          the legacy archive or the public literature; others are partially built in this repository; several
-          critical joins and validation steps still need to be written.
+          Completing Project Midas is not one program — it is a toolchain. Phases I–III built the cross-match,
+          validation, and catalog layers; Phase IV adds synthesis and method comparison. The inventory below
+          rates each component: what exists in this repo today, whether it meets current standards, what gap
+          remains, and which phase it belongs to.
         </p>
         <p>
           The inventory below rates each component against our actual research plan: what we have today,
@@ -73,6 +74,20 @@ export function ToolsInventory() {
                     <dd>{tool.action}</dd>
                   </div>
                 </dl>
+                {tool.repoPaths && tool.repoPaths.length > 0 && (
+                  <div className="tool-card__repo">
+                    <span className="tool-card__repo-label">In repo</span>
+                    <ul className="tool-card__repo-list">
+                      {tool.repoPaths.map((link) => (
+                        <li key={link.path}>
+                          <a href={repoBlobUrl(link.path)} rel="noopener noreferrer">
+                            {link.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <footer className="tool-card__phase">{tool.phase}</footer>
               </article>
             ))}

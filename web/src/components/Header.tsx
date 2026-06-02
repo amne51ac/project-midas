@@ -57,15 +57,18 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const isHome = route.type === 'home';
   const isPhase = route.type === 'phase';
+  const isFindings = route.type === 'findings';
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-home-route', isHome);
     document.documentElement.classList.toggle('is-phase-route', isPhase);
+    document.documentElement.classList.toggle('is-findings-route', isFindings);
     return () => {
       document.documentElement.classList.remove('is-home-route');
       document.documentElement.classList.remove('is-phase-route');
+      document.documentElement.classList.remove('is-findings-route');
     };
-  }, [isHome, isPhase]);
+  }, [isHome, isPhase, isFindings]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -101,7 +104,7 @@ export function Header() {
     isPhase && phaseActiveSection === id;
 
   return (
-    <header className={`site-header${isHome || isPhase ? ' site-header--home' : ''}`}>
+    <header className={`site-header${isHome || isPhase || isFindings ? ' site-header--home' : ''}`}>
       <div className="site-header__bar">
         <a className="site-header__brand" href="/" onClick={closeMenu}>
           Project Midas
@@ -127,6 +130,14 @@ export function Header() {
               {label}
             </a>
           ))}
+          <a
+            href="/findings"
+            className={navLinkClass(isFindings)}
+            aria-current={isFindings ? 'page' : undefined}
+            onClick={closeMenu}
+          >
+            Findings
+          </a>
         </nav>
 
         <div className="site-header__actions">
@@ -202,6 +213,9 @@ export function Header() {
             {label}
           </a>
         ))}
+        <a href="/findings" className={navLinkClass(isFindings)} onClick={closeMenu}>
+          Findings
+        </a>
         {isHome && (
           <>
             <p className="site-header__drawer-label">Sections</p>

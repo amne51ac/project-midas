@@ -1,6 +1,6 @@
 # Project Midas
 
-> Project Midas — photometric search for unresolved binaries in M34 (NGC 1039). 3,760 legacy BVR stars, 3,738 Gaia DR3 matches, 263 high-confidence members, 6-catalog explorer. 3/4 research phases complete (85%). Interactive HR diagrams, isochrone gallery, Q-value validation, open pipelines.
+> Project Midas — photometric search for unresolved binaries in M34 (NGC 1039). 3,760 legacy BVR stars, 3,738 Gaia DR3 matches, 263 high-confidence members, 6-catalog explorer. 4/4 research phases complete (100%). Interactive HR diagrams, isochrone gallery, Q-value validation, open pipelines.
 
 ## Primary URL
 https://midasastronomy.com
@@ -21,6 +21,7 @@ https://github.com/amne51ac/project-midas
 - Catalog layers in explorer: 6
 
 ## Main sections
+- [Findings](https://midasastronomy.com/findings)
 - [History](https://midasastronomy.com/history)
 - [Sky / finder chart](https://midasastronomy.com/sky)
 - [Science / HR diagram](https://midasastronomy.com/science)
@@ -34,7 +35,7 @@ https://github.com/amne51ac/project-midas
 - [Phase I: Archaeology & reproducibility](https://midasastronomy.com/phases/phase-i) — complete; 8/8 tasks
 - [Phase II: Gaia integration](https://midasastronomy.com/phases/phase-ii) — complete; 8/8 tasks
 - [Phase III: Validation](https://midasastronomy.com/phases/phase-iii) — complete; 6/6 tasks
-- [Phase IV: Synthesis](https://midasastronomy.com/phases/phase-iv) — upcoming; 0/4 tasks
+- [Phase IV: Synthesis](https://midasastronomy.com/phases/phase-iv) — complete; 4/4 tasks
 
 ## Citation
 Project Midas revival (https://midasastronomy.com). M34 (NGC 1039) photometric binary census.

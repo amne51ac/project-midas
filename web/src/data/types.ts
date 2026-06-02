@@ -22,6 +22,8 @@ export interface Star {
 }
 
 export interface HistoryEvent {
+  /** Display year or range, e.g. "1764" or "2013–2018" */
+  year: string;
   era: string;
   title: string;
   summary: string;

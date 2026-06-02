@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "phase": "IV",
+    "nCgMembers": 263,
+    "ebv": 0.07,
+    "ageGyr": 0.2,
+    "builtFrom": "synthesis_summary.json"
+  },
+  "overall": {
+    "n": 263,
+    "nBinaryUnion": 253,
+    "fractionUnion": 0.962
+  },
+  "channels": [
+    {
+      "id": "q",
+      "label": "Q-value (B\u2212V track)",
+      "count": 51,
+      "fraction": 0.194
+    },
+    {
+      "id": "malofeeva",
+      "label": "Malofeeva IR",
+      "count": 242,
+      "fraction": 0.92
+    },
+    {
+      "id": "excel",
+      "label": "Excel Control",
+      "count": 83,
+      "fraction": 0.316
+    },
+    {
+      "id": "wocs_rv",
+      "label": "WOCS PRV \u2265 90%",
+      "count": 0,
+      "fraction": 0.0
+    },
+    {
+      "id": "ruwe",
+      "label": "Gaia RUWE > 1.4",
+      "count": 23,
+      "fraction": 0.087
+    }
+  ],
+  "overlap": [
+    {
+      "label": "Q only (not Malofeeva)",
+      "count": 4
+    },
+    {
+      "label": "Malofeeva only (not Q)",
+      "count": 195
+    },
+    {
+      "label": "Q \u2229 Malofeeva",
+      "count": 47
+    },
+    {
+      "label": "Excel only (no Q or Malofeeva)",
+      "count": 4
+    },
+    {
+      "label": "RUWE only (no Q / Mal / Excel)",
+      "count": 3
+    },
+    {
+      "label": "No channel flags",
+      "count": 10
+    },
+    {
+      "label": "Union (\u22651 channel)",
+      "count": 253
+    },
+    {
+      "label": "\u22652 channels",
+      "count": 98
+    }
+  ],
+  "byMass": {
+    "union": [
+      {
+        "massLo": 0.45,
+        "massHi": 0.65,
+        "n": 82,
+        "nBinary": 81,
+        "fraction": 0.988,
+        "ciLo": 0.951,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 0.65,
+        "massHi": 0.85,
+        "n": 68,
+        "nBinary": 65,
+        "fraction": 0.956,
+        "ciLo": 0.897,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 0.85,
+        "massHi": 1.05,
+        "n": 32,
+        "nBinary": 30,
+        "fraction": 0.938,
+        "ciLo": 0.844,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 1.05,
+        "massHi": 1.25,
+        "n": 30,
+        "nBinary": 29,
+        "fraction": 0.967,
+        "ciLo": 0.9,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 1.25,
+        "massHi": 1.55,
+        "n": 21,
+        "nBinary": 20,
+        "fraction": 0.952,
+        "ciLo": 0.857,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 1.55,
+        "massHi": 2.6,
+        "n": 25,
+        "nBinary": 23,
+        "fraction": 0.92,
+        "ciLo": 0.8,
+        "ciHi": 1.0
+      }
+    ],
+    "q": [
+      {
+        "massLo": 0.45,
+        "massHi": 0.65,
+        "n": 82,
+        "nBinary": 30,
+        "fraction": 0.366,
+        "ciLo": 0.256,
+        "ciHi": 0.464
+      },
+      {
+        "massLo": 0.65,
+        "massHi": 0.85,
+        "n": 68,
+        "nBinary": 5,
+        "fraction": 0.074,
+        "ciLo": 0.015,
+        "ciHi": 0.147
+      },
+      {
+        "massLo": 0.85,
+        "massHi": 1.05,
+        "n": 32,
+        "nBinary": 5,
+        "fraction": 0.156,
+        "ciLo": 0.062,
+        "ciHi": 0.281
+      },
+      {
+        "massLo": 1.05,
+        "massHi": 1.25,
+        "n": 30,
+        "nBinary": 4,
+        "fraction": 0.133,
+        "ciLo": 0.033,
+        "ciHi": 0.267
+      },
+      {
+        "massLo": 1.25,
+        "massHi": 1.55,
+        "n": 21,
+        "nBinary": 5,
+        "fraction": 0.238,
+        "ciLo": 0.095,
+        "ciHi": 0.43
+      },
+      {
+        "massLo": 1.55,
+        "massHi": 2.6,
+        "n": 25,
+        "nBinary": 1,
+        "fraction": 0.04,
+        "ciLo": 0.0,
+        "ciHi": 0.12
+      }
+    ],
+    "malofeeva": [
+      {
+        "massLo": 0.45,
+        "massHi": 0.65,
+        "n": 82,
+        "nBinary": 78,
+        "fraction": 0.951,
+        "ciLo": 0.89,
+        "ciHi": 0.988
+      },
+      {
+        "massLo": 0.65,
+        "massHi": 0.85,
+        "n": 68,
+        "nBinary": 62,
+        "fraction": 0.912,
+        "ciLo": 0.838,
+        "ciHi": 0.971
+      },
+      {
+        "massLo": 0.85,
+        "massHi": 1.05,
+        "n": 32,
+        "nBinary": 28,
+        "fraction": 0.875,
+        "ciLo": 0.75,
+        "ciHi": 0.969
+      },
+      {
+        "massLo": 1.05,
+        "massHi": 1.25,
+        "n": 30,
+        "nBinary": 27,
+        "fraction": 0.9,
+        "ciLo": 0.767,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 1.25,
+        "massHi": 1.55,
+        "n": 21,
+        "nBinary": 20,
+        "fraction": 0.952,
+        "ciLo": 0.857,
+        "ciHi": 1.0
+      },
+      {
+        "massLo": 1.55,
+        "massHi": 2.6,
+        "n": 25,
+        "nBinary": 22,
+        "fraction": 0.88,
+        "ciLo": 0.759,
+        "ciHi": 1.0
+      }
+    ],
+    "excel": [
+      {
+        "massLo": 0.45,
+        "massHi": 0.65,
+        "n": 82,
+        "nBinary": 44,
+        "fraction": 0.537,
+        "ciLo": 0.415,
+        "ciHi": 0.646
+      },
+      {
+        "massLo": 0.65,
+        "massHi": 0.85,
+        "n": 68,
+        "nBinary": 13,
+        "fraction": 0.191,
+        "ciLo": 0.088,
+        "ciHi": 0.294
+      },
+      {
+        "massLo": 0.85,
+        "massHi": 1.05,
+        "n": 32,
+        "nBinary": 5,
+        "fraction": 0.156,
+        "ciLo": 0.031,
+        "ciHi": 0.281
+      },
+      {
+        "massLo": 1.05,
+        "massHi": 1.25,
+        "n": 30,
+        "nBinary": 5,
+        "fraction": 0.167,
+        "ciLo": 0.033,
+        "ciHi": 0.3
+      },
+      {
+        "massLo": 1.25,
+        "massHi": 1.55,
+        "n": 21,
+        "nBinary": 7,
+        "fraction": 0.333,
+        "ciLo": 0.143,
+        "ciHi": 0.524
+      },
+      {
+        "massLo": 1.55,
+        "massHi": 2.6,
+        "n": 25,
+        "nBinary": 5,
+        "fraction": 0.2,
+        "ciLo": 0.04,
+        "ciHi": 0.36
+      }
+    ]
+  }
+}

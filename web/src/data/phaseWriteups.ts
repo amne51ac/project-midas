@@ -186,7 +186,7 @@ Q    = (Mv_iso − Mv_obs) / 0.753      # binary heuristic`,
         title: 'Ship with CI',
         completedDate: '2026-05-31',
         paragraphs: [
-          'GitHub Actions and GitLab CI build the static site on every push. The research tree has its own requirements.txt (numpy, scipy, astropy) separate from the web bundle.',
+          'GitHub Actions builds and deploys the static site on every push to main. The research tree has its own requirements.txt (numpy, scipy, astropy) separate from the web bundle.',
           'For GitHub Pages, set VITE_BASE_PATH to the repository name so asset paths resolve under the project URL.',
         ],
         examples: [
@@ -542,6 +542,175 @@ mv0 = V0 − 5 log₁₀(470/10)          # absolute V, corrected`,
       { label: 'Malofeeva F1 (CG)', value: '0.32 @ Q∈(0,1]' },
       { label: '2MASS / AllWISE cache', value: '3,383 / 6,985' },
       { label: 'Midas IR overlap', value: '2,061 / 2,109' },
+      { label: 'Phase completed', value: '1 Jun 2026' },
+    ],
+  },
+  'phase-iv': {
+    phaseId: 'phase-iv',
+    overview: [
+      'Phase IV turns the Phase III validation channels into population-level answers: what fraction of Cantat-Gaudin members are binaries, and how does that depend on mass?',
+      'The key design choice is deduplication — each Midas star counts once. A star is binary in the union sample if any of five independent channels fires: legacy Q-value, Malofeeva IR colors, Excel Control binaries, WOCS RV variability (PRV ≥ 90%), or Gaia RUWE > 1.4. Channel hit counts are reported separately because they overlap heavily.',
+    ],
+    steps: [
+      {
+        id: 'mass-map',
+        title: 'Map absolute magnitude to stellar mass',
+        paragraphs: [
+          'Mass bins need a monotonic Mv → M☉ map. midas/mass.py inverts the Yonsei–Yale 0.2 Gyr isochrone (the same age Midas.py used for M34) so each CG member with a de-reddened Mv lands in a physical mass bin.',
+          'Default bins span 0.45–2.6 M☉ in six intervals — wide enough for stable bootstrap counts on N=263 members, narrow enough to see a trend if low-mass stars host fewer equal-mass unresolved pairs.',
+        ],
+        examples: [
+          {
+            kind: 'note',
+            label: 'Isochrone age',
+            body: '0.2 Gyr (200 Myr) · E(B−V)=0.07 · 258 / 263 members with finite mass',
+          },
+        ],
+        homeHref: homeSectionHref('science'),
+        homeLabel: 'Isochrone gallery',
+      },
+      {
+        id: 'union',
+        title: 'Deduplicated binary union',
+        completedDate: '2026-06-01',
+        paragraphs: [
+          'Among 263 Cantat-Gaudin members (P ≥ 0.7), the union flags 253 as binary — 96.2%. Malofeeva alone accounts for 242 hits because most IR-flagged stars never received a high Q-value; Excel Control adds 83; Q-value adds 51; RUWE adds 23; WOCS PRV adds 0 on the 23 targets with measurements.',
+          'This is an upper envelope on “binary or binary-like” rather than a clean spectroscopic fraction — Malofeeva and RUWE probe different physics than unresolved equal-mass pairs. Per-channel fractions and overlap matrices feed the method-comparison write-up.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'Channel hits (not exclusive)',
+            body: 'Q=51 · Malofeeva=242 · Excel=83 · WOCS PRV=0 · RUWE=23 · Union=253',
+          },
+          {
+            kind: 'command',
+            label: 'Run synthesis',
+            body: 'python scripts/run_phase4_synthesis.py --ebv 0.07\n# → data/processed/synthesis_summary.json',
+          },
+        ],
+        homeHref: homeSectionHref('compare'),
+        homeLabel: 'Compare chapter',
+      },
+      {
+        id: 'fraction-mass',
+        title: 'Binary fraction vs. mass',
+        completedDate: '2026-06-01',
+        paragraphs: [
+          'Bootstrap resampling within each mass bin yields 95% confidence intervals on the union fraction. All six bins sit above 92% — the Malofeeva channel dominates every bin, so the mass dependence is flat in this first pass.',
+          'Per-channel fractions by mass (also in synthesis_summary.json) show where Q-value and Excel pick up stars Malofeeva misses — the material for the B−V vs Gaia+IR comparison.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'Union f(binary) by M☉',
+            body: '0.45–0.65: 0.99 · 0.65–0.85: 0.96 · 0.85–1.05: 0.94 · 1.05–1.25: 0.97 · 1.25–1.55: 0.95 · 1.55–2.6: 0.92',
+          },
+          {
+            kind: 'note',
+            label: 'Interpretation',
+            body: 'Flat mass trend reflects Malofeeva completeness, not a measured MF — tighten with channel-exclusive fractions and WOCS RV follow-up.',
+          },
+        ],
+      },
+      {
+        id: 'ir-merge',
+        title: 'Merge 2MASS + AllWISE into join table',
+        paragraphs: [
+          'Independent IR colors (J−K, W1−W2, W2−BP) need photometry on the same Midas rows as the B−V pipeline. merge_ir_photometry.py cross-matches the Phase III field caches to m34_join.csv at ≤2″ and writes m34_join_ir.csv with Gaia BP for pseudocolor diagrams.',
+          '2,089 stars now carry W2−BP — the same color space Malofeeva used — so we can plot Midas Q picks and Malofeeva flags on identical axes without their pre-selected sample table.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'IR cross-match',
+            body: '2MASS: 2,061 · AllWISE: 2,109 · W2−BP: 2,089 of 3,760 Midas stars',
+          },
+          {
+            kind: 'command',
+            label: 'Rebuild IR join',
+            body: 'python scripts/fetch_ir_photometry.py --verify\npython scripts/merge_ir_photometry.py\n# → data/processed/m34_join_ir.csv',
+          },
+        ],
+        homeHref: homeSectionHref('data'),
+        homeLabel: 'Data explorer',
+      },
+      {
+        id: 'method-compare',
+        title: 'Methods comparison (B−V vs Gaia+IR)',
+        completedDate: '2026-06-01',
+        paragraphs: [
+          'The Compare chapter now shows channel hit counts, exclusive Q/Malofeeva partitions, mass-binned fractions, and an interactive W2−BP vs de-reddened B−V diagram on 223 CG members with AllWISE+Gaia BP photometry.',
+          'Malofeeva-only stars dominate the IR-excess region; Q-only picks are sparse (4 in the full CG sample, 3 with IR on the diagram). Dual-flag stars (Q ∩ Malofeeva) form a visible overlap wedge — the photometric track offset and IR pseudocolor channels are partially correlated but far from identical.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'Diagram layers (223 with W2−BP)',
+            body: 'Mal only: 166 · Q∩Mal: 45 · Q only: 1 · Excel: 3 · None: 7',
+          },
+          {
+            kind: 'command',
+            label: 'Regenerate web exports',
+            body: 'python scripts/merge_ir_photometry.py\npython scripts/build_web_synthesis.py\n# → synthesisSummary.json + methodCompareDiagram.json',
+          },
+        ],
+        homeHref: homeSectionHref('compare'),
+        homeLabel: 'Compare chapter',
+      },
+      {
+        id: 'wd-check',
+        title: 'Rubin et al. white dwarf astrometry',
+        completedDate: '2026-06-01',
+        paragraphs: [
+          'Rubin et al. (2008) selected 44 LAWDS white dwarf candidates via UBV imaging; 17 were confirmed spectroscopically (mostly DA). Five DA WDs sit at the cluster distance modulus — the anchors for their initial–final mass relation plot.',
+          'We ingest Table 2 coordinates and cross-match to our Gaia DR3 field export. At V ≈ 19–21 many candidates lack Gaia matches or have unreliable parallaxes; only LAWDS 15 and 17 show partial PM agreement with the Cantat-Gaudin member locus. Rubin photometric membership remains the strongest constraint until DR4 or dedicated PM follow-up.',
+        ],
+        examples: [
+          {
+            kind: 'stats',
+            label: 'Gaia DR3 cross-match',
+            body: '44 candidates · 22 Gaia matches · 0 clean π+PM cluster hits · 5 paper members',
+          },
+          {
+            kind: 'command',
+            label: 'Run WD check',
+            body: 'python scripts/fetch_rubin_wd.py\npython scripts/validate_wd_check.py\npython scripts/build_web_wd_check.py',
+          },
+        ],
+        homeHref: homeSectionHref('compare'),
+        homeLabel: 'WD table on Compare chapter',
+      },
+      {
+        id: 'release',
+        title: 'Public data release',
+        completedDate: '2026-06-01',
+        paragraphs: [
+          'Phase IV closes with a reproducible package: REPRODUCTION.md documents every script stage, run_reproduction.py orchestrates core → validation → synthesis → web exports, and build_web_all.py refreshes the JSON the public site reads.',
+          'Processed CSVs remain gitignored (regenerate locally); web/src/data/ holds portable summaries — synthesis overlap, method-compare diagram points, WD check table, HR sample, and catalog layers. CITATION.cff provides a standard citation block for the repository.',
+        ],
+        examples: [
+          {
+            kind: 'command',
+            label: 'Full reproduction',
+            body: 'cd research && source .venv/bin/activate\npython scripts/run_reproduction.py --stage all\ncd ../web && npm run build',
+          },
+          {
+            kind: 'note',
+            label: 'Web-only refresh',
+            body: 'python scripts/build_web_all.py  # after processed/ tables exist',
+          },
+        ],
+        homeHref: homeSectionHref('tools'),
+        homeLabel: 'Tools chapter — data release',
+      },
+    ],
+    outcomes: [
+      { label: 'Synthesis module', value: 'research/midas/synthesis.py' },
+      { label: 'Union f(binary)', value: '96.2% (253 / 263 CG)' },
+      { label: 'Method compare UI', value: 'Compare ch. — overlap + W2−BP' },
+      { label: 'WD check', value: '44 LAWDS · 22 Gaia DR3' },
+      { label: 'Reproduction guide', value: 'research/REPRODUCTION.md' },
       { label: 'Phase completed', value: '1 Jun 2026' },
     ],
   },

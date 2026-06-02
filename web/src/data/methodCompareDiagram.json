@@ -1,0 +1,2282 @@
+{
+  "meta": {
+    "nCgMembers": 263,
+    "nWithIr": 223,
+    "ebv": 0.07,
+    "xLabel": "De-reddened B\u2212V (bv0)",
+    "yLabel": "W2 \u2212 BP",
+    "builtFrom": "m34_join_ir.csv"
+  },
+  "categories": [
+    {
+      "id": "none",
+      "label": "No channel",
+      "color": "#4a5568"
+    },
+    {
+      "id": "mal_only",
+      "label": "Malofeeva only",
+      "color": "#c9a227"
+    },
+    {
+      "id": "q_only",
+      "label": "Q only",
+      "color": "#e8c547"
+    },
+    {
+      "id": "q_mal",
+      "label": "Q \u2229 Malofeeva",
+      "color": "#d4842a"
+    },
+    {
+      "id": "excel_other",
+      "label": "Excel (no Q/Mal)",
+      "color": "#9898c8"
+    },
+    {
+      "id": "other_binary",
+      "label": "Other binary flags",
+      "color": "#6ab0b0"
+    }
+  ],
+  "categoryCounts": {
+    "none": 7,
+    "mal_only": 166,
+    "q_only": 1,
+    "q_mal": 45,
+    "excel_other": 3,
+    "other_binary": 1
+  },
+  "points": [
+    {
+      "id": 502175,
+      "bv0": -0.063,
+      "w2Bp": 0.102,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500600,
+      "bv0": -0.125,
+      "w2Bp": 0.054,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501786,
+      "bv0": -0.095,
+      "w2Bp": -0.072,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502334,
+      "bv0": -0.102,
+      "w2Bp": 0.055,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501725,
+      "bv0": -0.048,
+      "w2Bp": -0.137,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502967,
+      "bv0": -0.05,
+      "w2Bp": -0.197,
+      "category": "excel_other",
+      "q": false,
+      "mal": false,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502090,
+      "bv0": 0.002,
+      "w2Bp": -0.276,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501917,
+      "bv0": 0.007,
+      "w2Bp": -0.292,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 501927,
+      "bv0": 0.024,
+      "w2Bp": -0.358,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502736,
+      "bv0": 0.02,
+      "w2Bp": -0.268,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501485,
+      "bv0": 0.039,
+      "w2Bp": -0.394,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502773,
+      "bv0": 0.045,
+      "w2Bp": -0.305,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501571,
+      "bv0": 0.141,
+      "w2Bp": -0.574,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502448,
+      "bv0": 0.107,
+      "w2Bp": -0.541,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502464,
+      "bv0": 0.072,
+      "w2Bp": -0.376,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502861,
+      "bv0": 0.089,
+      "w2Bp": -0.453,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501518,
+      "bv0": 0.131,
+      "w2Bp": -0.505,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501457,
+      "bv0": 0.135,
+      "w2Bp": -0.466,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501627,
+      "bv0": 0.128,
+      "w2Bp": -0.536,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500914,
+      "bv0": 0.115,
+      "w2Bp": -0.557,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502005,
+      "bv0": 0.198,
+      "w2Bp": -0.915,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 502333,
+      "bv0": 0.149,
+      "w2Bp": -0.582,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 503034,
+      "bv0": 0.171,
+      "w2Bp": -0.736,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500921,
+      "bv0": 0.165,
+      "w2Bp": -0.663,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501936,
+      "bv0": 0.272,
+      "w2Bp": -1.085,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501955,
+      "bv0": 0.213,
+      "w2Bp": -0.879,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501265,
+      "bv0": 0.289,
+      "w2Bp": -0.875,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502365,
+      "bv0": 0.171,
+      "w2Bp": -0.983,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501496,
+      "bv0": 0.293,
+      "w2Bp": -0.929,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500902,
+      "bv0": 0.26,
+      "w2Bp": -0.98,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500811,
+      "bv0": 0.31,
+      "w2Bp": -1.341,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501556,
+      "bv0": 0.338,
+      "w2Bp": -1.134,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 2847,
+      "bv0": 0.301,
+      "w2Bp": -1.056,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502270,
+      "bv0": 0.256,
+      "w2Bp": -1.071,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 503308,
+      "bv0": 0.39,
+      "w2Bp": -1.364,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 502972,
+      "bv0": 0.342,
+      "w2Bp": -1.182,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501401,
+      "bv0": 0.348,
+      "w2Bp": -1.217,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501286,
+      "bv0": 0.419,
+      "w2Bp": -1.449,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 502525,
+      "bv0": 0.45,
+      "w2Bp": -1.524,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502146,
+      "bv0": 0.376,
+      "w2Bp": -1.307,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 503010,
+      "bv0": 0.362,
+      "w2Bp": -1.277,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501974,
+      "bv0": 0.38,
+      "w2Bp": -1.317,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 6978,
+      "bv0": 0.434,
+      "w2Bp": -1.348,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502633,
+      "bv0": 0.514,
+      "w2Bp": -1.668,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501505,
+      "bv0": 0.443,
+      "w2Bp": -1.643,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500227,
+      "bv0": 0.455,
+      "w2Bp": -1.422,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 3021,
+      "bv0": 0.553,
+      "w2Bp": -1.713,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 503230,
+      "bv0": 0.537,
+      "w2Bp": -1.697,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502756,
+      "bv0": 0.388,
+      "w2Bp": -1.405,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5492,
+      "bv0": 0.439,
+      "w2Bp": -1.434,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5564,
+      "bv0": 0.472,
+      "w2Bp": -1.482,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 4285,
+      "bv0": 0.517,
+      "w2Bp": -1.715,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7525,
+      "bv0": 0.466,
+      "w2Bp": -1.482,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500741,
+      "bv0": 0.493,
+      "w2Bp": -1.562,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 10705,
+      "bv0": 0.464,
+      "w2Bp": -1.539,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 6362,
+      "bv0": 0.505,
+      "w2Bp": -1.867,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1635,
+      "bv0": 0.527,
+      "w2Bp": -1.611,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 2037,
+      "bv0": 0.504,
+      "w2Bp": -1.638,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 2135,
+      "bv0": 0.517,
+      "w2Bp": -1.776,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 6125,
+      "bv0": 0.73,
+      "w2Bp": -2.102,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 200,
+      "bv0": 0.5,
+      "w2Bp": -1.656,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7463,
+      "bv0": 0.528,
+      "w2Bp": -1.63,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1094,
+      "bv0": 0.636,
+      "w2Bp": -1.944,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 8543,
+      "bv0": 0.536,
+      "w2Bp": -1.635,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501412,
+      "bv0": 1.066,
+      "w2Bp": -3.302,
+      "category": "other_binary",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 501893,
+      "bv0": 0.546,
+      "w2Bp": -1.71,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5521,
+      "bv0": 0.544,
+      "w2Bp": -1.716,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 501019,
+      "bv0": 0.542,
+      "w2Bp": -1.781,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7440,
+      "bv0": 0.544,
+      "w2Bp": -1.739,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7812,
+      "bv0": 0.578,
+      "w2Bp": -1.781,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501219,
+      "bv0": 0.552,
+      "w2Bp": -1.888,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 6330,
+      "bv0": 0.665,
+      "w2Bp": -2.026,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 7581,
+      "bv0": 0.702,
+      "w2Bp": -2.115,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 500747,
+      "bv0": 0.551,
+      "w2Bp": -1.752,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 870,
+      "bv0": 0.58,
+      "w2Bp": -1.827,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 502493,
+      "bv0": 0.562,
+      "w2Bp": -1.779,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500081,
+      "bv0": 0.591,
+      "w2Bp": -1.843,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5426,
+      "bv0": 0.73,
+      "w2Bp": -2.17,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 11161,
+      "bv0": 0.598,
+      "w2Bp": -1.84,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8311,
+      "bv0": 0.627,
+      "w2Bp": -1.871,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500609,
+      "bv0": 0.682,
+      "w2Bp": -2.199,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 4971,
+      "bv0": 0.636,
+      "w2Bp": -1.889,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 9243,
+      "bv0": 0.652,
+      "w2Bp": -1.948,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7835,
+      "bv0": 0.603,
+      "w2Bp": -2.237,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501864,
+      "bv0": 0.66,
+      "w2Bp": -1.98,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500238,
+      "bv0": 0.624,
+      "w2Bp": -1.953,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8724,
+      "bv0": 0.698,
+      "w2Bp": -2.04,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500910,
+      "bv0": 0.688,
+      "w2Bp": -2.172,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501509,
+      "bv0": 0.703,
+      "w2Bp": -2.114,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502479,
+      "bv0": 0.718,
+      "w2Bp": -2.112,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8256,
+      "bv0": 0.731,
+      "w2Bp": -2.088,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500435,
+      "bv0": 0.726,
+      "w2Bp": -2.145,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500555,
+      "bv0": 0.707,
+      "w2Bp": -2.125,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501877,
+      "bv0": 0.77,
+      "w2Bp": -2.339,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502603,
+      "bv0": 0.864,
+      "w2Bp": -2.495,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501825,
+      "bv0": 0.863,
+      "w2Bp": -2.653,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 3320,
+      "bv0": 0.742,
+      "w2Bp": -2.269,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 7302,
+      "bv0": 0.767,
+      "w2Bp": -2.391,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501340,
+      "bv0": 0.804,
+      "w2Bp": -2.578,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 7393,
+      "bv0": 0.805,
+      "w2Bp": -2.395,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7678,
+      "bv0": 0.813,
+      "w2Bp": -2.33,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5034,
+      "bv0": 0.854,
+      "w2Bp": -2.616,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 5614,
+      "bv0": 0.991,
+      "w2Bp": -2.752,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501750,
+      "bv0": 0.785,
+      "w2Bp": -2.452,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 502999,
+      "bv0": 0.811,
+      "w2Bp": -2.368,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500836,
+      "bv0": 0.811,
+      "w2Bp": -2.372,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8289,
+      "bv0": 0.818,
+      "w2Bp": -2.469,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500145,
+      "bv0": 0.835,
+      "w2Bp": -2.614,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501767,
+      "bv0": 0.845,
+      "w2Bp": -2.447,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501374,
+      "bv0": 0.839,
+      "w2Bp": -2.628,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500259,
+      "bv0": 0.833,
+      "w2Bp": -2.494,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501059,
+      "bv0": 0.898,
+      "w2Bp": -2.643,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 3656,
+      "bv0": 0.876,
+      "w2Bp": -2.506,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500466,
+      "bv0": 0.854,
+      "w2Bp": -2.464,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 11372,
+      "bv0": 0.874,
+      "w2Bp": -2.508,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502382,
+      "bv0": 0.964,
+      "w2Bp": -3.028,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 9462,
+      "bv0": 1.015,
+      "w2Bp": -2.97,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 502316,
+      "bv0": 0.892,
+      "w2Bp": -2.572,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 2504,
+      "bv0": 0.859,
+      "w2Bp": -2.788,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1463,
+      "bv0": 0.896,
+      "w2Bp": -2.601,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500597,
+      "bv0": 0.842,
+      "w2Bp": -2.824,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 9687,
+      "bv0": 0.895,
+      "w2Bp": -2.634,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500569,
+      "bv0": 0.905,
+      "w2Bp": -2.627,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501283,
+      "bv0": 0.857,
+      "w2Bp": -2.805,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 3012,
+      "bv0": 1.038,
+      "w2Bp": -3.124,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 1750,
+      "bv0": 0.912,
+      "w2Bp": -2.697,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 11448,
+      "bv0": 0.913,
+      "w2Bp": -2.631,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 9890,
+      "bv0": 0.939,
+      "w2Bp": -2.764,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 240,
+      "bv0": 0.912,
+      "w2Bp": -2.717,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5880,
+      "bv0": 0.947,
+      "w2Bp": -2.759,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501074,
+      "bv0": 0.98,
+      "w2Bp": -2.851,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1602,
+      "bv0": 1.012,
+      "w2Bp": -2.864,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 3760,
+      "bv0": 1.019,
+      "w2Bp": -2.998,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500647,
+      "bv0": 1.074,
+      "w2Bp": -3.246,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 11038,
+      "bv0": 1.03,
+      "w2Bp": -3.021,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502472,
+      "bv0": 1.086,
+      "w2Bp": -3.135,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502483,
+      "bv0": 1.046,
+      "w2Bp": -3.0,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5113,
+      "bv0": 1.052,
+      "w2Bp": -2.9,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500001,
+      "bv0": 1.254,
+      "w2Bp": -3.522,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 503275,
+      "bv0": 1.051,
+      "w2Bp": -3.017,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501924,
+      "bv0": 1.1,
+      "w2Bp": -3.124,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500837,
+      "bv0": 1.037,
+      "w2Bp": -3.317,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 776,
+      "bv0": 1.127,
+      "w2Bp": -3.278,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 3429,
+      "bv0": 1.121,
+      "w2Bp": -3.19,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 4442,
+      "bv0": 1.067,
+      "w2Bp": -3.46,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1446,
+      "bv0": 1.026,
+      "w2Bp": -3.388,
+      "category": "none",
+      "q": false,
+      "mal": false,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8440,
+      "bv0": 1.142,
+      "w2Bp": -3.27,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7154,
+      "bv0": 1.164,
+      "w2Bp": -3.27,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502521,
+      "bv0": 1.116,
+      "w2Bp": -3.246,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7372,
+      "bv0": 1.106,
+      "w2Bp": -3.181,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1991,
+      "bv0": 1.141,
+      "w2Bp": -3.254,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500398,
+      "bv0": 1.256,
+      "w2Bp": -3.763,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501795,
+      "bv0": 1.138,
+      "w2Bp": -3.347,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501972,
+      "bv0": 1.175,
+      "w2Bp": -3.304,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502151,
+      "bv0": 1.175,
+      "w2Bp": -3.538,
+      "category": "excel_other",
+      "q": false,
+      "mal": false,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 3249,
+      "bv0": 1.134,
+      "w2Bp": -3.591,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 502181,
+      "bv0": 1.189,
+      "w2Bp": -3.588,
+      "category": "excel_other",
+      "q": false,
+      "mal": false,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501327,
+      "bv0": 1.229,
+      "w2Bp": -3.506,
+      "category": "q_only",
+      "q": true,
+      "mal": false,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7503,
+      "bv0": 1.372,
+      "w2Bp": -3.949,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502406,
+      "bv0": 1.198,
+      "w2Bp": -3.428,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502251,
+      "bv0": 1.239,
+      "w2Bp": -3.448,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 11552,
+      "bv0": 1.22,
+      "w2Bp": -3.516,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500487,
+      "bv0": 1.225,
+      "w2Bp": -3.493,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502835,
+      "bv0": 1.285,
+      "w2Bp": -3.526,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 4143,
+      "bv0": 1.256,
+      "w2Bp": -3.548,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 10092,
+      "bv0": 1.281,
+      "w2Bp": -3.763,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 503288,
+      "bv0": 1.283,
+      "w2Bp": -3.597,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 2862,
+      "bv0": 1.215,
+      "w2Bp": -3.853,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 1510,
+      "bv0": 1.2,
+      "w2Bp": -3.788,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 10973,
+      "bv0": 1.285,
+      "w2Bp": -3.673,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 3556,
+      "bv0": 1.337,
+      "w2Bp": -3.716,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7131,
+      "bv0": 1.277,
+      "w2Bp": -4.079,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 11185,
+      "bv0": 1.404,
+      "w2Bp": -4.11,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501964,
+      "bv0": 1.313,
+      "w2Bp": -3.776,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501017,
+      "bv0": 1.329,
+      "w2Bp": -3.923,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501288,
+      "bv0": 1.396,
+      "w2Bp": -4.254,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": true
+    },
+    {
+      "id": 5887,
+      "bv0": 1.339,
+      "w2Bp": -3.715,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7720,
+      "bv0": 1.336,
+      "w2Bp": -4.017,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501920,
+      "bv0": 1.349,
+      "w2Bp": -3.977,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 2958,
+      "bv0": 1.357,
+      "w2Bp": -3.956,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 4552,
+      "bv0": 1.442,
+      "w2Bp": -4.463,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 6603,
+      "bv0": 1.465,
+      "w2Bp": -4.438,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 503212,
+      "bv0": 1.371,
+      "w2Bp": -4.083,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 502793,
+      "bv0": 1.452,
+      "w2Bp": -4.142,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 3630,
+      "bv0": 1.421,
+      "w2Bp": -4.079,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500504,
+      "bv0": 1.35,
+      "w2Bp": -4.257,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 4022,
+      "bv0": 1.407,
+      "w2Bp": -4.155,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7826,
+      "bv0": 1.38,
+      "w2Bp": -4.237,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502331,
+      "bv0": 1.443,
+      "w2Bp": -4.306,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501858,
+      "bv0": 1.456,
+      "w2Bp": -4.366,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 11010,
+      "bv0": 1.464,
+      "w2Bp": -4.692,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 8204,
+      "bv0": 1.434,
+      "w2Bp": -4.193,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 3672,
+      "bv0": 1.478,
+      "w2Bp": -4.546,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501933,
+      "bv0": 1.454,
+      "w2Bp": -4.182,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 11029,
+      "bv0": 1.418,
+      "w2Bp": -4.709,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 7781,
+      "bv0": 1.451,
+      "w2Bp": -4.881,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 5890,
+      "bv0": 1.524,
+      "w2Bp": -4.304,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 500188,
+      "bv0": 1.497,
+      "w2Bp": -4.535,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 9432,
+      "bv0": 1.428,
+      "w2Bp": -4.514,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 5693,
+      "bv0": 1.407,
+      "w2Bp": -4.446,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501241,
+      "bv0": 1.439,
+      "w2Bp": -4.609,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501997,
+      "bv0": 1.385,
+      "w2Bp": -4.502,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8811,
+      "bv0": 1.449,
+      "w2Bp": -4.41,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501919,
+      "bv0": 1.496,
+      "w2Bp": -4.447,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 2610,
+      "bv0": 1.477,
+      "w2Bp": -4.678,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 1473,
+      "bv0": 1.512,
+      "w2Bp": -4.676,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 500056,
+      "bv0": 1.344,
+      "w2Bp": -4.602,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 8925,
+      "bv0": 1.479,
+      "w2Bp": -4.573,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501971,
+      "bv0": 1.442,
+      "w2Bp": -4.591,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 502754,
+      "bv0": 1.5,
+      "w2Bp": -4.54,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 916,
+      "bv0": 1.445,
+      "w2Bp": -4.511,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 2576,
+      "bv0": 1.408,
+      "w2Bp": -4.594,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 3867,
+      "bv0": 1.469,
+      "w2Bp": -4.628,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 6110,
+      "bv0": 1.417,
+      "w2Bp": -4.615,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 414,
+      "bv0": 1.473,
+      "w2Bp": -4.504,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501679,
+      "bv0": 1.5,
+      "w2Bp": -4.925,
+      "category": "q_mal",
+      "q": true,
+      "mal": true,
+      "excel": true,
+      "ruwe": true
+    },
+    {
+      "id": 3859,
+      "bv0": 1.436,
+      "w2Bp": -4.763,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": true,
+      "ruwe": false
+    },
+    {
+      "id": 501688,
+      "bv0": 1.397,
+      "w2Bp": -4.786,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 7093,
+      "bv0": 1.422,
+      "w2Bp": -4.806,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 9966,
+      "bv0": 1.323,
+      "w2Bp": -4.858,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 2201,
+      "bv0": 1.322,
+      "w2Bp": -4.981,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 5582,
+      "bv0": 1.332,
+      "w2Bp": -4.976,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    },
+    {
+      "id": 501090,
+      "bv0": 1.382,
+      "w2Bp": -5.052,
+      "category": "mal_only",
+      "q": false,
+      "mal": true,
+      "excel": false,
+      "ruwe": false
+    }
+  ]
+}

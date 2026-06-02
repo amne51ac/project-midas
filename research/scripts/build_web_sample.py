@@ -85,30 +85,35 @@ def main() -> None:
 
     history = [
         {
+            "year": "1764",
             "era": "Discovery",
             "title": "Messier catalogues M34",
             "summary": "Charles Messier records a loose cluster of small stars in Perseus.",
             "detail": "NGC 1039 sits at roughly 1,500 light-years.",
         },
         {
+            "year": "1960–1996",
             "era": "Photometry",
             "title": "Multicolor surveys",
             "summary": "Photographic and photoelectric campaigns map the main sequence.",
             "detail": "Jones & Prosser (1996) provide membership via proper motions to V ≈ 16.",
         },
         {
-            "era": "Gaia",
-            "title": "Astrometric revolution",
-            "summary": "Gaia parallaxes redefine cluster membership at scale.",
-            "detail": "Cantat-Gaudin & Anders (2020) publish probabilistic member lists.",
-        },
-        {
+            "year": "2013–2018",
             "era": "Midas",
             "title": "Project Midas",
             "summary": "Isochrone–binary diagnostics on deep BVR(I) photometry.",
             "detail": "Excel and Python pipelines classify candidate single and binary stars.",
         },
         {
+            "year": "2018–2020",
+            "era": "Gaia",
+            "title": "Astrometric revolution",
+            "summary": "Gaia parallaxes redefine cluster membership at scale.",
+            "detail": "Cantat-Gaudin & Anders (2020) publish probabilistic member lists.",
+        },
+        {
+            "year": "2025–",
             "era": "Present",
             "title": "Revival & validation",
             "summary": "Cross-matching legacy photometry with Gaia and modern catalogs.",

@@ -1,0 +1,20 @@
+title: Project Midas
+message: >-
+  Photometric revival and validation of the M34 (NGC 1039) binary census —
+  interactive site plus reproducible Python pipeline.
+type: software
+authors:
+  - given-names: Mark
+    family-names: Milhouse
+repository-code: 'https://github.com/amne51ac/project-midas'
+url: 'https://midasastronomy.com'
+license: GPL-2.0-or-later
+keywords:
+  - astronomy
+  - open-clusters
+  - binaries
+  - photometry
+  - M34
+  - NGC 1039
+version: 0.1.0
+date-released: 2026-06-01

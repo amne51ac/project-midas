@@ -148,6 +148,17 @@ function phaseDescription(phase: RoadmapPhase): string {
 }
 
 export function getPageMeta(route: AppRoute): PageMeta {
+  if (route.type === 'findings') {
+    const stats = getSiteStats();
+    return {
+      title: 'Findings · Project Midas',
+      description:
+        `Synthesis of the M34 revival: ${stats.nCgMembers} Cantat-Gaudin members, ` +
+        '96% union binary fraction, Q vs Malofeeva channel overlap, W2−BP method comparison, ' +
+        'Rubin white dwarf check, and reproduction pipeline.',
+    };
+  }
+
   if (route.type === 'phase') {
     const phase = ROADMAP_PHASES.find((p) => p.id === route.phaseId);
     if (phase) {
@@ -278,6 +289,7 @@ ${SITE.github}
 - Catalog layers in explorer: ${stats.catalogLayers}
 
 ## Main sections
+- [Findings](${SITE.url}/findings)
 - [History](${SITE.url}/history)
 - [Sky / finder chart](${SITE.url}/sky)
 - [Science / HR diagram](${SITE.url}/science)
@@ -301,11 +313,13 @@ export function buildSitemapXml(): string {
     priority:
       route.type === 'home' && !route.section
         ? '1.0'
-        : route.type === 'phase' && !route.section
-          ? '0.85'
-          : route.type === 'home'
-            ? '0.8'
-            : '0.75',
+        : route.type === 'findings'
+          ? '0.9'
+          : route.type === 'phase' && !route.section
+            ? '0.85'
+            : route.type === 'home'
+              ? '0.8'
+              : '0.75',
     changefreq: route.type === 'home' && !route.section ? 'weekly' : 'monthly',
   }));
 

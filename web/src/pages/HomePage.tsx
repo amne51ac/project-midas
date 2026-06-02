@@ -8,10 +8,12 @@ import { HRDiagram, type HRDiagramMode } from '../components/HRDiagram';
 import { HistoryTimeline } from '../components/HistoryTimeline';
 import { DataExplorer } from '../components/DataExplorer';
 import { DataComparison } from '../components/DataComparison';
+import { MethodComparison } from '../components/MethodComparison';
 import catalogs from '../data/m34_catalogs.json';
 import type { CatalogBundle } from '../data/catalogTypes';
 import { RoadmapOverview } from '../components/RoadmapOverview';
 import { ToolsInventory } from '../components/ToolsInventory';
+import { DataRelease } from '../components/DataRelease';
 import { CodeDemoGallery } from '../components/CodeRunner';
 import { CODE_DEMOS } from '../data/codeDemos';
 import { useScrolly } from '../hooks/useScrolly';
@@ -318,19 +320,22 @@ export default function HomePage({ scrollTo }: HomePageProps) {
             reddening corrections, and Excel classification on the same record.
           </p>
           <p>
-            When comparing binary diagnostics we join on Midas ID first. A WOCS target also flagged
-            in Malofeeva and Excel is still one star, not three detections. Phase III will measure
-            completeness and contamination as set overlap — ROC curves and confusion tables — rather
-            than adding catalog sizes together.
+            Phase III measured completeness and contamination as set overlap — ROC curves and
+            confusion tables against Malofeeva, WOCS RV, and Gaia RUWE. Phase IV extends that to
+            deduplicated binary fractions and channel-exclusive comparisons on Cantat-Gaudin members.
           </p>
           <p>
             Excel binary candidates appear in gold on the final HR scrolly step in{' '}
             <a href="/science">Chapter 3</a>; catalog layers and join flags are in{' '}
             <a href="/data">Chapter 4</a>. Pipeline details live in{' '}
-            <code>research/scripts/cross_match.py</code> and the Phase I–II writeups.
+            <a href="https://github.com/amne51ac/project-midas/tree/main/research/scripts">
+              research/scripts/
+            </a>{' '}
+            and the phase writeups on the roadmap.
           </p>
         </div>
         <DataComparison />
+        <MethodComparison />
       </section>
 
       <section id="code" className="section section--rule">
@@ -373,6 +378,7 @@ export default function HomePage({ scrollTo }: HomePageProps) {
           Toolchain inventory
         </h3>
         <ToolsInventory />
+        <DataRelease />
 
         <h3 className="section__subhead">Questions we are aiming to answer</h3>
         <div className="section__prose">
@@ -383,19 +389,6 @@ export default function HomePage({ scrollTo }: HomePageProps) {
             <li>Do legacy Midas photometry stars add value beyond Gaia G/BP/RP at faint magnitudes?</li>
             <li>Can white dwarf candidates from Rubin et al. be confirmed with DR4 astrometry?</li>
           </ul>
-        </div>
-
-        <div className="section__prose" style={{ marginTop: '2.5rem' }}>
-          <p>
-            <strong>Repository layout:</strong> <code>web/</code> — this site ·{' '}
-            <code>research/</code> — data, scripts, notebooks · Legacy Midas code lives in the
-            sibling archive and will be linked as provenance.
-          </p>
-          <p>
-            <strong>Hosting:</strong> Static build deploys to GitHub Pages at{' '}
-            <a href="https://midasastronomy.com">midasastronomy.com</a> (CI sets{' '}
-            <code>VITE_BASE_PATH=/</code>).
-          </p>
         </div>
       </section>
 

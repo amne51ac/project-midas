@@ -4,10 +4,12 @@ Interactive research portal for **Project Midas** — photometric search for unr
 
 | Directory | Purpose |
 |-----------|---------|
-| [`web/`](web/) | Scrollable static site (Vite + React + D3). Deployed to **GitHub Pages** and **GitLab Pages**. |
+| [`web/`](web/) | Scrollable static site (Vite + React + D3). Deployed to **GitHub Pages** at [midasastronomy.com](https://midasastronomy.com). |
 | [`research/`](research/) | Data pipelines, scripts, notebooks, and processed catalogs. |
 
 Legacy Midas code and Excel workbooks live in the parent workspace archive (`../Midas/`, `../original_excels/`).
+
+**Reproduce the full pipeline:** [`research/REPRODUCTION.md`](research/REPRODUCTION.md) · cite via [`CITATION.cff`](CITATION.cff)
 
 ## Quick start — local development
 
@@ -35,7 +37,6 @@ Both hosts serve project sites from a subpath unless you use a custom domain:
 |------|-------------|------------------|
 | GitHub Pages (custom domain) | `https://midasastronomy.com/` | `/` |
 | GitHub Pages (project URL) | `https://<user>.github.io/project-midas/` | `/project-midas/` |
-| GitLab Pages | `https://<group>.gitlab.io/project-midas/` | `/project-midas/` |
 | Custom domain | `https://midas.example.org/` | `/` |
 
 ```bash
@@ -70,27 +71,18 @@ Optional: add `www.midasastronomy.com` as a second custom domain in GitHub Pages
 
 Fallback URL (before DNS propagates): `https://amne51ac.github.io/project-midas/` — requires `VITE_BASE_PATH=/project-midas/`; production uses `/` for the custom domain.
 
-### GitLab Pages
-
-1. Push to GitLab.
-2. [`.gitlab-ci.yml`](.gitlab-ci.yml) runs on the default branch and publishes `public/` (built from `web/dist`).
-
-Pages URL: `https://<namespace>.gitlab.io/<project-name>/`
-
-### Custom domain (either host)
-
-1. Set `VITE_BASE_PATH=/` in CI or locally before build.
-2. Configure DNS / Pages custom domain in GitHub or GitLab settings.
-3. Rebuild and deploy.
-
 ## Research pipeline
 
-See [`research/README.md`](research/README.md). Planned flow:
+See [`research/REPRODUCTION.md`](research/REPRODUCTION.md) for the full end-to-end guide. Quick path:
 
-1. Ingest legacy Midas photometry → `research/data/raw/`
-2. Cross-match Gaia DR3 via `research/scripts/`
-3. Join Malofeeva / Cantat-Gaudin catalogs
-4. Export summaries to `web/src/data/` for visualization
+```bash
+cd research && source .venv/bin/activate
+python scripts/run_reproduction.py --stage all   # needs raw Midas CSVs + network first time
+python scripts/build_web_all.py                  # web JSON only
+cd ../web && npm run build
+```
+
+Summary: [`research/README.md`](research/README.md) · columns: [`research/DATA_DICTIONARY.md`](research/DATA_DICTIONARY.md)
 
 ## License
 

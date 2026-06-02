@@ -191,6 +191,8 @@ python scripts/validate_phase3.py --only malofeeva wocs ruwe roc completeness ca
 
 Notebook: `notebooks/q_threshold_calibration.ipynb` — ROC plot and Q threshold grid vs Malofeeva.
 
+**Full pipeline:** `notebooks/project_midas_full_pipeline.ipynb` — Phases I–IV in one runnable notebook (uses cached `data/processed/` by default; set `FETCH_NETWORK = True` to refresh Gaia/VizieR).
+
 Truth sets:
 - **Malofeeva** — IR two-index binary flags (248 Midas overlap)
 - **WOCS** — RV variability probability PRV ≥ 90% (118 matched targets)
@@ -203,11 +205,41 @@ python scripts/fetch_ir_photometry.py --verify
 # → data/processed/twomass_m34.csv, allwise_m34.csv
 ```
 
-## Open questions (research targets)
+## Phase IV synthesis
 
-1. Q-value completeness vs. Malofeeva IR binary diagram  
-2. Gaia-confirmed membership for all Midas stars  
-3. Binary fraction as a function of mass  
-4. White dwarf candidate confirmation (Rubin et al. + DR4)  
+Deduplicated binary fractions on Cantat-Gaudin members — union of Q, Malofeeva, Excel, WOCS PRV, and RUWE channels:
+
+```bash
+python scripts/run_phase4_synthesis.py --refresh-pipeline --ebv 0.07
+# → data/processed/synthesis_summary.json
+
+python scripts/build_web_synthesis.py
+# → ../web/src/data/synthesisSummary.json + methodCompareDiagram.json
+
+python scripts/fetch_rubin_wd.py
+python scripts/validate_wd_check.py
+python scripts/build_web_wd_check.py
+# → wdCheckSummary.json on Compare chapter
+
+python scripts/merge_ir_photometry.py
+# → data/processed/m34_join_ir.csv (m34_join + 2MASS/AllWISE + W2−BP)
+```
+
+## Data release
+
+Full reproduction guide: [`REPRODUCTION.md`](REPRODUCTION.md)
+
+```bash
+python scripts/run_reproduction.py --stage all   # orchestrated pipeline
+python scripts/build_web_all.py                # refresh web/src/data/*.json
+```
+
+Citation metadata: [`../CITATION.cff`](../CITATION.cff)
+
+## Follow-up science (optional)
+
+1. Channel-exclusive binary fractions vs. mass (beyond union upper envelope)  
+2. Gaia DR4 refresh for faint LAWDS white dwarfs  
+3. Formal methods paper / Zenodo deposit of processed tables  
 
 See root [`README.md`](../README.md) and [`PROJECT_ANALYSIS.md`](../PROJECT_ANALYSIS.md) in the parent workspace for full context.
