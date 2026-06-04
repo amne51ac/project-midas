@@ -131,16 +131,21 @@ export default function HomePage({ scrollTo }: HomePageProps) {
           <div className="hero__scrim" />
         </div>
         <div className="hero__content">
-          <p className="hero__kicker">NGC 1039 · Messier 34 · Perseus</p>
+          <p className="hero__kicker">NGC 1039 · M34 · proving ground for Credence</p>
           <h1 className="hero__title">The spiral cluster, revisited</h1>
           <p className="hero__deck">
-            A study of binary stars in open cluster M34 — from Messier&apos;s discovery through Gaia,
-            and Project Midas&apos;s photometric search for unresolved pairs in a ~200 Myr population.
+            We revived legacy Midas photometry for M34 — binary stars in a ~200 Myr open cluster,
+            reconnected to Gaia and modern surveys. That work became the prototype for{' '}
+            <a href="/credence" className="hero__link">Credence</a>: ingest heterogeneous catalogs,
+            resolve each star to one record, infer membership and binarity, and display it all in a
+            planetarium-scale sky atlas.
           </p>
           <div className="hero__meta">
             <span>~470 pc · ~200 Myr</span>
-            <span>{data.meta.n_sample.toLocaleString()} stars shown (sample)</span>
-            <span>Scroll to explore</span>
+            <span>{data.meta.n_sample.toLocaleString()} stars in this sample</span>
+            <a href="/credence" className="hero__meta-link">
+              Where it&apos;s going → Credence
+            </a>
           </div>
         </div>
       </section>

@@ -326,6 +326,27 @@ code {
   gap: 1.5rem;
 }
 
+.hero__link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(122, 184, 255, 0.45);
+  text-underline-offset: 0.15em;
+}
+
+.hero__link:hover {
+  color: #a8d0ff;
+}
+
+.hero__meta-link {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.hero__meta-link:hover {
+  text-decoration: underline;
+}
+
 /* —— Prose sections —— */
 .section {
   max-width: var(--max-wide);

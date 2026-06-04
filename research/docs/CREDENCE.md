@@ -26,7 +26,18 @@ Training: 263 CG members (P ≥ 0.7) → random 224 train / 39 val (same cluster
 
 Checkpoint: `data/processed/credence_model.pt`
 
-**Science-valid evaluation** requires T0 multi-cluster training with **cluster-held-out** test — not more M34 rows or a random split on ~10⁶ members. See [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md).
+**Science-valid evaluation** uses T0 multi-cluster training with **cluster-held-out** test. See [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md).
+
+### T0 cluster-held-out (credence-mlp-v2-t0)
+
+```bash
+python scripts/fetch_t0_cg.py
+python scripts/fetch_t0_surveys.py          # optional: --cluster melotte_22
+python scripts/build_t0_join.py
+python scripts/train_credence_t0.py --holdout ngc_1039 --retrain
+```
+
+Example: hold out M34 → train on Pleiades, Hyades, Praesepe, M35, IC 2602 → test F1 vs Malofeeva on M34 only (~0.15 with RUWE weak labels on train clusters; in-sample M34 F1 ~0.96).
 
 ## Usage (M34)
 

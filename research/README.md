@@ -246,6 +246,15 @@ Full system design: [`docs/CREDENCE_ARCHITECTURE.md`](docs/CREDENCE_ARCHITECTURE
 
 ML training & evaluation: [`docs/CREDENCE_ML_DATA_STRATEGY.md`](docs/CREDENCE_ML_DATA_STRATEGY.md) — train/test splits, T0 cluster-held-out plan, why not random split on full census.
 
+T0 pipeline (cluster-held-out infer):
+
+```bash
+python scripts/fetch_t0_cg.py
+python scripts/fetch_t0_surveys.py    # Gaia + AllWISE per cluster
+python scripts/build_t0_join.py
+python scripts/train_credence_t0.py --holdout ngc_1039 --retrain
+```
+
 ## Data release
 
 Full reproduction guide: [`REPRODUCTION.md`](REPRODUCTION.md)

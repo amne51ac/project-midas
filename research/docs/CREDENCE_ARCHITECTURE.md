@@ -509,7 +509,7 @@ L = w_bin · BCE(p_binary, y_soft)
 | Phase | Data | Split | Status |
 |-------|------|-------|--------|
 | **ML-1** | M34 (~263 members) | Random 85/15 on one cluster | Done — plumbing; F1 ≈ 0.96 is **not** held-out |
-| **ML-2** | T0 (5–10 clusters, 10⁴–10⁵) | **Cluster-held-out** | Next — meaningful science |
+| **ML-2** | T0 (6 clusters, ~4k members) | **Cluster-held-out** | Started — `credence-mlp-v2-t0`; M34 holdout F1≈0.15 |
 | **ML-3** | T1 (~3×10⁵) | Cluster CV + optional SSL pretrain | Calibration, uncertainty |
 | **ML-4** | T2 (~10⁶) | Cluster CV on val; production infer all | Atlas v1 |
 | **ML-5** | T3 + gold labels | Cluster CV | XP encoder; RV/eclipse fine-tune |

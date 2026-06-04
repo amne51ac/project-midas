@@ -461,9 +461,11 @@ def run_credence_t0(
     test_eval = evaluate_vectors(
         split.test,
         vectors,
+        members_only=True,
         cluster_ids=list(split.holdout_cluster_ids),
         threshold=DEFAULT_BINARY_THRESHOLD,
     )
+    test_eval["label"] = "Held-out cluster vs Malofeeva IR (M34 only meaningful)"
     grid = sweep_threshold(split.test, vectors)[:5]
     best_t = grid[0]["threshold"] if grid else DEFAULT_BINARY_THRESHOLD
     test_best = evaluate_vectors(

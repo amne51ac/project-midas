@@ -301,12 +301,23 @@ def batch_tensors(
     }
 
 
+def _binary_train_target(row: CredenceRow) -> float:
+    """Per-row supervised target for p_binary during training."""
+    if row.cluster_id == "ngc_1039":
+        return float(row.malofeeva)
+    # Other T0 clusters: no Malofeeva ingest yet — astrometric weak label
+    return float(row.ruwe_high)
+
+
 def label_vectors(rows: list[CredenceRow]) -> dict[str, np.ndarray]:
     return {
-        "y_binary": np.array([float(r.malofeeva) for r in rows], dtype=np.float32),
+        "y_binary": np.array([_binary_train_target(r) for r in rows], dtype=np.float32),
         "y_cmd": np.array([float(r.excel_binary) for r in rows], dtype=np.float32),
-        "y_ir": np.array([float(r.malofeeva) for r in rows], dtype=np.float32),
-        "y_ruwe": np.array([float(r.ruwe_high) for r in rows], dtype=np.float32),
+        "y_ir": np.array(
+            [float(r.malofeeva) if row.cluster_id == "ngc_1039" else float(row.ruwe_high) for row in rows],
+            dtype=np.float32,
+        ),
+        "y_ruwe": np.array([float(row.ruwe_high) for row in rows], dtype=np.float32),
         "weight": np.array(
             [r.cg_proba if r.cg_proba is not None else 0.0 for r in rows],
             dtype=np.float32,

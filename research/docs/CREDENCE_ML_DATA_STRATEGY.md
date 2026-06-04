@@ -192,16 +192,35 @@ Full census from the start is appropriate **only** when split by purpose:
 
 | Item | Status |
 |------|--------|
-| `midas/credence/data.py` | Done — M34 rows, features, labels |
-| `midas/credence/model.py` | Done — `credence-mlp-v1` |
-| `midas/credence/engine.py` | Done — train; **needs cluster split** |
-| `scripts/train_credence.py` | Done — M34 only |
-| Multi-cluster StarEntity ingest | **Planned** |
-| `credence/train/splits.py` | **Planned** |
-| `credence/train/labels.py` | **Planned** |
-| Cluster CV in `validate_credence.py` | **Planned** |
-| `calibrate.py` (isotonic) | **Planned** |
-| CI cluster-fold regression | **Planned** |
+| `midas/credence/data.py` | Done — T0 + M34 rows, per-cluster context |
+| `midas/credence/model.py` | Done — `credence-mlp-v1` / v2 |
+| `midas/credence/splits.py` | Done — cluster holdout + LOO |
+| `midas/credence/t0_registry.py` | Done — 6 benchmark clusters |
+| `midas/credence/t0_build.py` | Done — `t0_join_ir.csv` |
+| `midas/credence/engine.py` | Done — `run_credence_t0()` |
+| `scripts/fetch_t0_cg.py` | Done — VizieR CG members |
+| `scripts/fetch_t0_surveys.py` | Done — Gaia + AllWISE cones |
+| `scripts/build_t0_join.py` | Done |
+| `scripts/train_credence_t0.py` | Done |
+| `scripts/validate_credence_t0.py` | Done — holdout + optional LOO |
+| `calibrate.py` (isotonic) | Planned |
+| CI cluster-fold regression | Planned |
+
+## 8.1 First T0 result (M34 held out)
+
+**Setup:** Train on 5 clusters (Pleiades, Hyades, Praesepe, M35, IC 2602) — 3,710 members.  
+Hold out **M34** (263 members). Training uses **RUWE** weak labels off M34; M34 **not** in training gradients.
+
+**Held-out M34 vs Malofeeva (tuned threshold):** P≈0.83, R≈0.08, **F1≈0.15** (vs F1≈0.96 in-sample on M34).
+
+This is the expected gap when generalizing across clusters without M34-specific supervision. Next: literature labels per cluster, LOO report (`validate_credence_t0.py --loo`), calibration.
+
+```bash
+python scripts/fetch_t0_cg.py
+python scripts/fetch_t0_surveys.py   # per cluster; slow
+python scripts/build_t0_join.py
+python scripts/train_credence_t0.py --holdout ngc_1039 --retrain
+```
 
 ---
 
