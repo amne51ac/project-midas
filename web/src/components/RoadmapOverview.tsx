@@ -5,7 +5,7 @@ import {
   phaseProgress,
   ROADMAP_PHASES,
 } from '../data/roadmap';
-import { phasePageHref } from '../routing/appRoute';
+import { continuedSectionHref } from '../routing/appRoute';
 import { PHASE_STATUS_CLASS, PhaseTrack } from './roadmapShared';
 
 function RoadmapSummary() {
@@ -55,9 +55,10 @@ function RoadmapSummary() {
 
 function PhaseOverviewCard({ phase }: { phase: (typeof ROADMAP_PHASES)[number] }) {
   const progress = phaseProgress(phase);
+  const href = continuedSectionHref(phase.id as 'phase-i' | 'phase-ii' | 'phase-iii' | 'phase-iv');
 
   return (
-    <a href={phasePageHref(phase.id)} className={`phase-overview-card ${PHASE_STATUS_CLASS[phase.status]}`}>
+    <a href={href} className={`phase-overview-card ${PHASE_STATUS_CLASS[phase.status]}`}>
       <div className="phase-overview-card__head">
         <p className="phase-overview-card__label">{phase.label}</p>
         <span className={`roadmap-phase__badge roadmap-phase__badge--${phase.status}`}>

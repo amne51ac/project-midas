@@ -1,21 +1,12 @@
 import { useEffect, useState } from 'react';
+import { CREDENCE_SECTIONS } from '../data/credence';
 import {
-  CREDENCE_SECTIONS,
-} from '../data/credence';
-import {
-  phasePageHref,
-  PHASE_SECTIONS,
+  CONTINUED_SECTIONS,
+  continuedSectionHref,
   useAppRoute,
-  type PhaseSectionId,
+  type ContinuedSectionId,
 } from '../routing/appRoute';
 import { NO_SECTIONS, useScrollSpy } from '../hooks/useScrollSpy';
-
-const PHASE_LINKS = [
-  { phaseId: 'phase-i', label: 'Phase I' },
-  { phaseId: 'phase-ii', label: 'Phase II' },
-  { phaseId: 'phase-iii', label: 'Phase III' },
-  { phaseId: 'phase-iv', label: 'Phase IV' },
-] as const;
 
 const HOME_SECTIONS = [
   { id: 'history', label: 'History' },
@@ -24,13 +15,11 @@ const HOME_SECTIONS = [
   { id: 'data', label: 'Data' },
   { id: 'compare', label: 'Compare' },
   { id: 'code', label: 'Code' },
-  { id: 'tools', label: 'Tools' },
-  { id: 'roadmap', label: 'Roadmap' },
+  { id: 'credence', label: 'Credence' },
 ] as const;
 
 const HOME_SECTION_IDS = HOME_SECTIONS.map(({ id }) => id);
-const PHASE_SECTION_IDS = PHASE_SECTIONS.map(({ id }) => id);
-
+const CONTINUED_SECTION_IDS = CONTINUED_SECTIONS.map(({ id }) => id);
 const CREDENCE_SECTION_IDS = CREDENCE_SECTIONS.map(({ id }) => id);
 
 const GITHUB_URL = 'https://github.com/amne51ac/project-midas';
@@ -61,22 +50,19 @@ export function Header() {
   const route = useAppRoute();
   const [menuOpen, setMenuOpen] = useState(false);
   const isHome = route.type === 'home';
-  const isPhase = route.type === 'phase';
-  const isFindings = route.type === 'findings';
+  const isContinued = route.type === 'continued';
   const isCredence = route.type === 'credence';
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-home-route', isHome);
-    document.documentElement.classList.toggle('is-phase-route', isPhase);
-    document.documentElement.classList.toggle('is-findings-route', isFindings);
+    document.documentElement.classList.toggle('is-continued-route', isContinued);
     document.documentElement.classList.toggle('is-credence-route', isCredence);
     return () => {
       document.documentElement.classList.remove('is-home-route');
-      document.documentElement.classList.remove('is-phase-route');
-      document.documentElement.classList.remove('is-findings-route');
+      document.documentElement.classList.remove('is-continued-route');
       document.documentElement.classList.remove('is-credence-route');
     };
-  }, [isHome, isPhase, isFindings, isCredence]);
+  }, [isHome, isContinued, isCredence]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -94,37 +80,33 @@ export function Header() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  const isPhaseActive = (phaseId: string) =>
-    route.type === 'phase' && route.phaseId === phaseId;
-
   const homeActiveSection = useScrollSpy(isHome ? HOME_SECTION_IDS : NO_SECTIONS, {
     initialId: route.type === 'home' ? route.section : undefined,
   });
 
-  const phaseActiveSection = useScrollSpy(isPhase ? PHASE_SECTION_IDS : NO_SECTIONS, {
-    elementPrefix: 'phase-',
-    initialId: route.type === 'phase' ? route.section : undefined,
+  const continuedActiveSection = useScrollSpy(isContinued ? CONTINUED_SECTION_IDS : NO_SECTIONS, {
+    initialId: route.type === 'continued' ? route.section : undefined,
   });
-
-  const isSectionActive = (id: string) => isHome && homeActiveSection === id;
-
-  const isPhaseSectionActive = (id: PhaseSectionId) =>
-    isPhase && phaseActiveSection === id;
 
   const credenceActiveSection = useScrollSpy(isCredence ? CREDENCE_SECTION_IDS : NO_SECTIONS, {
     initialId: undefined,
   });
 
+  const isSectionActive = (id: string) => isHome && homeActiveSection === id;
+  const isContinuedSectionActive = (id: ContinuedSectionId) =>
+    isContinued && continuedActiveSection === id;
   const isCredenceSectionActive = (id: string) => isCredence && credenceActiveSection === id;
 
+  const hasSubnav = isHome || isContinued || isCredence;
+
   return (
-    <header className={`site-header${isHome || isPhase || isFindings || isCredence ? ' site-header--home' : ''}`}>
+    <header className={`site-header${hasSubnav ? ' site-header--home' : ''}`}>
       <div className="site-header__bar">
         <a className="site-header__brand" href="/" onClick={closeMenu}>
           Project Midas
         </a>
 
-        <nav className="site-header__primary" aria-label="Project phases">
+        <nav className="site-header__primary" aria-label="Site sections">
           <a
             href="/"
             className={navLinkClass(isHome)}
@@ -133,24 +115,13 @@ export function Header() {
           >
             Home
           </a>
-          {PHASE_LINKS.map(({ phaseId, label }) => (
-            <a
-              key={phaseId}
-              href={phasePageHref(phaseId)}
-              className={navLinkClass(isPhaseActive(phaseId))}
-              aria-current={isPhaseActive(phaseId) ? 'page' : undefined}
-              onClick={closeMenu}
-            >
-              {label}
-            </a>
-          ))}
           <a
-            href="/findings"
-            className={navLinkClass(isFindings)}
-            aria-current={isFindings ? 'page' : undefined}
+            href="/continued"
+            className={navLinkClass(isContinued)}
+            aria-current={isContinued ? 'page' : undefined}
             onClick={closeMenu}
           >
-            Findings
+            Midas Continued
           </a>
           <a
             href="/credence"
@@ -200,6 +171,22 @@ export function Header() {
         </nav>
       )}
 
+      {isContinued && (
+        <nav className="site-header__subnav" aria-label="Continued sections">
+          {CONTINUED_SECTIONS.map(({ id, label }) => (
+            <a
+              key={id}
+              href={continuedSectionHref(id)}
+              className={navLinkClass(isContinuedSectionActive(id))}
+              aria-current={isContinuedSectionActive(id) ? 'location' : undefined}
+              onClick={closeMenu}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      )}
+
       {isCredence && (
         <nav className="site-header__subnav" aria-label="Credence sections">
           {CREDENCE_SECTIONS.map(({ id, label }) => (
@@ -216,43 +203,17 @@ export function Header() {
         </nav>
       )}
 
-      {isPhase && (
-        <nav className="site-header__subnav" aria-label="Phase sections">
-          {PHASE_SECTIONS.map(({ id, label }) => (
-            <a
-              key={id}
-              href={phasePageHref(route.phaseId, id)}
-              className={navLinkClass(isPhaseSectionActive(id))}
-              aria-current={isPhaseSectionActive(id) ? 'location' : undefined}
-              onClick={closeMenu}
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
-      )}
-
       <div
         id="site-nav-drawer"
         className={`site-header__drawer${menuOpen ? ' is-open' : ''}`}
         aria-hidden={!menuOpen}
       >
-        <p className="site-header__drawer-label">Phases</p>
+        <p className="site-header__drawer-label">Site</p>
         <a href="/" className={navLinkClass(isHome)} onClick={closeMenu}>
           Home
         </a>
-        {PHASE_LINKS.map(({ phaseId, label }) => (
-          <a
-            key={phaseId}
-            href={phasePageHref(phaseId)}
-            className={navLinkClass(isPhaseActive(phaseId))}
-            onClick={closeMenu}
-          >
-            {label}
-          </a>
-        ))}
-        <a href="/findings" className={navLinkClass(isFindings)} onClick={closeMenu}>
-          Findings
+        <a href="/continued" className={navLinkClass(isContinued)} onClick={closeMenu}>
+          Midas Continued
         </a>
         <a href="/credence" className={navLinkClass(isCredence)} onClick={closeMenu}>
           Credence
@@ -272,14 +233,14 @@ export function Header() {
             ))}
           </>
         )}
-        {isPhase && (
+        {isContinued && (
           <>
-            <p className="site-header__drawer-label">On this phase</p>
-            {PHASE_SECTIONS.map(({ id, label }) => (
+            <p className="site-header__drawer-label">On this page</p>
+            {CONTINUED_SECTIONS.map(({ id, label }) => (
               <a
                 key={id}
-                href={phasePageHref(route.phaseId, id)}
-                className={navLinkClass(isPhaseSectionActive(id))}
+                href={continuedSectionHref(id)}
+                className={navLinkClass(isContinuedSectionActive(id))}
                 onClick={closeMenu}
               >
                 {label}

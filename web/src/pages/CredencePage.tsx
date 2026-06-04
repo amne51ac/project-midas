@@ -158,8 +158,51 @@ export function CredencePage() {
           <p className="findings-section__link">
             <a href={CREDENCE_LINKS.architecture}>Full design doc (CREDENCE_ARCHITECTURE.md)</a>
             {' · '}
+            <a href={CREDENCE_LINKS.mlStrategy}>ML data strategy</a>
+            {' · '}
             <a href={CREDENCE_LINKS.docs}>CREDENCE.md</a>
           </p>
+
+          <article className="credence-section" id="ml-plan">
+            <h3 className="credence-section__title">{design.mlDataStrategy.title}</h3>
+            <p className="section__prose">{design.mlDataStrategy.lede}</p>
+            <div className="credence-table-wrap">
+              <table className="credence-table credence-table--wide">
+                <thead>
+                  <tr>
+                    <th scope="col">Approach</th>
+                    <th scope="col">Verdict</th>
+                    <th scope="col">Note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {design.mlDataStrategy.verdicts.map((row) => (
+                    <tr key={row.approach}>
+                      <th scope="row">{row.approach}</th>
+                      <td>{row.verdict}</td>
+                      <td>{row.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="section__prose">
+              <strong>M34 today:</strong>
+            </p>
+            <ul className="findings-section__list section__prose">
+              {design.mlDataStrategy.m34Today.map((line) => (
+                <li key={line.slice(0, 28)}>{line}</li>
+              ))}
+            </ul>
+            <p className="section__prose">
+              <strong>Protocol (T0+):</strong>
+            </p>
+            <ul className="findings-section__list section__prose">
+              {design.mlDataStrategy.protocol.map((line) => (
+                <li key={line.slice(0, 28)}>{line}</li>
+              ))}
+            </ul>
+          </article>
 
           <article className="credence-section">
             <h3 className="credence-section__title">{design.inferEngine.title}</h3>
@@ -408,7 +451,7 @@ export function CredencePage() {
             </p>
           ))}
           <p className="findings-section__link">
-            <a href={CREDENCE_LINKS.findings}>Phase I–IV findings</a>
+            <a href={CREDENCE_LINKS.findings}>Midas Continued findings</a>
             {' · '}
             <a href={CREDENCE_LINKS.data}>M34 data explorer</a>
             {' · '}
@@ -424,7 +467,8 @@ export function CredencePage() {
             <code>{`cd research && source .venv/bin/activate
 python scripts/cross_match.py          # resolve
 python scripts/merge_ir_photometry.py  # ingest IR
-python scripts/validate_credence.py    # infer
+python scripts/train_credence.py       # train (optional)
+python scripts/validate_credence.py    # infer + benchmark
 python scripts/build_web_all.py        # display JSON`}</code>
           </pre>
         </section>

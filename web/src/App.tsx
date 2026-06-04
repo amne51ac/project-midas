@@ -2,24 +2,19 @@ import { useAppRoute } from './routing/appRoute';
 import { usePageMeta } from './hooks/usePageMeta';
 import { getPageMeta } from './config/siteMeta';
 import HomePage from './pages/HomePage';
-import { PhasePage } from './pages/PhasePage';
-import FindingsPage from './pages/FindingsPage';
+import ContinuedPage from './pages/ContinuedPage';
 import CredencePage from './pages/CredencePage';
 
 export default function App() {
   const route = useAppRoute();
   usePageMeta(getPageMeta(route), route);
 
-  if (route.type === 'findings') {
-    return <FindingsPage />;
+  if (route.type === 'continued') {
+    return <ContinuedPage scrollTo={route.section} />;
   }
 
   if (route.type === 'credence') {
     return <CredencePage />;
-  }
-
-  if (route.type === 'phase') {
-    return <PhasePage phaseId={route.phaseId} scrollTo={route.section} />;
   }
 
   return <HomePage scrollTo={route.section} />;

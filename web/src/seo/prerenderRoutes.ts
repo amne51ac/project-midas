@@ -1,10 +1,4 @@
-import { ROADMAP_PHASES } from '../data/roadmap';
-import {
-  HOME_SECTION_IDS,
-  PHASE_SECTIONS,
-  routeToPath,
-  type AppRoute,
-} from '../routing/appRoute';
+import { CONTINUED_SECTIONS, HOME_SECTION_IDS, routeToPath, type AppRoute } from '../routing/appRoute';
 
 export function getAllRoutes(): AppRoute[] {
   const routes: AppRoute[] = [{ type: 'home' }];
@@ -13,14 +7,11 @@ export function getAllRoutes(): AppRoute[] {
     routes.push({ type: 'home', section });
   }
 
-  for (const phase of ROADMAP_PHASES) {
-    routes.push({ type: 'phase', phaseId: phase.id });
-    for (const { id } of PHASE_SECTIONS) {
-      routes.push({ type: 'phase', phaseId: phase.id, section: id });
-    }
+  routes.push({ type: 'continued' });
+  for (const { id } of CONTINUED_SECTIONS) {
+    routes.push({ type: 'continued', section: id });
   }
 
-  routes.push({ type: 'findings' });
   routes.push({ type: 'credence' });
 
   return routes;

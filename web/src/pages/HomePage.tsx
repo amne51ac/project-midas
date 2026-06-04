@@ -11,9 +11,6 @@ import { DataComparison } from '../components/DataComparison';
 import { MethodComparison } from '../components/MethodComparison';
 import catalogs from '../data/m34_catalogs.json';
 import type { CatalogBundle } from '../data/catalogTypes';
-import { RoadmapOverview } from '../components/RoadmapOverview';
-import { ToolsInventory } from '../components/ToolsInventory';
-import { DataRelease } from '../components/DataRelease';
 import { CodeDemoGallery } from '../components/CodeRunner';
 import { CODE_DEMOS } from '../data/codeDemos';
 import { useScrolly } from '../hooks/useScrolly';
@@ -229,10 +226,9 @@ export default function HomePage({ scrollTo }: HomePageProps) {
         <div className="section__prose" style={{ marginTop: '2rem' }}>
           <p>
             The isochrone gallery compares Yonsei–Yale ages side by side — the same tracks rebuilt
-            from legacy ISO.csv in Phase I. Toggle dashed cyan PARSEC v1.2S curves (Phase II) to see
-            how model choice shifts the turnoff. Use the filters below the gallery for uniform
-            de-reddening (E(B−V) = {data.meta.ebv ?? 0.07}) and Cantat-Gaudin membership (P ≥
-            {data.meta.cg_member_threshold ?? 0.7}).
+            from legacy ISO.csv. Toggle dashed cyan PARSEC v1.2S curves to see how model choice shifts
+            the turnoff. Use the filters below the gallery for uniform de-reddening (E(B−V) ={' '}
+            {data.meta.ebv ?? 0.07}) and Cantat-Gaudin membership (P ≥ {data.meta.cg_member_threshold ?? 0.7}).
           </p>
         </div>
 
@@ -315,23 +311,13 @@ export default function HomePage({ scrollTo }: HomePageProps) {
         <h2 className="section__title">Joining the layers</h2>
         <div className="section__prose">
           <p className="lead">
-            Phase I reproduced the Excel Control singles/binaries counts (187 / 171). Phase II built{' '}
-            <code>m34_join.csv</code> — one row per Midas star with Gaia astrometry, catalog flags,
-            reddening corrections, and Excel classification on the same record.
+            Legacy Midas photometry, Jones &amp; Prosser proper-motion members, and Gaia DR3 all
+            cover the same ~35′ field. The revival work joined those layers into one table — see{' '}
+            <a href="/continued">Midas Continued</a> for the full pipeline and findings.
           </p>
           <p>
-            Phase III measured completeness and contamination as set overlap — ROC curves and
-            confusion tables against Malofeeva, WOCS RV, and Gaia RUWE. Phase IV extends that to
-            deduplicated binary fractions and channel-exclusive comparisons on Cantat-Gaudin members.
-          </p>
-          <p>
-            Excel binary candidates appear in gold on the final HR scrolly step in{' '}
-            <a href="/science">Chapter 3</a>; catalog layers and join flags are in{' '}
-            <a href="/data">Chapter 4</a>. Pipeline details live in{' '}
-            <a href="https://github.com/amne51ac/project-midas/tree/main/research/scripts">
-              research/scripts/
-            </a>{' '}
-            and the phase writeups on the roadmap.
+            Toggle layers below to compare footprints and density. Excel binary candidates appear in
+            gold on the final HR scrolly step in <a href="/science">Chapter 3</a>.
           </p>
         </div>
         <DataComparison />
@@ -355,40 +341,28 @@ export default function HomePage({ scrollTo }: HomePageProps) {
         <CodeDemoGallery demos={CODE_DEMOS} />
       </section>
 
-      <section id="roadmap" className="section section--rule">
-        <p className="section__label">Chapter 7</p>
-        <h2 className="section__title">Roadmap, tools & open questions</h2>
+      <section id="credence" className="section section--rule">
+        <p className="section__label">What&apos;s next</p>
+        <h2 className="section__title">From M34 to the whole sky</h2>
         <div className="section__prose">
           <p className="lead">
-            Reviving Project Midas is a phased integration problem: preserve legacy photometry, wire in Gaia-era
-            catalogs, validate the Q-value heuristic against modern binary diagnostics, then synthesize results
-            into a methods-focused write-up.
+            The Midas revival taught us how to ingest legacy photometry, resolve it against modern
+            catalogs, and infer properties like membership and binarity. That pipeline — and the
+            gaps we found comparing B−V track offsets to Gaia+WISE IR diagnostics — became the
+            seed for Credence.
           </p>
-        </div>
-
-        <h3 id="roadmap-phases" className="section__subhead">
-          Project roadmap
-        </h3>
-        <RoadmapOverview />
-
-        <h3
-          id="tools"
-          className="section__subhead"
-        >
-          Toolchain inventory
-        </h3>
-        <ToolsInventory />
-        <DataRelease />
-
-        <h3 className="section__subhead">Questions we are aiming to answer</h3>
-        <div className="section__prose">
-          <ul>
-            <li>How complete is B−V isochrone binary detection compared to Gaia+IR methods?</li>
-            <li>Which Midas Q-value candidates confirm in Malofeeva, WOCS RV, or Gaia astrometry?</li>
-            <li>What binary fraction vs. mass emerges when catalogs are joined without double-counting?</li>
-            <li>Do legacy Midas photometry stars add value beyond Gaia G/BP/RP at faint magnitudes?</li>
-            <li>Can white dwarf candidates from Rubin et al. be confirmed with DR4 astrometry?</li>
-          </ul>
+          <p>
+            Credence is a planetarium-scale atlas: ingest heterogeneous star catalogs, resolve
+            duplicates across surveys, infer membership and binary likelihood with calibrated models,
+            and display the results in an explorable sky view. M34 was the proving ground; Credence
+            extends the same architecture to open clusters across the Galaxy.
+          </p>
+          <p>
+            Read the full Credence design — pipeline tiers, infer benchmarks (F1 ≈ 0.66 vs legacy Q
+            ≈ 0.55 on M34), and the roadmap from prototype to galaxy-scale release — on the{' '}
+            <a href="/credence">Credence page</a>. Phase writeups, findings, and the toolchain live
+            on <a href="/continued">Midas Continued</a>.
+          </p>
         </div>
       </section>
 

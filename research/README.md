@@ -244,6 +244,8 @@ On M34 CG members vs Malofeeva: **F1 ≈ 0.66** (Credence infer) vs **≈ 0.55**
 
 Full system design: [`docs/CREDENCE_ARCHITECTURE.md`](docs/CREDENCE_ARCHITECTURE.md) — pipeline boundaries, StarEntity / CredenceVector schemas, DuckDB layout, Atlas tiles, scale tiers, M34 mapping.
 
+ML training & evaluation: [`docs/CREDENCE_ML_DATA_STRATEGY.md`](docs/CREDENCE_ML_DATA_STRATEGY.md) — train/test splits, T0 cluster-held-out plan, why not random split on full census.
+
 ## Data release
 
 Full reproduction guide: [`REPRODUCTION.md`](REPRODUCTION.md)

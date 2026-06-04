@@ -8,11 +8,13 @@ from pathlib import Path
 
 import numpy as np
 
+from midas.credence.t0_registry import T0_BY_ID, get_cluster
 from midas.membership import DEFAULT_CG_MEMBER_THRESHOLD
 from midas.paths import PROCESSED
 from midas.validation import RUWE_ASTROMETRIC_BINARY
 
 JOIN_IR_CSV = PROCESSED / "m34_join_ir.csv"
+T0_JOIN_IR_CSV = PROCESSED / "t0_join_ir.csv"
 GAIA_CSV = PROCESSED / "gaia_m34.csv"
 
 DEFAULT_CG_TRAIN_PROBA = 0.7
@@ -23,6 +25,7 @@ M34_AGE_GYR = 0.2
 @dataclass
 class CredenceRow:
     midas_id: int
+    cluster_id: str
     g: float | None
     bp_rp: float | None
     w2_bp: float | None
@@ -84,11 +87,52 @@ def _load_gaia_bp_rp() -> dict[str, tuple[float, float]]:
     return out
 
 
+def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> CredenceRow:
+    star_id = str(rec.get("star_id", "")).strip()
+    midas_id = int(star_id) if star_id.isdigit() else hash(star_id) % (10**9)
+    ruwe = _float(rec.get("ruwe"))
+    return CredenceRow(
+        midas_id=midas_id,
+        cluster_id=str(rec.get("cluster_id") or "ngc_1039"),
+        g=_float(rec.get("phot_g_mean_mag")),
+        bp_rp=_float(rec.get("bp_rp")),
+        w2_bp=_float(rec.get("w2_bp")),
+        ruwe=ruwe,
+        cg_proba=_float(rec.get("cg_proba")),
+        cg_member=bool(int(rec.get("cg_member") or 0)),
+        malofeeva=bool(int(rec.get("malofeeva") or 0)),
+        excel_binary=bool(int(rec.get("excel_binary") or 0)),
+        ruwe_high=bool(int(rec.get("ruwe_high") or 0))
+        or (ruwe is not None and ruwe > RUWE_ASTROMETRIC_BINARY),
+        Q=pipeline_q.get(midas_id) if pipeline_q else None,
+    )
+
+
+def load_t0_credence_rows(
+    *,
+    t0_path: Path | None = None,
+    pipeline_q: dict[int, float] | None = None,
+) -> list[CredenceRow]:
+    path = t0_path or T0_JOIN_IR_CSV
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Missing {path}\nRun: python scripts/build_t0_join.py"
+        )
+    rows: list[CredenceRow] = []
+    with open(path) as f:
+        for rec in csv.DictReader(f):
+            rows.append(_row_from_t0_rec(rec, pipeline_q))
+    return rows
+
+
 def load_credence_rows(
     *,
     join_ir_path: Path | None = None,
     pipeline_q: dict[int, float] | None = None,
+    prefer_t0: bool = False,
 ) -> list[CredenceRow]:
+    if prefer_t0 and T0_JOIN_IR_CSV.exists():
+        return load_t0_credence_rows(pipeline_q=pipeline_q)
     path = join_ir_path or JOIN_IR_CSV
     if not path.exists():
         raise FileNotFoundError(
@@ -117,6 +161,7 @@ def load_credence_rows(
             rows.append(
                 CredenceRow(
                     midas_id=midas_id,
+                    cluster_id="ngc_1039",
                     g=g,
                     bp_rp=bp_rp,
                     w2_bp=_float(rec.get("w2_bp")),
@@ -184,16 +229,25 @@ def compute_feature_stats(rows: list[CredenceRow]) -> FeatureStats:
     )
 
 
-def cluster_context(stats: FeatureStats) -> np.ndarray:
-    """Hand cluster embedding until multi-cluster ingest (M34 defaults)."""
+def cluster_context(
+    stats: FeatureStats,
+    *,
+    cluster_id: str = "ngc_1039",
+) -> np.ndarray:
+    """Hand cluster embedding from registry distance/age + local CMD stats."""
+    if cluster_id in T0_BY_ID:
+        c = get_cluster(cluster_id)
+        dist_pc, age_gyr = c.dist_pc, c.age_gyr
+    else:
+        dist_pc, age_gyr = M34_DIST_PC, M34_AGE_GYR
     return np.array(
         [
             stats.g_mean / 20.0,
             stats.g_std / 5.0,
             stats.bp_rp_mean / 3.0,
             stats.bp_rp_std / 2.0,
-            np.log10(M34_DIST_PC) / 3.0,
-            M34_AGE_GYR,
+            np.log10(dist_pc) / 3.0,
+            age_gyr,
         ],
         dtype=np.float32,
     )
@@ -229,11 +283,14 @@ def row_features(row: CredenceRow, stats: FeatureStats) -> dict[str, np.ndarray]
 def batch_tensors(
     rows: list[CredenceRow],
     stats: FeatureStats,
-    ctx: np.ndarray,
+    ctx: np.ndarray | None = None,
 ) -> dict[str, np.ndarray]:
     feats = [row_features(r, stats) for r in rows]
     n = len(rows)
-    ctx_batch = np.tile(ctx, (n, 1))
+    if ctx is None:
+        ctx_batch = np.stack([cluster_context(stats, cluster_id=r.cluster_id) for r in rows])
+    else:
+        ctx_batch = np.tile(ctx, (n, 1))
     return {
         "gaia": np.stack([f["gaia"] for f in feats]),
         "gaia_mask": np.stack([f["gaia_mask"] for f in feats]),
@@ -264,6 +321,8 @@ __all__ = [
     "DEFAULT_CG_MEMBER_THRESHOLD",
     "DEFAULT_CG_TRAIN_PROBA",
     "JOIN_IR_CSV",
+    "T0_JOIN_IR_CSV",
+    "load_t0_credence_rows",
     "batch_tensors",
     "cluster_context",
     "compute_feature_stats",

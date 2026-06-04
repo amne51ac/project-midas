@@ -3,6 +3,7 @@ import { homeSectionHref } from '../routing/appRoute';
 
 export const GITHUB_REPO = 'https://github.com/amne51ac/project-midas';
 export const CREDENCE_ARCHITECTURE = `${GITHUB_REPO}/blob/main/research/docs/CREDENCE_ARCHITECTURE.md`;
+export const CREDENCE_ML_STRATEGY = `${GITHUB_REPO}/blob/main/research/docs/CREDENCE_ML_DATA_STRATEGY.md`;
 export const CREDENCE_DOCS = `${GITHUB_REPO}/blob/main/research/docs/CREDENCE.md`;
 export const CREDENCE_MODULE = `${GITHUB_REPO}/blob/main/research/midas/credence/`;
 
@@ -70,7 +71,11 @@ export const CREDENCE = {
     { label: 'Pipeline', value: '4 steps', detail: 'Ingest · resolve · infer · display' },
     { label: 'Primary population', value: '~3.5k–7k OCs', detail: 'Known Gaia-era catalogs' },
     { label: 'Scale target', value: '~10⁶ stars', detail: 'Member rows at T2 rollout' },
-    { label: 'M34 infer', value: `${b.n} CG members`, detail: `F1 ≈ ${b.credence.f1.toFixed(2)} vs Q ≈ ${b.qValue.f1.toFixed(2)}` },
+    {
+      label: 'M34 infer',
+      value: `${b.n} CG members`,
+      detail: `F1 ≈ ${b.credence.f1.toFixed(2)} (in-sample; T0 cluster CV next)`,
+    },
   ],
 
   vision: {
@@ -199,6 +204,45 @@ export const CREDENCE = {
         'Optional Gaia XP encoder; spectroscopic fine-tune (T3+)',
       ],
     },
+    mlDataStrategy: {
+      title: 'ML training & evaluation plan',
+      lede:
+        'Meaningful infer ML needs diverse clusters and cluster-held-out tests — not M34 alone or a random split on ~10⁶ members.',
+      verdicts: [
+        {
+          approach: 'M34 only (~263 members)',
+          verdict: 'Plumbing only',
+          note: 'One cluster; Malofeeva is training target and benchmark; F1 ≈ 0.96 is not held-out.',
+        },
+        {
+          approach: 'Full census, random star train/test',
+          verdict: 'Not recommended',
+          note: 'Leaks cluster structure; labels do not scale with member count.',
+        },
+        {
+          approach: 'T0: 5–10 clusters, cluster-held-out',
+          verdict: 'Recommended next',
+          note: '~10⁴–10⁵ stars; train on N−1 clusters, test on held-out cluster(s).',
+        },
+        {
+          approach: 'T1/T2 scale after harness',
+          verdict: 'Production path',
+          note: 'Pretrain on all Gaia+WISE members optional; eval still cluster-CV.',
+        },
+      ],
+      m34Today: [
+        'Source: m34_join_ir.csv — 3,760 rows scored; 263 CG members (P ≥ 0.7) in training pool',
+        'Train: 224 stars · Val: 39 (random split, same cluster) — val is not the reported benchmark',
+        'Benchmark: all 263 members vs Malofeeva — overlaps training set',
+        'Labels: Malofeeva (binary + IR heads), Excel CMD, RUWE — weighted by P(member)',
+      ],
+      protocol: [
+        'Split by cluster_id — never leak a test cluster into training gradients',
+        'Weak labels (Malofeeva, RUWE) down-weighted; gold (RV, eclipsing) where sparse',
+        'Report per-channel and per-cluster metrics — not one global F1',
+        'Beat legacy Q on held-out clusters at matched precision',
+      ],
+    },
   },
 
   dataScope: {
@@ -214,7 +258,7 @@ export const CREDENCE = {
         clusters: '5–10',
         stars: '10⁴–10⁵',
         modalities: 'Gaia + WISE + literature labels',
-        purpose: 'Calibrate infer; Pleiades, Hyades, M34, Praesepe, …',
+        purpose: 'Cluster-held-out infer ML; Pleiades, Hyades, M34, Praesepe, …',
       },
       {
         id: 't1',
@@ -222,7 +266,7 @@ export const CREDENCE = {
         clusters: '~1,500–2,000',
         stars: '~2–3 × 10⁵',
         modalities: 'Gaia + WISE (G ≲ 18)',
-        purpose: 'Train and validate at scale',
+        purpose: 'Scale training + calibration (cluster CV)',
       },
       {
         id: 't2',
@@ -264,7 +308,7 @@ export const CREDENCE = {
     title: 'Infer — M34 benchmark',
     note:
       `${credenceSummary.meta.description} — ${credenceSummary.meta.version} in midas/credence/. ` +
-        'Trained on Cantat-Gaudin members; Malofeeva IR is validation only.',
+        'M34 prototype only: see ML training plan for why reported F1 is not a held-out test.',
     benchmark: b,
     coverage: credenceSummary.coverage,
     model: credenceSummary.model,
@@ -353,27 +397,30 @@ export const CREDENCE = {
   },
 
   limitations: [
-    'M34 infer benchmark uses Malofeeva IR as truth — partial circularity on the IR plane.',
+    'M34 F1 uses Malofeeva as training target and benchmark — not cluster-held-out.',
+    'Random 224/39 train/val on one cluster does not prove cross-cluster generalization.',
     'Membership catalogs disagree at faint limits; credences must show uncertainty.',
     'Legacy Midas-depth BVR exists for ~10¹ clusters, not galaxy scale.',
   ],
 
   roadmap: [
-    'v0: model infer on M34 (credence-mlp-v1) — done',
+    'v0: credence-mlp-v1 on M34 — infer plumbing (done)',
     'v1: Credence Atlas on M34 — display layer',
-    'v2: T0 multi-cluster ingest + cluster-held-out retrain',
-    'v3: Bulk Hunt/CG ingest; region tiles',
-    'v4: Zenodo galaxy-scale release',
+    'v2: T0 ingest (5–10 clusters) + cluster-held-out credence-mlp-v2',
+    'v3: T1 scale (~3×10⁵), calibration + region tiles',
+    'v4: T2 production infer (~10⁶) + Zenodo release',
+    'v5: Gaia XP encoder; spectroscopic fine-tune on gold labels',
   ],
 };
 
 export const CREDENCE_LINKS = {
-  findings: '/findings',
+  findings: '/continued/findings',
   compare: homeSectionHref('compare'),
   data: homeSectionHref('data'),
-  tools: homeSectionHref('tools'),
+  tools: '/continued/tools',
   docs: CREDENCE_DOCS,
   architecture: CREDENCE_ARCHITECTURE,
+  mlStrategy: CREDENCE_ML_STRATEGY,
   module: CREDENCE_MODULE,
   validateScript: `${GITHUB_REPO}/blob/main/research/scripts/validate_credence.py`,
 };

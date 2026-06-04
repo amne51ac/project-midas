@@ -1,7 +1,7 @@
 import sample from './m34_sample.json';
 import synthesis from './synthesisSummary.json';
 import wdCheck from './wdCheckSummary.json';
-import { homeSectionHref, phasePageHref } from '../routing/appRoute';
+import { homeSectionHref, continuedSectionHref } from '../routing/appRoute';
 
 export interface FindingStat {
   label: string;
@@ -64,7 +64,7 @@ export const FINDINGS: FindingsData = {
         'Interactive site + Pyodide demos make the arithmetic inspectable without a local Python install.',
         'DATA_DICTIONARY.md and REPRODUCTION.md document every column for downstream joins.',
       ],
-      href: phasePageHref('phase-i'),
+      href: continuedSectionHref('phase-i'),
       hrefLabel: 'Phase I writeup',
     },
     {
@@ -102,7 +102,7 @@ export const FINDINGS: FindingsData = {
         'Q and Malofeeva measure different physics — track offset in B−V vs Gaia+WISE pseudocolor.',
         'Validation framework (ROC, confusion matrices) is reusable for threshold tuning.',
       ],
-      href: phasePageHref('phase-iii'),
+      href: continuedSectionHref('phase-iii'),
       hrefLabel: 'Phase III writeup',
     },
     {

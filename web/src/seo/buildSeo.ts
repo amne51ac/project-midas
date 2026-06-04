@@ -2,6 +2,7 @@ import sampleBundle from '../data/m34_sample.json';
 import catalogBundle from '../data/m34_catalogs.json';
 import { ROADMAP_PHASES, overallProgress, type RoadmapPhase } from '../data/roadmap';
 import type { AppRoute } from '../routing/appRoute';
+import { CONTINUED_SECTIONS } from '../routing/appRoute';
 import { canonicalUrl, getAllRoutes, routeToPath } from './prerenderRoutes';
 
 export const SITE = {
@@ -67,15 +68,16 @@ const HOME_SECTIONS: Record<string, PageMeta> = {
     title: 'Code · Interactive demos',
     description: 'In-browser Python (Pyodide) demos for distance modulus, Q-values, and pipeline arithmetic.',
   },
-  tools: {
-    title: 'Tools · Pipeline inventory',
-    description: 'Scripts, notebooks, and external archives used in the Project Midas revival.',
-  },
-  roadmap: {
-    title: 'Roadmap · Project phases',
-    description: 'Four-phase plan: legacy ingest, Gaia integration, validation, and synthesis.',
+  credence: {
+    title: 'Credence · From M34 to the sky',
+    description:
+      'How the Midas revival led to Credence — a planetarium-scale atlas for ingesting, resolving, and inferring star properties.',
   },
 };
+
+const CONTINUED_SECTION_LABELS = Object.fromEntries(
+  CONTINUED_SECTIONS.map(({ id, label }) => [id, label]),
+) as Record<string, string>;
 
 export function getSiteStats(): SiteStats {
   const meta = sampleBundle.meta;
@@ -148,14 +150,33 @@ function phaseDescription(phase: RoadmapPhase): string {
 }
 
 export function getPageMeta(route: AppRoute): PageMeta {
-  if (route.type === 'findings') {
-    const stats = getSiteStats();
+  if (route.type === 'continued') {
+    if (route.section === 'findings') {
+      const stats = getSiteStats();
+      return {
+        title: 'Findings · Midas Continued',
+        description:
+          `Synthesis of the M34 revival: ${stats.nCgMembers} Cantat-Gaudin members, ` +
+          '96% union binary fraction, Q vs Malofeeva channel overlap, W2−BP method comparison, ' +
+          'Rubin white dwarf check, and reproduction pipeline.',
+      };
+    }
+    if (route.section && route.section.startsWith('phase-')) {
+      const phase = ROADMAP_PHASES.find((p) => p.id === route.section);
+      if (phase) {
+        return {
+          title: `${phase.label}: ${phase.title} · Midas Continued`,
+          description: phaseDescription(phase),
+        };
+      }
+    }
+    const sectionLabel = route.section
+      ? CONTINUED_SECTION_LABELS[route.section]
+      : undefined;
     return {
-      title: 'Findings · Project Midas',
+      title: sectionLabel ? `${sectionLabel} · Midas Continued` : 'Midas Continued · Project Midas',
       description:
-        `Synthesis of the M34 revival: ${stats.nCgMembers} Cantat-Gaudin members, ` +
-        '96% union binary fraction, Q vs Malofeeva channel overlap, W2−BP method comparison, ' +
-        'Rubin white dwarf check, and reproduction pipeline.',
+        'Four phases of revival work for M34: legacy photometry, Gaia integration, validation, synthesis, findings, and toolchain.',
     };
   }
 
@@ -166,23 +187,6 @@ export function getPageMeta(route: AppRoute): PageMeta {
         'Credence — ingest, resolve, infer, and display open-cluster stars in a planetarium atlas. ' +
         'M34 infer F1 ≈ 0.66 vs legacy Q ≈ 0.55. Galaxy-scale tiers from Cantat-Gaudin and Hunt catalogs.',
     };
-  }
-
-  if (route.type === 'phase') {
-    const phase = ROADMAP_PHASES.find((p) => p.id === route.phaseId);
-    if (phase) {
-      const sectionLabel =
-        route.section &&
-        ({ overview: 'Overview', writeup: 'What we did', tracker: 'Task tracker', explorations: 'Explorations' } as const)[
-          route.section
-        ];
-      return {
-        title: sectionLabel
-          ? `${phase.label}: ${sectionLabel} · Project Midas`
-          : `${phase.label}: ${phase.title} · Project Midas`,
-        description: phaseDescription(phase),
-      };
-    }
   }
 
   if (route.type === 'home' && route.section && HOME_SECTIONS[route.section]) {
@@ -263,7 +267,7 @@ export function buildJsonLd(stats = getSiteStats()): object[] {
         position: index + 1,
         name: `${phase.label}: ${phase.title}`,
         description: phase.summary,
-        url: `${SITE.url}${routeToPath({ type: 'phase', phaseId: phase.id })}`,
+        url: `${SITE.url}${routeToPath({ type: 'continued', section: phase.id as 'phase-i' })}`,
       })),
     },
   ];
@@ -272,7 +276,7 @@ export function buildJsonLd(stats = getSiteStats()): object[] {
 export function buildLlmsTxt(stats = getSiteStats()): string {
   const phaseLines = ROADMAP_PHASES.map(
     (p) =>
-      `- [${p.label}: ${p.title}](${SITE.url}${routeToPath({ type: 'phase', phaseId: p.id })}) — ${p.status}; ${p.tasks.filter((t) => t.status === 'done').length}/${p.tasks.length} tasks`,
+      `- [${p.label}: ${p.title}](${SITE.url}/continued/${p.id}) — ${p.status}; ${p.tasks.filter((t) => t.status === 'done').length}/${p.tasks.length} tasks`,
   );
 
   return `# ${SITE.name}
@@ -297,19 +301,20 @@ ${SITE.github}
 - Gaia field cone: ${stats.gaiaFieldCount.toLocaleString()} sources
 - Catalog layers in explorer: ${stats.catalogLayers}
 
-## Main sections
-- [Findings](${SITE.url}/findings)
-- [Credence](${SITE.url}/credence)
+## Site pages
+- [Midas Continued](${SITE.url}/continued) — phases I–IV, findings, toolchain
+- [Credence](${SITE.url}/credence) — ingest, resolve, infer, display atlas
+
+## Home sections
 - [History](${SITE.url}/history)
 - [Sky / finder chart](${SITE.url}/sky)
 - [Science / HR diagram](${SITE.url}/science)
 - [Data explorer](${SITE.url}/data)
 - [Catalog comparison](${SITE.url}/compare)
 - [Code demos](${SITE.url}/code)
-- [Tools inventory](${SITE.url}/tools)
-- [Roadmap](${SITE.url}/roadmap)
+- [Credence intro](${SITE.url}/credence)
 
-## Research phases
+## Research phases (on Midas Continued)
 ${phaseLines.join('\n')}
 
 ## Citation
@@ -323,15 +328,17 @@ export function buildSitemapXml(): string {
     priority:
       route.type === 'home' && !route.section
         ? '1.0'
-        : route.type === 'findings'
-          ? '0.9'
-          : route.type === 'credence'
-            ? '0.88'
-            : route.type === 'phase' && !route.section
-            ? '0.85'
-            : route.type === 'home'
-              ? '0.8'
-              : '0.75',
+        : route.type === 'continued' && !route.section
+          ? '0.92'
+          : route.type === 'continued' && route.section === 'findings'
+            ? '0.9'
+            : route.type === 'credence'
+              ? '0.88'
+              : route.type === 'continued' && route.section?.startsWith('phase-')
+                ? '0.85'
+                : route.type === 'home'
+                  ? '0.8'
+                  : '0.75',
     changefreq: route.type === 'home' && !route.section ? 'weekly' : 'monthly',
   }));
 

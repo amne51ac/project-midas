@@ -11,11 +11,16 @@ venv/
 
 # Research data (large files — use Git LFS or external storage)
 research/data/raw/
-research/data/processed/*.csv
-research/data/processed/*.parquet
+research/data/processed/**/*.csv
+research/data/processed/**/*.parquet
+research/data/processed/t0/
+research/data/processed/t0_join_ir.csv
 research/data/processed/validation_summary.json
 research/data/processed/synthesis_summary.json
 research/data/processed/wd_check_summary.json
+research/data/processed/credence_t0_summary.json
+research/data/processed/credence_model_t0.pt
+research/data/processed/credence_vectors.csv
 
 # OS / IDE
 .DS_Store

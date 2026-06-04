@@ -366,12 +366,14 @@ M34 = **T0 demo** with rare legacy BVR modality.
 
 | Milestone | Architecture deliverable |
 |-----------|-------------------------|
-| v0 (now) | Model infer on M34 (`credence-mlp-v1`); static web summary |
+| v0 (now) | Model infer on M34 (`credence-mlp-v1`); static web summary — **plumbing only** |
 | v1 | DuckDB schema + M34 load; `/atlas` |
-| v2 | T0 multi-cluster ingest + cluster-held-out retrain |
-| v3 | T1 ingest + tile pipeline |
-| v4 | T2 atlas; Zenodo release |
+| v2 | T0 multi-cluster ingest + **cluster-held-out** `credence-mlp-v2` |
+| v3 | T1 ingest (~3×10⁵), calibration + tile pipeline |
+| v4 | T2 production infer (~10⁶) + atlas + Zenodo release |
 | v5 | Gaia XP encoder; spectroscopic fine-tune |
+
+**ML data strategy (canonical):** [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md) — training sets, test protocol, why not random split on full census.
 
 ---
 
@@ -379,7 +381,9 @@ M34 = **T0 demo** with rare legacy BVR modality.
 
 **M34 ships a PyTorch MLP** (`midas/credence/`, `credence-mlp-v1`). The NN is not a separate product — it **is the infer step**, with the same ingest, resolve, and display contracts.
 
-M34-only training overfits the benchmark (high val F1 on member split). The science milestone is **cluster-held-out evaluation** on T0 clusters before galaxy-scale rollout.
+**M34 is not a science-valid test:** 263 CG members, random 85/15 train/val on the **same cluster**, Malofeeva used as both training target and reported benchmark (~224 train stars overlap the F1 eval). See [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md) §3.
+
+**Do not** wait for T2 (~10⁶ stars) or use a random star-level train/test on the full census. The next milestone is **T0 (5–10 clusters) with cluster-held-out evaluation** — labels and split design scale before row count.
 
 ### 13.1 Implemented vs next
 
@@ -502,13 +506,15 @@ L = w_bin · BCE(p_binary, y_soft)
 
 ### 13.5 Phased roadmap
 
-| Phase | Data | Status |
-|-------|------|--------|
-| **ML-1** | M34 | Done — `credence-mlp-v1`, F1 ≈ 0.96 vs Malofeeva |
-| **ML-2** | T0 (5–10 clusters) | Cluster-held-out retrain |
-| **ML-3** | T1 (~3×10⁵) | + uncertainty head, magnitude-bin stability |
-| **ML-4** | T2 + XP subset | XP encoder |
-| **ML-5** | + SB9/eclipse labels | Spectroscopic fine-tune on gold set |
+| Phase | Data | Split | Status |
+|-------|------|-------|--------|
+| **ML-1** | M34 (~263 members) | Random 85/15 on one cluster | Done — plumbing; F1 ≈ 0.96 is **not** held-out |
+| **ML-2** | T0 (5–10 clusters, 10⁴–10⁵) | **Cluster-held-out** | Next — meaningful science |
+| **ML-3** | T1 (~3×10⁵) | Cluster CV + optional SSL pretrain | Calibration, uncertainty |
+| **ML-4** | T2 (~10⁶) | Cluster CV on val; production infer all | Atlas v1 |
+| **ML-5** | T3 + gold labels | Cluster CV | XP encoder; RV/eclipse fine-tune |
+
+Full rationale: [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md) §5–6.
 
 ### 13.6 Relationship to Gaia-era ML literature
 

@@ -9,7 +9,8 @@
 
 Project Midas Phases I–IV proved resolve + infer on M34. Credence generalizes that pattern and adds unified storage and a sky-facing product.
 
-**Design & architecture:** [`CREDENCE_ARCHITECTURE.md`](CREDENCE_ARCHITECTURE.md)
+**Design & architecture:** [`CREDENCE_ARCHITECTURE.md`](CREDENCE_ARCHITECTURE.md)  
+**ML training data & evaluation plan:** [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md)
 
 ## Infer (M34 implementation)
 
@@ -21,9 +22,11 @@ The infer step is a PyTorch multimodal MLP (`credence-mlp-v1`):
 | WISE | W2−BP (+ mask) | `p_ir` |
 | Trunk | cluster context + P(member) | `p_binary` (primary) |
 
-Training: Cantat-Gaudin members (P ≥ 0.7), member train/val split. Malofeeva IR is validation only — not used for gradient updates.
+Training: 263 CG members (P ≥ 0.7) → random 224 train / 39 val (same cluster). Labels include Malofeeva (also used in reported benchmark — see ML data strategy doc).
 
 Checkpoint: `data/processed/credence_model.pt`
+
+**Science-valid evaluation** requires T0 multi-cluster training with **cluster-held-out** test — not more M34 rows or a random split on ~10⁶ members. See [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md).
 
 ## Usage (M34)
 
@@ -60,10 +63,11 @@ On 263 Cantat-Gaudin members vs Malofeeva IR (same proxy as Phase III):
 | Step | Status |
 |------|--------|
 | Ingest + resolve (M34 join) | done (Phases I–II) |
-| Infer (`midas/credence/`) | M34 prototype (credence-mlp-v1) |
+| Infer (`midas/credence/`) | M34 prototype (`credence-mlp-v1`) — plumbing |
 | Display (`/atlas`) | planned |
-| T0 multi-cluster retrain | planned |
-| Galaxy-scale ingest (Hunt/CG) | planned |
+| T0 ingest + cluster-held-out infer (`credence-mlp-v2`) | **next ML milestone** |
+| T1 calibration + T2 production infer | planned |
+| Galaxy-scale ingest (Hunt/CG) | after eval harness |
 
 ## References
 

@@ -24,12 +24,16 @@ from midas.credence.data import (
     member_rows,
 )
 from midas.credence.model import MODEL_VERSION, CredenceInferModel, HIDDEN_DIM
+from midas.credence.splits import ClusterSplit, cluster_holdout_split
 from midas.membership import DEFAULT_CG_MEMBER_THRESHOLD
 from midas.paths import PROCESSED
 from midas.validation import ValidationRow, confusion_matrix, predict_q_binary, roc_curve
 
 CREDENCE_JSON = PROCESSED / "credence_summary.json"
 CREDENCE_CHECKPOINT = PROCESSED / "credence_model.pt"
+T0_CHECKPOINT = PROCESSED / "credence_model_t0.pt"
+T0_SUMMARY_JSON = PROCESSED / "credence_t0_summary.json"
+T0_MODEL_VERSION = "credence-mlp-v2-t0"
 CREDENCE_VECTORS_CSV = PROCESSED / "credence_vectors.csv"
 
 DEFAULT_EPOCHS = 120
@@ -75,8 +79,7 @@ def infer_vectors(
     device = device or _device()
     model = model.to(device)
     model.eval()
-    ctx = cluster_context(stats)
-    batch = batch_tensors(rows, stats, ctx)
+    batch = batch_tensors(rows, stats, ctx=None)
     tens = _to_torch(batch, device)
     h = _trunk_forward(model, tens)
     p_bin = torch.sigmoid(model.head_binary(h)).cpu().numpy().reshape(-1)
@@ -110,26 +113,40 @@ def train_model(
     val_fraction: float = 0.15,
     seed: int = 42,
     checkpoint: Path | None = CREDENCE_CHECKPOINT,
+    holdout_cluster_ids: list[str] | None = None,
+    model_version: str = MODEL_VERSION,
 ) -> tuple[CredenceInferModel, FeatureStats, dict]:
-    train_pool = member_rows(rows)
-    if len(train_pool) < 40:
-        raise ValueError(f"Need ≥40 CG training stars; got {len(train_pool)}")
-
     stats = compute_feature_stats(rows)
-    ctx = cluster_context(stats)
 
-    rng = np.random.default_rng(seed)
-    perm = rng.permutation(len(train_pool))
-    n_val = max(20, int(len(train_pool) * val_fraction))
-    val_set = {int(i) for i in perm[:n_val]}
-    train_rows = [train_pool[i] for i in range(len(train_pool)) if i not in val_set]
-    val_rows = [train_pool[i] for i in range(len(train_pool)) if i in val_set]
+    split_meta: dict | None = None
+    if holdout_cluster_ids:
+        split = cluster_holdout_split(
+            rows, holdout_cluster_ids=holdout_cluster_ids, val_fraction=val_fraction, seed=seed
+        )
+        train_rows, val_rows = split.train, split.val
+        split_meta = {
+            "split": "cluster_holdout",
+            "holdout_cluster_ids": list(split.holdout_cluster_ids),
+            "train_cluster_ids": list(split.train_cluster_ids),
+            "n_test_holdout": len(split.test),
+        }
+    else:
+        train_pool = member_rows(rows)
+        if len(train_pool) < 40:
+            raise ValueError(f"Need ≥40 CG training stars; got {len(train_pool)}")
+        rng = np.random.default_rng(seed)
+        perm = rng.permutation(len(train_pool))
+        n_val = max(20, int(len(train_pool) * val_fraction))
+        val_set = {int(i) for i in perm[:n_val]}
+        train_rows = [train_pool[i] for i in range(len(train_pool)) if i not in val_set]
+        val_rows = [train_pool[i] for i in range(len(train_pool)) if i in val_set]
+        split_meta = {"split": "random_member", "holdout_cluster_ids": []}
 
     device = _device()
     model = CredenceInferModel().to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
 
-    train_batch = batch_tensors(train_rows, stats, ctx)
+    train_batch = batch_tensors(train_rows, stats, ctx=None)
     train_labels = label_vectors(train_rows)
     train_t = _to_torch(train_batch, device)
     y_bin = torch.from_numpy(train_labels["y_binary"]).to(device)
@@ -161,7 +178,7 @@ def train_model(
             history.append({"epoch": epoch, "loss": float(loss.item()), "val_f1": cm.f1})
 
     meta = {
-        "model_version": MODEL_VERSION,
+        "model_version": model_version,
         "hidden_dim": HIDDEN_DIM,
         "epochs": epochs,
         "lr": lr,
@@ -169,6 +186,7 @@ def train_model(
         "n_val": len(val_rows),
         "feature_stats": asdict(stats),
         "history": history,
+        **(split_meta or {}),
     }
     if checkpoint:
         checkpoint.parent.mkdir(parents=True, exist_ok=True)
@@ -210,8 +228,12 @@ def evaluate_vectors(
     *,
     members_only: bool = True,
     threshold: float = DEFAULT_BINARY_THRESHOLD,
+    cluster_ids: list[str] | None = None,
 ) -> dict:
     subset = [r for r in rows if r.cg_member] if members_only else rows
+    if cluster_ids is not None:
+        allowed = frozenset(cluster_ids)
+        subset = [r for r in subset if r.cluster_id in allowed]
     y_true = np.array([r.malofeeva for r in subset])
     y_pred = np.array([vectors[r.midas_id].p_binary >= threshold for r in subset])
     scores = np.array([vectors[r.midas_id].p_binary for r in subset])
@@ -407,6 +429,99 @@ def run_credence(
         write_vectors_csv(rows, vectors, write_vectors)
 
     return summary
+
+
+def run_credence_t0(
+    *,
+    holdout_cluster_ids: list[str],
+    epochs: int = DEFAULT_EPOCHS,
+    retrain: bool = False,
+    checkpoint: Path | None = T0_CHECKPOINT,
+    write_json: Path | None = T0_SUMMARY_JSON,
+) -> dict:
+    """Train with cluster holdout; evaluate on held-out cluster members."""
+    from midas.credence.data import load_t0_credence_rows
+
+    rows = load_t0_credence_rows()
+    split = cluster_holdout_split(rows, holdout_cluster_ids=holdout_cluster_ids)
+
+    if retrain or not (checkpoint or T0_CHECKPOINT).exists():
+        model, stats, train_meta = train_model(
+            rows,
+            epochs=epochs,
+            checkpoint=checkpoint or T0_CHECKPOINT,
+            holdout_cluster_ids=holdout_cluster_ids,
+            model_version=T0_MODEL_VERSION,
+        )
+    else:
+        model, stats, train_meta = load_model(checkpoint or T0_CHECKPOINT)
+
+    vectors = infer_vectors(model, rows, stats)
+
+    test_eval = evaluate_vectors(
+        split.test,
+        vectors,
+        cluster_ids=list(split.holdout_cluster_ids),
+        threshold=DEFAULT_BINARY_THRESHOLD,
+    )
+    grid = sweep_threshold(split.test, vectors)[:5]
+    best_t = grid[0]["threshold"] if grid else DEFAULT_BINARY_THRESHOLD
+    test_best = evaluate_vectors(
+        split.test,
+        vectors,
+        cluster_ids=list(split.holdout_cluster_ids),
+        threshold=best_t,
+    )
+
+    n_by_cluster: dict[str, int] = {}
+    for r in rows:
+        if r.cg_member:
+            n_by_cluster[r.cluster_id] = n_by_cluster.get(r.cluster_id, 0) + 1
+
+    summary = {
+        "meta": {
+            "detector": "Credence",
+            "engine": "model",
+            "version": T0_MODEL_VERSION,
+            "description": "T0 multimodal MLP — cluster-held-out training",
+            "join_table": "t0_join_ir.csv",
+            "holdout_cluster_ids": list(split.holdout_cluster_ids),
+            "train_cluster_ids": list(split.train_cluster_ids),
+            "checkpoint": str((checkpoint or T0_CHECKPOINT).name),
+        },
+        "model": train_meta,
+        "coverage": {
+            "n_rows": len(rows),
+            "n_cg_members": sum(n_by_cluster.values()),
+            "members_per_cluster": n_by_cluster,
+            "n_test_holdout": len(split.test),
+        },
+        "holdout_validation": {
+            "default_threshold": test_eval,
+            "best_f1_threshold": test_best,
+            "threshold_grid_top5": grid,
+        },
+    }
+
+    if write_json:
+        write_json.parent.mkdir(parents=True, exist_ok=True)
+        with open(write_json, "w") as f:
+            json.dump(summary, f, indent=2)
+
+    return summary
+
+
+def print_credence_t0_report(summary: dict) -> None:
+    model = summary["model"]
+    cov = summary["coverage"]
+    hold = summary["holdout_validation"]["best_f1_threshold"]
+    print(f"\n=== Credence T0 ({summary['meta']['version']}) ===")
+    print(f"Holdout: {summary['meta']['holdout_cluster_ids']}")
+    print(f"Train clusters: {summary['meta']['train_cluster_ids']}")
+    print(f"Train n={model['n_train']} val n={model['n_val']} · test n={cov['n_test_holdout']}")
+    print(f"Members per cluster: {cov['members_per_cluster']}")
+    print(f"\nHeld-out test (Malofeeva proxy, threshold={hold['threshold']:.2f}):")
+    print(f"  P={hold['precision']:.3f}  R={hold['recall']:.3f}  F1={hold['f1']:.3f}")
 
 
 def print_credence_report(summary: dict) -> None:
