@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
+  CREDENCE_SECTIONS,
+} from '../data/credence';
+import {
   phasePageHref,
   PHASE_SECTIONS,
   useAppRoute,
@@ -27,6 +30,8 @@ const HOME_SECTIONS = [
 
 const HOME_SECTION_IDS = HOME_SECTIONS.map(({ id }) => id);
 const PHASE_SECTION_IDS = PHASE_SECTIONS.map(({ id }) => id);
+
+const CREDENCE_SECTION_IDS = CREDENCE_SECTIONS.map(({ id }) => id);
 
 const GITHUB_URL = 'https://github.com/amne51ac/project-midas';
 
@@ -58,20 +63,20 @@ export function Header() {
   const isHome = route.type === 'home';
   const isPhase = route.type === 'phase';
   const isFindings = route.type === 'findings';
-  const isPrism = route.type === 'prism';
+  const isCredence = route.type === 'credence';
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-home-route', isHome);
     document.documentElement.classList.toggle('is-phase-route', isPhase);
     document.documentElement.classList.toggle('is-findings-route', isFindings);
-    document.documentElement.classList.toggle('is-prism-route', isPrism);
+    document.documentElement.classList.toggle('is-credence-route', isCredence);
     return () => {
       document.documentElement.classList.remove('is-home-route');
       document.documentElement.classList.remove('is-phase-route');
       document.documentElement.classList.remove('is-findings-route');
-      document.documentElement.classList.remove('is-prism-route');
+      document.documentElement.classList.remove('is-credence-route');
     };
-  }, [isHome, isPhase, isFindings, isPrism]);
+  }, [isHome, isPhase, isFindings, isCredence]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -106,8 +111,14 @@ export function Header() {
   const isPhaseSectionActive = (id: PhaseSectionId) =>
     isPhase && phaseActiveSection === id;
 
+  const credenceActiveSection = useScrollSpy(isCredence ? CREDENCE_SECTION_IDS : NO_SECTIONS, {
+    initialId: undefined,
+  });
+
+  const isCredenceSectionActive = (id: string) => isCredence && credenceActiveSection === id;
+
   return (
-    <header className={`site-header${isHome || isPhase || isFindings || isPrism ? ' site-header--home' : ''}`}>
+    <header className={`site-header${isHome || isPhase || isFindings || isCredence ? ' site-header--home' : ''}`}>
       <div className="site-header__bar">
         <a className="site-header__brand" href="/" onClick={closeMenu}>
           Project Midas
@@ -142,12 +153,12 @@ export function Header() {
             Findings
           </a>
           <a
-            href="/prism"
-            className={navLinkClass(isPrism)}
-            aria-current={isPrism ? 'page' : undefined}
+            href="/credence"
+            className={navLinkClass(isCredence)}
+            aria-current={isCredence ? 'page' : undefined}
             onClick={closeMenu}
           >
-            Prism
+            Credence
           </a>
         </nav>
 
@@ -181,6 +192,22 @@ export function Header() {
               href={`/${id}`}
               className={navLinkClass(isSectionActive(id))}
               aria-current={isSectionActive(id) ? 'location' : undefined}
+              onClick={closeMenu}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      )}
+
+      {isCredence && (
+        <nav className="site-header__subnav" aria-label="Credence sections">
+          {CREDENCE_SECTIONS.map(({ id, label }) => (
+            <a
+              key={id}
+              href={`/credence#${id}`}
+              className={navLinkClass(isCredenceSectionActive(id))}
+              aria-current={isCredenceSectionActive(id) ? 'location' : undefined}
               onClick={closeMenu}
             >
               {label}
@@ -227,8 +254,8 @@ export function Header() {
         <a href="/findings" className={navLinkClass(isFindings)} onClick={closeMenu}>
           Findings
         </a>
-        <a href="/prism" className={navLinkClass(isPrism)} onClick={closeMenu}>
-          Prism
+        <a href="/credence" className={navLinkClass(isCredence)} onClick={closeMenu}>
+          Credence
         </a>
         {isHome && (
           <>

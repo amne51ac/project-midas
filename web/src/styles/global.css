@@ -3491,20 +3491,20 @@ code {
   margin-top: 0;
 }
 
-/* Prism detector page */
-.prism-page {
+/* Credence project page */
+.credence-page {
   max-width: var(--max-wide);
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
 }
 
-.prism-page__title {
+.credence-page__title {
   margin: 0.35rem 0 0.5rem;
   font-size: clamp(2rem, 5vw, 2.75rem);
   line-height: 1.1;
 }
 
-.prism-page__subtitle {
+.credence-page__subtitle {
   display: block;
   margin-top: 0.35rem;
   font-size: clamp(0.95rem, 2.5vw, 1.15rem);
@@ -3513,54 +3513,54 @@ code {
   font-family: var(--sans);
 }
 
-.prism-page__tagline {
+.credence-page__tagline {
   font-family: var(--sans);
   font-size: 1.05rem;
   color: var(--accent);
   margin: 0 0 0.75rem;
 }
 
-.prism-page__lede {
+.credence-page__lede {
   max-width: 44rem;
 }
 
-.prism-benchmark {
+.credence-benchmark {
   display: grid;
   gap: 1.25rem;
   margin-top: 1rem;
 }
 
 @media (min-width: 768px) {
-  .prism-benchmark {
+  .credence-benchmark {
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
 }
 
-.prism-benchmark__meta {
+.credence-benchmark__meta {
   margin: 0;
 }
 
-.prism-table-wrap {
+.credence-table-wrap {
   overflow-x: auto;
   margin: 1rem 0;
 }
 
-.prism-table {
+.credence-table {
   width: 100%;
   border-collapse: collapse;
   font-family: var(--sans);
   font-size: 0.88rem;
 }
 
-.prism-table th,
-.prism-table td {
+.credence-table th,
+.credence-table td {
   padding: 0.55rem 0.75rem;
   text-align: left;
   border-bottom: 1px solid var(--rule);
 }
 
-.prism-table thead th {
+.credence-table thead th {
   font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -3568,20 +3568,20 @@ code {
   border-bottom-width: 2px;
 }
 
-.prism-table tbody th {
+.credence-table tbody th {
   font-weight: 500;
 }
 
-.prism-table__highlight {
+.credence-table__highlight {
   background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
-.prism-table__highlight th,
-.prism-table__highlight td {
+.credence-table__highlight th,
+.credence-table__highlight td {
   border-bottom-color: color-mix(in srgb, var(--accent) 25%, var(--rule));
 }
 
-.prism-planes {
+.credence-planes {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -3593,17 +3593,17 @@ code {
   border-radius: 2px;
 }
 
-.prism-planes__plane {
+.credence-planes__plane {
   flex: 1 1 8rem;
   min-width: 7rem;
 }
 
-.prism-planes__plane--score {
+.credence-planes__plane--score {
   border-left: 2px solid var(--accent);
   padding-left: 1rem;
 }
 
-.prism-planes__label {
+.credence-planes__label {
   font-family: var(--sans);
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -3612,36 +3612,36 @@ code {
   margin: 0 0 0.25rem;
 }
 
-.prism-planes__axes {
+.credence-planes__axes {
   font-family: var(--mono);
   font-size: 0.95rem;
   margin: 0;
 }
 
-.prism-planes__note {
+.credence-planes__note {
   font-family: var(--sans);
   font-size: 0.75rem;
   color: var(--ink-muted);
   margin: 0.2rem 0 0;
 }
 
-.prism-planes__fuse {
+.credence-planes__fuse {
   font-family: var(--mono);
   font-size: 1.25rem;
   color: var(--ink-muted);
   flex: 0 0 auto;
 }
 
-.prism-section {
+.credence-section {
   margin-top: 1.5rem;
 }
 
-.prism-section__title {
+.credence-section__title {
   margin: 0 0 0.65rem;
   font-size: 1.1rem;
 }
 
-.prism-value-list {
+.credence-value-list {
   list-style: none;
   margin: 1rem 0 0;
   padding: 0;
@@ -3650,24 +3650,24 @@ code {
 }
 
 @media (min-width: 640px) {
-  .prism-value-list {
+  .credence-value-list {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.prism-value-list__item {
+.credence-value-list__item {
   padding: 1rem 1.15rem;
   background: var(--bg-alt);
   border: 1px solid var(--rule);
   border-radius: 2px;
 }
 
-.prism-value-list__item h3 {
+.credence-value-list__item h3 {
   margin: 0 0 0.45rem;
   font-size: 0.95rem;
 }
 
-.prism-value-list__item p {
+.credence-value-list__item p {
   margin: 0;
   font-family: var(--sans);
   font-size: 0.88rem;
@@ -3675,24 +3675,24 @@ code {
   color: var(--ink-muted);
 }
 
-.prism-software {
+.credence-software {
   display: grid;
   gap: 1rem;
   margin: 1.25rem 0;
 }
 
-.prism-software__card {
+.credence-software__card {
   padding: 1.15rem 1.25rem;
   border: 1px solid var(--rule);
   border-radius: 2px;
   background: var(--bg-alt);
 }
 
-.prism-software__card--recommended {
+.credence-software__card--recommended {
   border-color: color-mix(in srgb, var(--accent) 40%, var(--rule));
 }
 
-.prism-software__head {
+.credence-software__head {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -3701,30 +3701,30 @@ code {
   margin-bottom: 0.65rem;
 }
 
-.prism-software__head h3 {
+.credence-software__head h3 {
   margin: 0;
   font-size: 1rem;
 }
 
-.prism-software__card > p {
+.credence-software__card > p {
   margin: 0 0 0.85rem;
   font-family: var(--sans);
   font-size: 0.9rem;
   line-height: 1.5;
 }
 
-.prism-software__cols {
+.credence-software__cols {
   display: grid;
   gap: 1rem;
 }
 
 @media (min-width: 560px) {
-  .prism-software__cols {
+  .credence-software__cols {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-.prism-software__cols h4 {
+.credence-software__cols h4 {
   margin: 0 0 0.35rem;
   font-family: var(--sans);
   font-size: 0.72rem;
@@ -3733,7 +3733,7 @@ code {
   color: var(--ink-muted);
 }
 
-.prism-software__cols ul {
+.credence-software__cols ul {
   margin: 0;
   padding-left: 1.1rem;
   font-family: var(--sans);
@@ -3741,14 +3741,14 @@ code {
   line-height: 1.45;
 }
 
-.prism-software__rec {
+.credence-software__rec {
   margin-top: 1rem;
   padding: 0.85rem 1rem;
   background: color-mix(in srgb, var(--accent) 6%, var(--bg-alt));
   border-left: 3px solid var(--accent);
 }
 
-.prism-verdict {
+.credence-verdict {
   font-family: var(--sans);
   font-size: 0.68rem;
   text-transform: uppercase;
@@ -3757,22 +3757,22 @@ code {
   border-radius: 2px;
 }
 
-.prism-verdict--recommended {
+.credence-verdict--recommended {
   background: color-mix(in srgb, #55a868 20%, transparent);
   color: #3d8a55;
 }
 
-.prism-verdict--future {
+.credence-verdict--future {
   background: color-mix(in srgb, var(--accent) 15%, transparent);
   color: var(--accent);
 }
 
-.prism-verdict--not-recommended {
+.credence-verdict--not-recommended {
   background: color-mix(in srgb, #888 15%, transparent);
   color: var(--ink-muted);
 }
 
-.prism-code {
+.credence-code {
   margin: 1rem 0;
   padding: 1rem 1.15rem;
   overflow-x: auto;
@@ -3784,24 +3784,117 @@ code {
   line-height: 1.55;
 }
 
-.prism-code code {
+.credence-code code {
   white-space: pre;
 }
 
-.prism-page__closing .section__subhead {
+.credence-page__closing .section__subhead {
   margin-top: 1.5rem;
 }
 
-.prism-page__closing .section__subhead:first-child {
+.credence-page__closing .section__subhead:first-child {
   margin-top: 0;
 }
 
+.credence-page__expansion {
+  display: block;
+  margin: 0.25rem 0 0.5rem;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  font-weight: 400;
+  color: var(--ink-muted);
+  font-family: var(--sans);
+  font-style: italic;
+  max-width: 44rem;
+}
+
+.credence-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0.5rem 0.65rem;
+  margin: 1.25rem 0 1.75rem;
+  padding: 1.15rem 1.25rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+.credence-flow__step {
+  flex: 1 1 7rem;
+  min-width: 6.5rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--bg);
+}
+
+.credence-flow__step--accent {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--rule));
+}
+
+.credence-flow__label {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-muted);
+  margin: 0 0 0.2rem;
+}
+
+.credence-flow__name {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.credence-flow__note {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin: 0.25rem 0 0;
+}
+
+.credence-flow__arrow {
+  align-self: center;
+  font-family: var(--mono);
+  color: var(--ink-muted);
+  flex: 0 0 auto;
+}
+
+.credence-diagram code {
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.credence-design-grid {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1.25rem 0;
+}
+
+@media (min-width: 720px) {
+  .credence-design-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.credence-storage-note {
+  padding: 0.85rem 1rem;
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg-alt));
+  border-left: 3px solid var(--rule);
+}
+
 @media (max-width: 640px) {
-  .prism-page {
+  .credence-page {
     padding: 1.5rem 1.25rem 3rem;
   }
 
-  .prism-planes__fuse {
+  .credence-planes__fuse {
+    display: none;
+  }
+
+  .credence-flow__arrow {
     display: none;
   }
 }

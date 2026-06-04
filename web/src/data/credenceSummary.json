@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "detector": "Credence",
+    "engine": "model",
+    "version": "credence-mlp-v1",
+    "description": "Multimodal MLP infer \u2014 Gaia + WISE + cluster context",
+    "cgMemberThreshold": 0.7,
+    "cgTrainProba": 0.7,
+    "builtFrom": "credence_summary.json"
+  },
+  "model": {
+    "hiddenDim": 64,
+    "epochs": 120,
+    "nTrain": 224,
+    "nVal": 39,
+    "valF1Last": 0.9870129870129869
+  },
+  "coverage": {
+    "nRows": 3760,
+    "nCgMembers": 263,
+    "nCgDualPlane": 223
+  },
+  "benchmark": {
+    "universe": "CG members",
+    "n": 263,
+    "truthSet": "Malofeeva IR",
+    "bestThreshold": 0.05,
+    "credence": {
+      "precision": 0.92,
+      "recall": 1.0,
+      "f1": 0.958
+    },
+    "defaultThreshold": {
+      "threshold": 0.5,
+      "precision": 0.92,
+      "recall": 1.0,
+      "f1": 0.958
+    },
+    "qValue": {
+      "qRange": [
+        0.0,
+        1.0
+      ],
+      "precision": 0.922,
+      "recall": 0.194,
+      "f1": 0.321
+    }
+  },
+  "docsPath": "research/docs/CREDENCE.md",
+  "modulePath": "research/midas/credence/"
+}

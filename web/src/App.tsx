@@ -4,7 +4,7 @@ import { getPageMeta } from './config/siteMeta';
 import HomePage from './pages/HomePage';
 import { PhasePage } from './pages/PhasePage';
 import FindingsPage from './pages/FindingsPage';
-import PrismPage from './pages/PrismPage';
+import CredencePage from './pages/CredencePage';
 
 export default function App() {
   const route = useAppRoute();
@@ -14,8 +14,8 @@ export default function App() {
     return <FindingsPage />;
   }
 
-  if (route.type === 'prism') {
-    return <PrismPage />;
+  if (route.type === 'credence') {
+    return <CredencePage />;
   }
 
   if (route.type === 'phase') {

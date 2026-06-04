@@ -21,7 +21,7 @@ export function getAllRoutes(): AppRoute[] {
   }
 
   routes.push({ type: 'findings' });
-  routes.push({ type: 'prism' });
+  routes.push({ type: 'credence' });
 
   return routes;
 }

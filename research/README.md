@@ -225,16 +225,24 @@ python scripts/merge_ir_photometry.py
 # → data/processed/m34_join_ir.csv (m34_join + 2MASS/AllWISE + W2−BP)
 ```
 
-## Phase V — Prism detector (prototype)
+## Phase V — Credence
 
-**Prism** (*Photometric Residuals in Sequence Membership*) — dual-plane Gaia CMD + W2−BP anomaly score. See [`docs/PRISM_DETECTOR.md`](docs/PRISM_DETECTOR.md).
+**Credence** — ingest → resolve → infer → display for open-cluster stars. See [`docs/CREDENCE.md`](docs/CREDENCE.md) and [`/credence`](https://midasastronomy.com/credence) on the site.
 
 ```bash
-python scripts/validate_prism.py
-# → data/processed/prism_summary.json
+python scripts/cross_match.py          # resolve (M34)
+python scripts/merge_ir_photometry.py  # ingest IR
+python scripts/validate_credence.py    # infer
+# → data/processed/credence_summary.json
+python scripts/build_web_credence.py
+# → web/src/data/credenceSummary.json
 ```
 
-On M34 CG members vs Malofeeva (first benchmark): **F1 ≈ 0.66** (Prism) vs **≈ 0.32** (legacy Q) at tuned threshold.
+On M34 CG members vs Malofeeva: **F1 ≈ 0.66** (Credence infer) vs **≈ 0.55** (legacy Q) at tuned threshold.
+
+## Design & architecture
+
+Full system design: [`docs/CREDENCE_ARCHITECTURE.md`](docs/CREDENCE_ARCHITECTURE.md) — pipeline boundaries, StarEntity / CredenceVector schemas, DuckDB layout, Atlas tiles, scale tiers, M34 mapping.
 
 ## Data release
 
@@ -249,7 +257,7 @@ Citation metadata: [`../CITATION.cff`](../CITATION.cff)
 
 ## Follow-up science (optional)
 
-1. Cross-cluster Prism validation (Pleiades / Hyades)  
+1. Cross-cluster Credence infer validation (Pleiades / Hyades)  
 2. Channel-exclusive binary fractions vs. mass (beyond union upper envelope)  
 3. Gaia DR4 refresh for faint LAWDS white dwarfs  
 4. Formal methods paper / Zenodo deposit of processed tables  

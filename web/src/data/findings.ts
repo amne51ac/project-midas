@@ -162,10 +162,10 @@ export const FINDINGS: FindingsData = {
       bullets: [
         'One command: python scripts/run_reproduction.py --stage all',
         'Web refresh: python scripts/build_web_all.py',
-        'Phase V prototype: Prism dual-plane detector — see /prism',
+        'Phase V: Credence — ingest, resolve, infer, display — see /credence',
       ],
-      href: '/prism',
-      hrefLabel: 'Prism detector proposal',
+      href: '/credence',
+      hrefLabel: 'Credence project outline',
     },
   ],
   limitations: [

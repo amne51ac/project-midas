@@ -159,13 +159,12 @@ export function getPageMeta(route: AppRoute): PageMeta {
     };
   }
 
-  if (route.type === 'prism') {
+  if (route.type === 'credence') {
     return {
-      title: 'Prism detector · Project Midas',
+      title: 'Credence · Project Midas',
       description:
-        'Prism (Photometric Residuals in Sequence Membership) — proposed Gaia-era binary detector. ' +
-        'Dual-plane CMD + IR sequence residuals vs legacy Q-value. Benchmark F1 ≈ 0.66 on M34 Cantat-Gaudin members. ' +
-        'Proposed as standalone cluster-prism Python package.',
+        'Credence — ingest, resolve, infer, and display open-cluster stars in a planetarium atlas. ' +
+        'M34 infer F1 ≈ 0.66 vs legacy Q ≈ 0.55. Galaxy-scale tiers from Cantat-Gaudin and Hunt catalogs.',
     };
   }
 
@@ -300,7 +299,7 @@ ${SITE.github}
 
 ## Main sections
 - [Findings](${SITE.url}/findings)
-- [Prism detector](${SITE.url}/prism)
+- [Credence](${SITE.url}/credence)
 - [History](${SITE.url}/history)
 - [Sky / finder chart](${SITE.url}/sky)
 - [Science / HR diagram](${SITE.url}/science)
@@ -326,7 +325,7 @@ export function buildSitemapXml(): string {
         ? '1.0'
         : route.type === 'findings'
           ? '0.9'
-          : route.type === 'prism'
+          : route.type === 'credence'
             ? '0.88'
             : route.type === 'phase' && !route.section
             ? '0.85'
