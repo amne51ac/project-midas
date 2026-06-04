@@ -159,6 +159,16 @@ export function getPageMeta(route: AppRoute): PageMeta {
     };
   }
 
+  if (route.type === 'prism') {
+    return {
+      title: 'Prism detector · Project Midas',
+      description:
+        'Prism (Photometric Residuals in Sequence Membership) — proposed Gaia-era binary detector. ' +
+        'Dual-plane CMD + IR sequence residuals vs legacy Q-value. Benchmark F1 ≈ 0.66 on M34 Cantat-Gaudin members. ' +
+        'Proposed as standalone cluster-prism Python package.',
+    };
+  }
+
   if (route.type === 'phase') {
     const phase = ROADMAP_PHASES.find((p) => p.id === route.phaseId);
     if (phase) {
@@ -290,6 +300,7 @@ ${SITE.github}
 
 ## Main sections
 - [Findings](${SITE.url}/findings)
+- [Prism detector](${SITE.url}/prism)
 - [History](${SITE.url}/history)
 - [Sky / finder chart](${SITE.url}/sky)
 - [Science / HR diagram](${SITE.url}/science)
@@ -315,7 +326,9 @@ export function buildSitemapXml(): string {
         ? '1.0'
         : route.type === 'findings'
           ? '0.9'
-          : route.type === 'phase' && !route.section
+          : route.type === 'prism'
+            ? '0.88'
+            : route.type === 'phase' && !route.section
             ? '0.85'
             : route.type === 'home'
               ? '0.8'

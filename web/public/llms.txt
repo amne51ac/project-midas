@@ -22,6 +22,7 @@ https://github.com/amne51ac/project-midas
 
 ## Main sections
 - [Findings](https://midasastronomy.com/findings)
+- [Prism detector](https://midasastronomy.com/prism)
 - [History](https://midasastronomy.com/history)
 - [Sky / finder chart](https://midasastronomy.com/sky)
 - [Science / HR diagram](https://midasastronomy.com/science)

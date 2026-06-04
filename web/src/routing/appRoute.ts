@@ -25,7 +25,8 @@ export type HomeSectionId = (typeof HOME_SECTION_IDS)[number];
 export type AppRoute =
   | { type: 'home'; section?: HomeSectionId }
   | { type: 'phase'; phaseId: string; section?: PhaseSectionId }
-  | { type: 'findings' };
+  | { type: 'findings' }
+  | { type: 'prism' };
 
 function isHomeSection(value: string): value is HomeSectionId {
   return (HOME_SECTION_IDS as readonly string[]).includes(value);
@@ -41,6 +42,8 @@ export function parsePathname(pathname: string): AppRoute {
   if (path === '/') return { type: 'home' };
 
   if (path === '/findings') return { type: 'findings' };
+
+  if (path === '/prism') return { type: 'prism' };
 
   if (path.startsWith('/phases/')) {
     const parts = path.slice('/phases/'.length).split('/').filter(Boolean);
@@ -75,6 +78,7 @@ export function useAppRoute(): AppRoute {
 
 export function routeToPath(route: AppRoute): string {
   if (route.type === 'findings') return '/findings';
+  if (route.type === 'prism') return '/prism';
   if (route.type === 'home') {
     return route.section ? `/${route.section}` : '/';
   }
@@ -85,6 +89,7 @@ export function routeToPath(route: AppRoute): string {
 
 export function routeToFilePath(route: AppRoute): string {
   if (route.type === 'findings') return 'findings/index.html';
+  if (route.type === 'prism') return 'prism/index.html';
   if (route.type === 'home') {
     return route.section ? `${route.section}/index.html` : 'index.html';
   }

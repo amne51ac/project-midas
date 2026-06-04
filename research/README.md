@@ -225,6 +225,17 @@ python scripts/merge_ir_photometry.py
 # → data/processed/m34_join_ir.csv (m34_join + 2MASS/AllWISE + W2−BP)
 ```
 
+## Phase V — Prism detector (prototype)
+
+**Prism** (*Photometric Residuals in Sequence Membership*) — dual-plane Gaia CMD + W2−BP anomaly score. See [`docs/PRISM_DETECTOR.md`](docs/PRISM_DETECTOR.md).
+
+```bash
+python scripts/validate_prism.py
+# → data/processed/prism_summary.json
+```
+
+On M34 CG members vs Malofeeva (first benchmark): **F1 ≈ 0.66** (Prism) vs **≈ 0.32** (legacy Q) at tuned threshold.
+
 ## Data release
 
 Full reproduction guide: [`REPRODUCTION.md`](REPRODUCTION.md)
@@ -238,8 +249,9 @@ Citation metadata: [`../CITATION.cff`](../CITATION.cff)
 
 ## Follow-up science (optional)
 
-1. Channel-exclusive binary fractions vs. mass (beyond union upper envelope)  
-2. Gaia DR4 refresh for faint LAWDS white dwarfs  
-3. Formal methods paper / Zenodo deposit of processed tables  
+1. Cross-cluster Prism validation (Pleiades / Hyades)  
+2. Channel-exclusive binary fractions vs. mass (beyond union upper envelope)  
+3. Gaia DR4 refresh for faint LAWDS white dwarfs  
+4. Formal methods paper / Zenodo deposit of processed tables  
 
 See root [`README.md`](../README.md) and [`PROJECT_ANALYSIS.md`](../PROJECT_ANALYSIS.md) in the parent workspace for full context.

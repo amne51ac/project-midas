@@ -58,17 +58,20 @@ export function Header() {
   const isHome = route.type === 'home';
   const isPhase = route.type === 'phase';
   const isFindings = route.type === 'findings';
+  const isPrism = route.type === 'prism';
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-home-route', isHome);
     document.documentElement.classList.toggle('is-phase-route', isPhase);
     document.documentElement.classList.toggle('is-findings-route', isFindings);
+    document.documentElement.classList.toggle('is-prism-route', isPrism);
     return () => {
       document.documentElement.classList.remove('is-home-route');
       document.documentElement.classList.remove('is-phase-route');
       document.documentElement.classList.remove('is-findings-route');
+      document.documentElement.classList.remove('is-prism-route');
     };
-  }, [isHome, isPhase, isFindings]);
+  }, [isHome, isPhase, isFindings, isPrism]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -104,7 +107,7 @@ export function Header() {
     isPhase && phaseActiveSection === id;
 
   return (
-    <header className={`site-header${isHome || isPhase || isFindings ? ' site-header--home' : ''}`}>
+    <header className={`site-header${isHome || isPhase || isFindings || isPrism ? ' site-header--home' : ''}`}>
       <div className="site-header__bar">
         <a className="site-header__brand" href="/" onClick={closeMenu}>
           Project Midas
@@ -137,6 +140,14 @@ export function Header() {
             onClick={closeMenu}
           >
             Findings
+          </a>
+          <a
+            href="/prism"
+            className={navLinkClass(isPrism)}
+            aria-current={isPrism ? 'page' : undefined}
+            onClick={closeMenu}
+          >
+            Prism
           </a>
         </nav>
 
@@ -215,6 +226,9 @@ export function Header() {
         ))}
         <a href="/findings" className={navLinkClass(isFindings)} onClick={closeMenu}>
           Findings
+        </a>
+        <a href="/prism" className={navLinkClass(isPrism)} onClick={closeMenu}>
+          Prism
         </a>
         {isHome && (
           <>

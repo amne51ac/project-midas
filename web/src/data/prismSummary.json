@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "detector": "Prism",
+    "version": "0.1",
+    "description": "Dual-plane Gaia CMD + W2\u2212BP sequence residual",
+    "cgMemberThreshold": 0.7,
+    "cgTrainProba": 0.7,
+    "builtFrom": "prism_summary.json"
+  },
+  "fit": {
+    "nTrainOptical": 249,
+    "nTrainIr": 219,
+    "opticalMad": 0.0719,
+    "irMad": 0.0639,
+    "scoreThresholdDefault": 2.5
+  },
+  "coverage": {
+    "nRows": 3760,
+    "nCgMembers": 263,
+    "nCgDualPlane": 223
+  },
+  "benchmark": {
+    "universe": "CG members",
+    "n": 263,
+    "truthSet": "Malofeeva IR",
+    "bestThreshold": 0.5,
+    "prism": {
+      "precision": 0.968,
+      "recall": 0.504,
+      "f1": 0.663
+    },
+    "defaultThreshold": {
+      "threshold": 2.5,
+      "precision": 0.95,
+      "recall": 0.079,
+      "f1": 0.145
+    },
+    "qValue": {
+      "qRange": [
+        0.0,
+        1.0
+      ],
+      "precision": 0.905,
+      "recall": 0.393,
+      "f1": 0.548
+    }
+  },
+  "docsPath": "research/docs/PRISM_DETECTOR.md",
+  "modulePath": "research/midas/prism.py"
+}
