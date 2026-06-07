@@ -13,6 +13,7 @@ export function getAllRoutes(): AppRoute[] {
   }
 
   routes.push({ type: 'credence' });
+  routes.push({ type: 'atlas' });
 
   return routes;
 }

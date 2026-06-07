@@ -23,7 +23,7 @@ def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--holdout", default="ngc_1039", help="Single holdout cluster")
     p.add_argument("--loo", action="store_true", help="Leave-one-cluster-out (slow)")
-    p.add_argument("--epochs", type=int, default=DEFAULT_EPOCHS)
+    p.add_argument("--epochs", type=int, default=60)
     p.add_argument("--retrain", action="store_true")
     args = p.parse_args()
 

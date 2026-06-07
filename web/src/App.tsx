@@ -4,6 +4,7 @@ import { getPageMeta } from './config/siteMeta';
 import HomePage from './pages/HomePage';
 import ContinuedPage from './pages/ContinuedPage';
 import CredencePage from './pages/CredencePage';
+import AtlasPage from './pages/AtlasPage';
 
 export default function App() {
   const route = useAppRoute();
@@ -15,6 +16,10 @@ export default function App() {
 
   if (route.type === 'credence') {
     return <CredencePage />;
+  }
+
+  if (route.type === 'atlas') {
+    return <AtlasPage />;
   }
 
   return <HomePage scrollTo={route.section} />;

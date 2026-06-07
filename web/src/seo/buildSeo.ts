@@ -185,7 +185,15 @@ export function getPageMeta(route: AppRoute): PageMeta {
       title: 'Credence · Project Midas',
       description:
         'Credence — ingest, resolve, infer, and display open-cluster stars in a planetarium atlas. ' +
-        'M34 infer F1 ≈ 0.66 vs legacy Q ≈ 0.55. Galaxy-scale tiers from Cantat-Gaudin and Hunt catalogs.',
+        'T0 cluster-held-out infer; galaxy-scale tiers from Cantat-Gaudin and Hunt catalogs.',
+    };
+  }
+
+  if (route.type === 'atlas') {
+    return {
+      title: 'Credence Atlas · T0 clusters',
+      description:
+        'Interactive sky map of six T0 open clusters — Cantat-Gaudin members colored by Credence infer (p_binary, P(member)).',
     };
   }
 

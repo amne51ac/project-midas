@@ -405,7 +405,7 @@ export const CREDENCE = {
 
   roadmap: [
     'v0: credence-mlp-v1 on M34 — infer plumbing (done)',
-    'v1: Credence Atlas on M34 — display layer',
+    'v1: Credence Atlas on T0 — /atlas live (6 clusters)',
     'v2: T0 ingest (5–10 clusters) + cluster-held-out credence-mlp-v2',
     'v3: T1 scale (~3×10⁵), calibration + region tiles',
     'v4: T2 production infer (~10⁶) + Zenodo release',

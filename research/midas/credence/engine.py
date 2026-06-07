@@ -33,6 +33,7 @@ CREDENCE_JSON = PROCESSED / "credence_summary.json"
 CREDENCE_CHECKPOINT = PROCESSED / "credence_model.pt"
 T0_CHECKPOINT = PROCESSED / "credence_model_t0.pt"
 T0_SUMMARY_JSON = PROCESSED / "credence_t0_summary.json"
+T0_VECTORS_CSV = PROCESSED / "credence_t0_vectors.csv"
 T0_MODEL_VERSION = "credence-mlp-v2-t0"
 CREDENCE_VECTORS_CSV = PROCESSED / "credence_vectors.csv"
 
@@ -75,6 +76,7 @@ def infer_vectors(
     stats: FeatureStats,
     *,
     device: torch.device | None = None,
+    model_version: str = MODEL_VERSION,
 ) -> dict[int, CredenceVector]:
     device = device or _device()
     model = model.to(device)
@@ -100,7 +102,7 @@ def infer_vectors(
             p_ruwe=float(p_ruwe[i]),
             score=score,
             planes=planes,
-            model_version=MODEL_VERSION,
+            model_version=model_version,
         )
     return vectors
 
@@ -337,10 +339,19 @@ def compare_to_q(
     }
 
 
-def write_vectors_csv(rows: list[CredenceRow], vectors: dict[int, CredenceVector], path: Path) -> None:
+def write_vectors_csv(
+    rows: list[CredenceRow],
+    vectors: dict[int, CredenceVector],
+    path: Path,
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
+        "cluster_id",
         "midas_id",
+        "ra",
+        "dec",
+        "phot_g_mean_mag",
+        "cg_proba",
         "p_binary",
         "p_cmd",
         "p_ir",
@@ -358,7 +369,12 @@ def write_vectors_csv(rows: list[CredenceRow], vectors: dict[int, CredenceVector
             v = vectors[row.midas_id]
             w.writerow(
                 {
+                    "cluster_id": row.cluster_id,
                     "midas_id": row.midas_id,
+                    "ra": row.ra if row.ra is not None else "",
+                    "dec": row.dec if row.dec is not None else "",
+                    "phot_g_mean_mag": row.g if row.g is not None else "",
+                    "cg_proba": round(row.cg_proba, 4) if row.cg_proba is not None else "",
                     "p_binary": round(v.p_binary, 5),
                     "p_cmd": round(v.p_cmd, 5),
                     "p_ir": round(v.p_ir, 5),
@@ -456,7 +472,7 @@ def run_credence_t0(
     else:
         model, stats, train_meta = load_model(checkpoint or T0_CHECKPOINT)
 
-    vectors = infer_vectors(model, rows, stats)
+    vectors = infer_vectors(model, rows, stats, model_version=T0_MODEL_VERSION)
 
     test_eval = evaluate_vectors(
         split.test,
@@ -509,6 +525,8 @@ def run_credence_t0(
         write_json.parent.mkdir(parents=True, exist_ok=True)
         with open(write_json, "w") as f:
             json.dump(summary, f, indent=2)
+
+    write_vectors_csv(rows, vectors, T0_VECTORS_CSV)
 
     return summary
 

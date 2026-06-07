@@ -28,7 +28,8 @@ export type HomeSectionId = (typeof HOME_SECTION_IDS)[number];
 export type AppRoute =
   | { type: 'home'; section?: HomeSectionId }
   | { type: 'continued'; section?: ContinuedSectionId }
-  | { type: 'credence' };
+  | { type: 'credence' }
+  | { type: 'atlas' };
 
 function isHomeSection(value: string): value is HomeSectionId {
   return (HOME_SECTION_IDS as readonly string[]).includes(value);
@@ -61,6 +62,8 @@ export function parsePathname(pathname: string): AppRoute {
   if (path === '/') return { type: 'home' };
 
   if (path === '/credence') return { type: 'credence' };
+
+  if (path === '/atlas') return { type: 'atlas' };
 
   const legacy = legacyPhaseToContinued(path);
   if (legacy) return legacy;
@@ -95,6 +98,7 @@ export function useAppRoute(): AppRoute {
 
 export function routeToPath(route: AppRoute): string {
   if (route.type === 'credence') return '/credence';
+  if (route.type === 'atlas') return '/atlas';
   if (route.type === 'continued') {
     return route.section ? `/continued/${route.section}` : '/continued';
   }
@@ -106,6 +110,7 @@ export function routeToPath(route: AppRoute): string {
 
 export function routeToFilePath(route: AppRoute): string {
   if (route.type === 'credence') return 'credence/index.html';
+  if (route.type === 'atlas') return 'atlas/index.html';
   if (route.type === 'continued') {
     return route.section ? `continued/${route.section}/index.html` : 'continued/index.html';
   }

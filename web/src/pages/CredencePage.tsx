@@ -402,8 +402,11 @@ export function CredencePage() {
             </ul>
           </article>
           <p className="section__prose">
-            <strong>Coming next:</strong> <code>/atlas</code> — the display step as a planetarium pan/zoom on
-            the celestial sphere, starting with M34 credence layers.
+            <a href="/atlas" className="hero__link">
+              Open Credence Atlas
+            </a>
+            {' '}
+            — T0 clusters colored by <code>p_binary</code> (display step).
           </p>
         </section>
 

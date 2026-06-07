@@ -35,6 +35,8 @@ class CredenceRow:
     malofeeva: bool
     excel_binary: bool
     ruwe_high: bool
+    ra: float | None = None
+    dec: float | None = None
     Q: float | None = None
 
 
@@ -104,6 +106,8 @@ def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> Credence
         excel_binary=bool(int(rec.get("excel_binary") or 0)),
         ruwe_high=bool(int(rec.get("ruwe_high") or 0))
         or (ruwe is not None and ruwe > RUWE_ASTROMETRIC_BINARY),
+        ra=_float(rec.get("ra")),
+        dec=_float(rec.get("dec")),
         Q=pipeline_q.get(midas_id) if pipeline_q else None,
     )
 
@@ -171,6 +175,8 @@ def load_credence_rows(
                     malofeeva=bool(int(rec.get("malofeeva") or 0)),
                     excel_binary=bool(int(rec.get("excel_binary") or 0)),
                     ruwe_high=ruwe is not None and ruwe > RUWE_ASTROMETRIC_BINARY,
+                    ra=_float(rec.get("ra")),
+                    dec=_float(rec.get("dec")),
                     Q=pipeline_q.get(midas_id) if pipeline_q else None,
                 )
             )
@@ -314,7 +320,10 @@ def label_vectors(rows: list[CredenceRow]) -> dict[str, np.ndarray]:
         "y_binary": np.array([_binary_train_target(r) for r in rows], dtype=np.float32),
         "y_cmd": np.array([float(r.excel_binary) for r in rows], dtype=np.float32),
         "y_ir": np.array(
-            [float(r.malofeeva) if row.cluster_id == "ngc_1039" else float(row.ruwe_high) for row in rows],
+            [
+                float(row.malofeeva) if row.cluster_id == "ngc_1039" else float(row.ruwe_high)
+                for row in rows
+            ],
             dtype=np.float32,
         ),
         "y_ruwe": np.array([float(row.ruwe_high) for row in rows], dtype=np.float32),

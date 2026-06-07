@@ -52,6 +52,7 @@ export function Header() {
   const isHome = route.type === 'home';
   const isContinued = route.type === 'continued';
   const isCredence = route.type === 'credence';
+  const isAtlas = route.type === 'atlas';
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-home-route', isHome);
@@ -130,6 +131,14 @@ export function Header() {
             onClick={closeMenu}
           >
             Credence
+          </a>
+          <a
+            href="/atlas"
+            className={navLinkClass(isAtlas)}
+            aria-current={isAtlas ? 'page' : undefined}
+            onClick={closeMenu}
+          >
+            Atlas
           </a>
         </nav>
 
@@ -214,6 +223,9 @@ export function Header() {
         </a>
         <a href="/continued" className={navLinkClass(isContinued)} onClick={closeMenu}>
           Midas Continued
+        </a>
+        <a href="/atlas" className={navLinkClass(isAtlas)} onClick={closeMenu}>
+          Atlas
         </a>
         <a href="/credence" className={navLinkClass(isCredence)} onClick={closeMenu}>
           Credence

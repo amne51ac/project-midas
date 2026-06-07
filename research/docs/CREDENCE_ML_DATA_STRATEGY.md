@@ -211,7 +211,7 @@ Full census from the start is appropriate **only** when split by purpose:
 **Setup:** Train on 5 clusters (Pleiades, Hyades, Praesepe, M35, IC 2602) — 3,710 members.  
 Hold out **M34** (263 members). Training uses **RUWE** weak labels off M34; M34 **not** in training gradients.
 
-**Held-out M34 vs Malofeeva (tuned threshold):** P≈0.83, R≈0.08, **F1≈0.15** (vs F1≈0.96 in-sample on M34).
+**Held-out M34 vs Malofeeva (tuned threshold):** P≈0.83, R≈0.10, **F1≈0.18** (vs F1≈0.96 in-sample on M34). LOO report: `credence_t0_cv.json` via `validate_credence_t0.py --loo`.
 
 This is the expected gap when generalizing across clusters without M34-specific supervision. Next: literature labels per cluster, LOO report (`validate_credence_t0.py --loo`), calibration.
 
