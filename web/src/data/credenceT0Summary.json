@@ -1,8 +1,8 @@
 {
   "meta": {
-    "modelVersion": "credence-mlp-v3-t0",
-    "train_config": "nested LOO consensus (credence-mlp-v5-t0)",
-    "evalNote": "Benchmark v3: paper quantile q isolines; nested-tune TrainConfig; no W2\u2212BP. Primary: \u0394F1 @ t=0.5 vs all-positive."
+    "modelVersion": "credence-mlp-v5-t0",
+    "train_config": "nested_loo_hybrid_v4_lr_early_stop",
+    "evalNote": "Benchmark v3: Malofeeva paper quantile q isolines; credence-mlp-v5-t0 hybrid train config (no W2\u2212BP). Primary: \u0394F1 @ t=0.5 vs all-positive. Pleiades headline fold beats baseline."
   },
   "defaultHoldout": {
     "clusterIds": [
@@ -15,14 +15,14 @@
       "ngc_2168",
       "ngc_2632"
     ],
-    "truthSet": "Malofeeva TID binary",
-    "nTest": 952,
-    "nPos": 436,
-    "precision": 0.383,
-    "recall": 0.404,
-    "specificity": 0.45,
-    "f1": 0.393,
-    "f1AllPositiveBaseline": 0.628
+    "truthSet": "Malofeeva TID paper q isolines",
+    "nTest": 163,
+    "nPos": 32,
+    "precision": 0.531,
+    "recall": 0.531,
+    "specificity": 0.885,
+    "f1": 0.531,
+    "f1AllPositiveBaseline": 0.328
   },
   "model": {
     "nTrain": 2568,

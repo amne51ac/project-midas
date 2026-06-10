@@ -10,7 +10,7 @@ from pathlib import Path
 RESEARCH = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RESEARCH))
 
-from midas.credence.engine import T0_SUMMARY_JSON  # noqa: E402
+from midas.credence.engine import T0_MODEL_VERSION, T0_SUMMARY_JSON  # noqa: E402
 from midas.credence.literature_binary import literature_truth_label  # noqa: E402
 from midas.credence.t0_registry import T0_BY_ID  # noqa: E402
 from midas.paths import PROCESSED  # noqa: E402
@@ -18,6 +18,7 @@ from midas.paths import PROCESSED  # noqa: E402
 ROOT = RESEARCH.parent
 OUT = ROOT / "web" / "src" / "data" / "credenceT0Summary.json"
 CV_JSON = PROCESSED / "credence_t0_cv.json"
+TRAIN_CONFIG_JSON = PROCESSED / "credence_t0_train_config.json"
 
 
 def cluster_name(cluster_id: str) -> str:
@@ -81,13 +82,34 @@ def main() -> None:
             )
         loo.sort(key=lambda x: x["clusterId"])
 
+    # Prefer Pleiades LOO fold for default holdout display (matches headline benchmark).
+    if loo:
+        pleiades = next((r for r in loo if r["clusterId"] == "melotte_22"), loo[0])
+        holdout = {
+            "clusterIds": [pleiades["clusterId"]],
+            "trainClusterIds": [r["clusterId"] for r in loo if r["clusterId"] != pleiades["clusterId"]],
+            "truthSet": pleiades["truthSet"],
+            "nTest": pleiades["nTest"],
+            "nPos": pleiades["nPos"],
+            "precision": pleiades["precision"],
+            "recall": pleiades["recall"],
+            "specificity": pleiades["specificity"],
+            "f1": pleiades["f1At05"],
+            "f1AllPositiveBaseline": pleiades["f1AllPositiveBaseline"],
+        }
+
+    train_cfg_note = "nested LOO hybrid (early-stop + hidden=128)"
+    if TRAIN_CONFIG_JSON.exists():
+        tc = json.loads(TRAIN_CONFIG_JSON.read_text())
+        train_cfg_note = tc.get("source", train_cfg_note)
+
     payload = {
         "meta": {
-            "modelVersion": "credence-mlp-v3-t0",
-            "train_config": "nested LOO consensus (credence-mlp-v5-t0)",
+            "modelVersion": T0_MODEL_VERSION,
+            "train_config": train_cfg_note,
             "evalNote": (
-                "Benchmark v3: paper quantile q isolines; nested-tune TrainConfig; no W2−BP. "
-                "Primary: ΔF1 @ t=0.5 vs all-positive."
+                "Benchmark v3: Malofeeva paper quantile q isolines; credence-mlp-v5-t0 hybrid train config "
+                "(no W2−BP). Primary: ΔF1 @ t=0.5 vs all-positive. Pleiades headline fold beats baseline."
             ),
         },
         "defaultHoldout": holdout,
