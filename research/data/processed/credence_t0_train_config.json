@@ -1,0 +1,22 @@
+{
+  "model_version": "credence-mlp-v5-t0",
+  "source": "nested_loo_hybrid_v4_lr_early_stop",
+  "nested_tune_outer_mean_delta_f1": -0.047356192268686204,
+  "config": {
+    "epochs": 80,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "hidden": 128,
+    "dropout": 0.1,
+    "val_fraction": 0.15,
+    "seed": 42,
+    "w_binary": 1.0,
+    "w_cmd": 0.15,
+    "w_ir": 0.05,
+    "w_ruwe": 0.15,
+    "pos_weight": 1.0,
+    "early_stop_patience": 20,
+    "val_metric": "macro_f1",
+    "feature_mode": "binary_no_w2bp"
+  }
+}

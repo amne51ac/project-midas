@@ -22,7 +22,14 @@ def main() -> None:
     cfg = default_t0_train_config()
     payload = {
         "model_version": T0_MODEL_VERSION,
-        "source": "nested_loo_consensus",
+        "source": "nested_loo_hybrid_v4_lr_early_stop",
+        "nested_tune_outer_mean_delta_f1": (
+            json.loads((PROCESSED / "credence_t0_nested_tune.json").read_text()).get(
+                "outer_mean_test_delta_f1"
+            )
+            if (PROCESSED / "credence_t0_nested_tune.json").exists()
+            else None
+        ),
         "config": asdict(cfg),
     }
     OUT.write_text(json.dumps(payload, indent=2))
