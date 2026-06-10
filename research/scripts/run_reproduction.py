@@ -77,6 +77,7 @@ def stage_phase4(*, ebv: float) -> None:
 
 def stage_credence_t0(*, epochs: int = 55, loo: bool = True) -> None:
     run("build_malofeeva_paper_isolines.py")
+    run("audit_tid_label_cases.py")
     run("probe_hyades_literature.py")
     run("write_benchmark_manifest.py")
     run("audit_malofeeva_labels.py")

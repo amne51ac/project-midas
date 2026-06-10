@@ -31,6 +31,7 @@ from midas.credence.benchmark import eval_universe, eval_tier, universe_label
 from midas.credence.calibrate import apply_calibration, fit_isotonic
 from midas.credence.model import MODEL_VERSION, CredenceInferModel, DEFAULT_DROPOUT, HIDDEN_DIM
 from midas.credence.splits import ClusterSplit, cluster_holdout_split
+from midas.credence.t0_defaults import default_t0_train_config
 from midas.membership import DEFAULT_CG_MEMBER_THRESHOLD
 from midas.paths import PROCESSED
 from midas.validation import ValidationRow, confusion_matrix, predict_q_binary, roc_curve
@@ -40,7 +41,7 @@ CREDENCE_CHECKPOINT = PROCESSED / "credence_model.pt"
 T0_CHECKPOINT = PROCESSED / "credence_model_t0.pt"
 T0_SUMMARY_JSON = PROCESSED / "credence_t0_summary.json"
 T0_VECTORS_CSV = PROCESSED / "credence_t0_vectors.csv"
-T0_MODEL_VERSION = "credence-mlp-v4-t0"
+T0_MODEL_VERSION = "credence-mlp-v5-t0"
 CREDENCE_VECTORS_CSV = PROCESSED / "credence_vectors.csv"
 
 DEFAULT_EPOCHS = 120
@@ -759,14 +760,16 @@ def run_credence_t0(
     rows = load_t0_credence_rows()
     split = cluster_holdout_split(rows, holdout_cluster_ids=holdout_cluster_ids)
 
+    cfg = config or default_t0_train_config(epochs=epochs)
+
     if retrain or not (checkpoint or T0_CHECKPOINT).exists():
         model, stats, train_meta = train_model(
             rows,
-            epochs=epochs,
+            epochs=cfg.epochs,
             checkpoint=checkpoint or T0_CHECKPOINT,
             holdout_cluster_ids=holdout_cluster_ids,
             model_version=T0_MODEL_VERSION,
-            config=config,
+            config=cfg,
         )
     else:
         model, stats, train_meta = load_model(checkpoint or T0_CHECKPOINT)

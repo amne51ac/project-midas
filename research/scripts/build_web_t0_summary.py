@@ -84,9 +84,10 @@ def main() -> None:
     payload = {
         "meta": {
             "modelVersion": "credence-mlp-v3-t0",
+            "train_config": "nested LOO consensus (credence-mlp-v5-t0)",
             "evalNote": (
-                "Benchmark v3: Malofeeva paper quantile q isolines; train without W2−BP. "
-                "Primary: ΔF1 @ t=0.5 vs all-positive. Headline = 3 Malofeeva folds."
+                "Benchmark v3: paper quantile q isolines; nested-tune TrainConfig; no W2−BP. "
+                "Primary: ΔF1 @ t=0.5 vs all-positive."
             ),
         },
         "defaultHoldout": holdout,

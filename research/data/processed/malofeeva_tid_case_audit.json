@@ -1,0 +1,47 @@
+{
+  "summary": "Case (a): left of q=0 isoline. Case (b): left of q=0.2 isoline (q\u2208[0,0.2] counted single). Production labels use case (a).",
+  "clusters": {
+    "melotte_22": {
+      "n_eval_universe": 163,
+      "case_a_pos_rate": 0.196,
+      "case_b_pos_rate": 0.209,
+      "target_case_a": 0.55,
+      "target_case_b": 0.45,
+      "case_a_vs_b_agreement": 0.988,
+      "case_b_more_conservative": false,
+      "production_pos_rate": 0.196,
+      "isoline_source": "paper_quantile",
+      "q0_shift": 0.40000000000000013
+    },
+    "ngc_1039": {
+      "n_eval_universe": 98,
+      "case_a_pos_rate": 0.408,
+      "case_b_pos_rate": 0.541,
+      "target_case_a": 0.52,
+      "target_case_b": 0.42,
+      "case_a_vs_b_agreement": 0.867,
+      "case_b_more_conservative": false,
+      "production_pos_rate": 0.463,
+      "isoline_source": "paper_quantile",
+      "q0_shift": 0.40000000000000013,
+      "note": "M34/Praesepe focus: case (b) lowers positive rate; check if model recall@0.5 improves under less strict boundary."
+    },
+    "ngc_2632": {
+      "n_eval_universe": 161,
+      "case_a_pos_rate": 0.429,
+      "case_b_pos_rate": 0.441,
+      "target_case_a": 0.58,
+      "target_case_b": 0.48,
+      "case_a_vs_b_agreement": 0.988,
+      "case_b_more_conservative": false,
+      "production_pos_rate": 0.429,
+      "isoline_source": "paper_quantile",
+      "q0_shift": 0.44999999999999996,
+      "note": "M34/Praesepe focus: case (b) lowers positive rate; check if model recall@0.5 improves under less strict boundary."
+    }
+  },
+  "recommendation": {
+    "switch_to_case_b": false,
+    "rationale": "M34 case_b pos 0.541 vs case_a 0.408; Praesepe case_b 0.441 vs case_a 0.429. Case (b) is stricter (fewer positives). Switch only if paper methodology requires q=0.2 boundary."
+  }
+}
