@@ -1,4 +1,5 @@
 import credenceSummary from './credenceSummary.json';
+import credenceT0Summary from './credenceT0Summary.json';
 import { homeSectionHref } from '../routing/appRoute';
 
 export const GITHUB_REPO = 'https://github.com/amne51ac/project-midas';
@@ -321,6 +322,7 @@ export const CREDENCE = {
       `CG members P ≥ ${credenceSummary.meta.cgTrainProba}: ` +
         `${credenceSummary.model.nTrain} train / ${credenceSummary.model.nVal} val · ` +
         `${credenceSummary.model.epochs} epochs · hidden ${credenceSummary.model.hiddenDim}`,
+    t0: credenceT0Summary,
   },
 
   display: {
@@ -399,17 +401,19 @@ export const CREDENCE = {
   limitations: [
     'M34 F1 uses Malofeeva as training target and benchmark — not cluster-held-out.',
     'Random 224/39 train/val on one cluster does not prove cross-cluster generalization.',
+    'T0 LOO: Malofeeva IR on M34/Pleiades/Praesepe; Brandner non-single on Hyades; RUWE elsewhere (weak).',
     'Membership catalogs disagree at faint limits; credences must show uncertainty.',
     'Legacy Midas-depth BVR exists for ~10¹ clusters, not galaxy scale.',
   ],
 
   roadmap: [
     'v0: credence-mlp-v1 on M34 — infer plumbing (done)',
-    'v1: Credence Atlas on T0 — /atlas live (6 clusters)',
-    'v2: T0 ingest (5–10 clusters) + cluster-held-out credence-mlp-v2',
-    'v3: T1 scale (~3×10⁵), calibration + region tiles',
-    'v4: T2 production infer (~10⁶) + Zenodo release',
-    'v5: Gaia XP encoder; spectroscopic fine-tune on gold labels',
+    'v1: Credence Atlas on T0 — /atlas live with pan/zoom (done)',
+    'v2: T0 ingest (6 clusters) + cluster-held-out credence-mlp-v2 (done)',
+    'v3: Literature binary labels per cluster + calibration',
+    'v4: T1 scale (~3×10⁵), region tiles',
+    'v5: T2 production infer (~10⁶) + Zenodo release',
+    'v6: Gaia XP encoder; spectroscopic fine-tune on gold labels',
   ],
 };
 

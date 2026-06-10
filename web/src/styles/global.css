@@ -3568,6 +3568,15 @@ code {
   margin: 1rem 0;
 }
 
+.credence-eval-caveat {
+  font-size: 0.82rem;
+  color: var(--ink-muted);
+  margin: 0.75rem 0 0;
+  padding: 0.65rem 0.85rem;
+  border-left: 3px solid var(--rule);
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg-alt));
+}
+
 .credence-table {
   width: 100%;
   border-collapse: collapse;
@@ -3976,12 +3985,31 @@ code {
   flex: 1 1 100%;
 }
 
-.atlas-panel__chart-wrap {
-  position: relative;
-  background: #0f172a;
-  border-radius: 10px;
-  border: 1px solid #334155;
-  overflow: hidden;
+.atlas-panel__fly,
+.atlas-panel__reset {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #475569;
+  background: #1e293b;
+  color: #e2e8f0;
+  cursor: pointer;
+}
+
+.atlas-panel__fly:hover:not(:disabled),
+.atlas-panel__reset:hover {
+  border-color: #94a3b8;
+  background: #334155;
+}
+
+.atlas-panel__fly:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.atlas-panel__actions {
+  display: flex;
+  align-items: flex-end;
 }
 
 .atlas-panel__svg {
@@ -3989,6 +4017,20 @@ code {
   height: auto;
   display: block;
   min-height: 420px;
+  cursor: grab;
+  touch-action: none;
+}
+
+.atlas-panel__svg:active {
+  cursor: grabbing;
+}
+
+.atlas-panel__chart-wrap {
+  position: relative;
+  background: #0f172a;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  overflow: hidden;
 }
 
 .atlas-tooltip {

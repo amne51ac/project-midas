@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import csv
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 
 import numpy as np
 
+from midas.credence.literature_binary import MALOFeeva_VIZIER, clusters_with_literature, literature_truth_label
 from midas.credence.t0_registry import T0_BY_ID, get_cluster
 from midas.membership import DEFAULT_CG_MEMBER_THRESHOLD
 from midas.paths import PROCESSED
@@ -17,9 +19,18 @@ JOIN_IR_CSV = PROCESSED / "m34_join_ir.csv"
 T0_JOIN_IR_CSV = PROCESSED / "t0_join_ir.csv"
 GAIA_CSV = PROCESSED / "gaia_m34.csv"
 
+M34_CLUSTER_ID = "ngc_1039"
+LITERATURE_CLUSTERS = clusters_with_literature()
 DEFAULT_CG_TRAIN_PROBA = 0.7
 M34_DIST_PC = 470.0
 M34_AGE_GYR = 0.2
+
+
+class FeatureMode(str, Enum):
+    """Training/inference feature sets (feature firewall for benchmark ablation)."""
+
+    FULL = "full"
+    BINARY_NO_W2BP = "binary_no_w2bp"  # drop W2−BP from IR plane — reduces label leakage
 
 
 @dataclass
@@ -30,11 +41,19 @@ class CredenceRow:
     bp_rp: float | None
     w2_bp: float | None
     ruwe: float | None
-    cg_proba: float | None
-    cg_member: bool
-    malofeeva: bool
-    excel_binary: bool
-    ruwe_high: bool
+    parallax: float | None = None
+    pmra: float | None = None
+    pmdec: float | None = None
+    h_mag: float | None = None
+    w2_mag: float | None = None
+    h_w2: float | None = None
+    cg_proba: float | None = None
+    cg_member: bool = False
+    malofeeva: bool = False
+    malofeeva_in_sample: bool = False
+    tid_mass_ok: bool = False
+    excel_binary: bool = False
+    ruwe_high: bool = False
     ra: float | None = None
     dec: float | None = None
     Q: float | None = None
@@ -50,6 +69,16 @@ class FeatureStats:
     w2_bp_std: float
     ruwe_mean: float
     ruwe_std: float
+    parallax_mean: float
+    parallax_std: float
+    pmra_mean: float
+    pmra_std: float
+    pmdec_mean: float
+    pmdec_std: float
+    h_mag_mean: float
+    h_mag_std: float
+    h_w2_mean: float
+    h_w2_std: float
 
 
 @dataclass
@@ -89,6 +118,10 @@ def _load_gaia_bp_rp() -> dict[str, tuple[float, float]]:
     return out
 
 
+def _h_w2(row: CredenceRow) -> float | None:
+    return row.h_mag
+
+
 def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> CredenceRow:
     star_id = str(rec.get("star_id", "")).strip()
     midas_id = int(star_id) if star_id.isdigit() else hash(star_id) % (10**9)
@@ -100,9 +133,17 @@ def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> Credence
         bp_rp=_float(rec.get("bp_rp")),
         w2_bp=_float(rec.get("w2_bp")),
         ruwe=ruwe,
+        parallax=_float(rec.get("parallax")),
+        pmra=_float(rec.get("pmra")),
+        pmdec=_float(rec.get("pmdec")),
+        h_mag=_float(rec.get("h_mag")),
+        w2_mag=_float(rec.get("w2_mag")),
+        h_w2=_float(rec.get("h_w2")),
         cg_proba=_float(rec.get("cg_proba")),
         cg_member=bool(int(rec.get("cg_member") or 0)),
         malofeeva=bool(int(rec.get("malofeeva") or 0)),
+        malofeeva_in_sample=bool(int(rec.get("malofeeva_in_sample") or 0)),
+        tid_mass_ok=bool(int(rec.get("tid_mass_ok") or 0)),
         excel_binary=bool(int(rec.get("excel_binary") or 0)),
         ruwe_high=bool(int(rec.get("ruwe_high") or 0))
         or (ruwe is not None and ruwe > RUWE_ASTROMETRIC_BINARY),
@@ -213,6 +254,11 @@ def compute_feature_stats(rows: list[CredenceRow]) -> FeatureStats:
     bp_rp = np.array([r.bp_rp for r in members if r.bp_rp is not None], dtype=np.float64)
     w2_bp = np.array([r.w2_bp for r in members if r.w2_bp is not None], dtype=np.float64)
     ruwe = np.array([r.ruwe for r in members if r.ruwe is not None], dtype=np.float64)
+    plx = np.array([r.parallax for r in members if r.parallax is not None], dtype=np.float64)
+    pmra = np.array([r.pmra for r in members if r.pmra is not None], dtype=np.float64)
+    pmdec = np.array([r.pmdec for r in members if r.pmdec is not None], dtype=np.float64)
+    h_mag_arr = np.array([r.h_mag for r in members if r.h_mag is not None], dtype=np.float64)
+    h_w2_arr = np.array([r.h_w2 for r in members if r.h_w2 is not None], dtype=np.float64)
 
     def _ms(arr: np.ndarray, default: float = 0.0) -> tuple[float, float]:
         if len(arr) == 0:
@@ -223,6 +269,11 @@ def compute_feature_stats(rows: list[CredenceRow]) -> FeatureStats:
     b_m, b_s = _ms(bp_rp, 0.5)
     w_m, w_s = _ms(w2_bp, 0.5)
     r_m, r_s = _ms(ruwe, 1.0)
+    plx_m, plx_s = _ms(plx, 1.0)
+    pmra_m, pmra_s = _ms(pmra, 5.0)
+    pmdec_m, pmdec_s = _ms(pmdec, 5.0)
+    h_m, h_s = _ms(h_mag_arr, 10.0)
+    hw_m, hw_s = _ms(h_w2_arr, 1.0)
     return FeatureStats(
         g_mean=g_m,
         g_std=g_s,
@@ -232,6 +283,16 @@ def compute_feature_stats(rows: list[CredenceRow]) -> FeatureStats:
         w2_bp_std=w_s,
         ruwe_mean=r_m,
         ruwe_std=r_s,
+        parallax_mean=plx_m,
+        parallax_std=plx_s,
+        pmra_mean=pmra_m,
+        pmra_std=pmra_s,
+        pmdec_mean=pmdec_m,
+        pmdec_std=pmdec_s,
+        h_mag_mean=h_m,
+        h_mag_std=h_s,
+        h_w2_mean=hw_m,
+        h_w2_std=hw_s,
     )
 
 
@@ -265,16 +326,34 @@ def _norm(v: float | None, mean: float, std: float) -> tuple[float, float]:
     return (v - mean) / std, 1.0
 
 
-def row_features(row: CredenceRow, stats: FeatureStats) -> dict[str, np.ndarray]:
+def row_features(
+    row: CredenceRow,
+    stats: FeatureStats,
+    *,
+    feature_mode: FeatureMode = FeatureMode.FULL,
+) -> dict[str, np.ndarray]:
     g, g_ok = _norm(row.g, stats.g_mean, stats.g_std)
     bp, bp_ok = _norm(row.bp_rp, stats.bp_rp_mean, stats.bp_rp_std)
     ru, ru_ok = _norm(row.ruwe, stats.ruwe_mean, stats.ruwe_std)
+    plx, plx_ok = _norm(row.parallax, stats.parallax_mean, stats.parallax_std)
+    pmra, pmra_ok = _norm(row.pmra, stats.pmra_mean, stats.pmra_std)
+    pmdec, pmdec_ok = _norm(row.pmdec, stats.pmdec_mean, stats.pmdec_std)
     w2, w2_ok = _norm(row.w2_bp, stats.w2_bp_mean, stats.w2_bp_std)
+    hw, hw_ok = _norm(row.h_w2, stats.h_w2_mean, stats.h_w2_std)
+    hm, hm_ok = _norm(row.h_mag, stats.h_mag_mean, stats.h_mag_std)
 
-    gaia = np.array([g, bp, ru if ru_ok else 0.0], dtype=np.float32)
-    gaia_mask = np.array([g_ok, bp_ok, ru_ok], dtype=np.float32)
-    wise = np.array([w2], dtype=np.float32)
-    wise_mask = np.array([w2_ok], dtype=np.float32)
+    gaia = np.array([g, bp, ru, plx, pmra, pmdec], dtype=np.float32)
+    gaia_mask = np.array([g_ok, bp_ok, ru_ok, plx_ok, pmra_ok, pmdec_ok], dtype=np.float32)
+
+    ir_val = hw if hw_ok else (hm if hm_ok else 0.0)
+    ir_ok = hw_ok or hm_ok
+    if feature_mode == FeatureMode.BINARY_NO_W2BP:
+        wise = np.array([ir_val, 0.0], dtype=np.float32)
+        wise_mask = np.array([float(ir_ok), 0.0], dtype=np.float32)
+    else:
+        wise = np.array([w2, ir_val], dtype=np.float32)
+        wise_mask = np.array([w2_ok, float(ir_ok)], dtype=np.float32)
+
     p_member = float(row.cg_proba if row.cg_proba is not None else 0.0)
 
     return {
@@ -290,8 +369,10 @@ def batch_tensors(
     rows: list[CredenceRow],
     stats: FeatureStats,
     ctx: np.ndarray | None = None,
+    *,
+    feature_mode: FeatureMode = FeatureMode.FULL,
 ) -> dict[str, np.ndarray]:
-    feats = [row_features(r, stats) for r in rows]
+    feats = [row_features(r, stats, feature_mode=feature_mode) for r in rows]
     n = len(rows)
     if ctx is None:
         ctx_batch = np.stack([cluster_context(stats, cluster_id=r.cluster_id) for r in rows])
@@ -307,11 +388,45 @@ def batch_tensors(
     }
 
 
+def eval_truth(row: CredenceRow, *, mode: str = "auto") -> bool:
+    """Cluster-aware evaluation: literature binary where ingested, else RUWE."""
+    if mode == "malofeeva":
+        return row.malofeeva
+    if mode == "ruwe":
+        return row.ruwe_high
+    if row.cluster_id in LITERATURE_CLUSTERS:
+        if row.cluster_id in MALOFeeva_VIZIER and not row.malofeeva_in_sample:
+            return False
+        return row.malofeeva
+    return row.ruwe_high
+
+
+def eval_truth_label(rows: list[CredenceRow]) -> str:
+    clusters = {r.cluster_id for r in rows}
+    lit = clusters & LITERATURE_CLUSTERS
+    if len(lit) == 1:
+        return literature_truth_label(next(iter(lit)))
+    if lit:
+        labels = sorted({literature_truth_label(c) for c in lit})
+        if len(labels) == 1:
+            return labels[0]
+        return " + ".join(labels)
+    return "RUWE high"
+
+
+def eval_score(row: CredenceRow, vector: CredenceVector) -> float:
+    """Score for thresholding: p_binary on literature clusters, p_ruwe elsewhere."""
+    if row.cluster_id in LITERATURE_CLUSTERS:
+        return vector.p_binary
+    return vector.p_ruwe
+
+
 def _binary_train_target(row: CredenceRow) -> float:
     """Per-row supervised target for p_binary during training."""
-    if row.cluster_id == "ngc_1039":
+    if row.cluster_id in LITERATURE_CLUSTERS:
+        if not row.malofeeva_in_sample or not row.tid_mass_ok:
+            return 0.0
         return float(row.malofeeva)
-    # Other T0 clusters: no Malofeeva ingest yet — astrometric weak label
     return float(row.ruwe_high)
 
 
@@ -321,14 +436,22 @@ def label_vectors(rows: list[CredenceRow]) -> dict[str, np.ndarray]:
         "y_cmd": np.array([float(r.excel_binary) for r in rows], dtype=np.float32),
         "y_ir": np.array(
             [
-                float(row.malofeeva) if row.cluster_id == "ngc_1039" else float(row.ruwe_high)
+                float(row.malofeeva)
+                if row.cluster_id in LITERATURE_CLUSTERS and row.malofeeva_in_sample
+                else float(row.ruwe_high)
                 for row in rows
             ],
             dtype=np.float32,
         ),
         "y_ruwe": np.array([float(row.ruwe_high) for row in rows], dtype=np.float32),
         "weight": np.array(
-            [r.cg_proba if r.cg_proba is not None else 0.0 for r in rows],
+            [
+                0.0
+                if r.cluster_id in LITERATURE_CLUSTERS
+                and (not r.malofeeva_in_sample or not r.tid_mass_ok)
+                else (r.cg_proba if r.cg_proba is not None else 0.0)
+                for r in rows
+            ],
             dtype=np.float32,
         ),
     }
@@ -340,6 +463,7 @@ __all__ = [
     "FeatureStats",
     "DEFAULT_CG_MEMBER_THRESHOLD",
     "DEFAULT_CG_TRAIN_PROBA",
+    "FeatureMode",
     "JOIN_IR_CSV",
     "T0_JOIN_IR_CSV",
     "load_t0_credence_rows",

@@ -1,0 +1,156 @@
+{
+  "literature_labels": {
+    "ic_2602": {
+      "n": 311,
+      "n_pos": 0,
+      "prevalence": 0.0
+    },
+    "melotte_22": {
+      "n": 952,
+      "n_pos": 863,
+      "prevalence": 0.907
+    },
+    "melotte_25": {
+      "n": 515,
+      "n_pos": 114,
+      "prevalence": 0.221
+    },
+    "ngc_1039": {
+      "n": 263,
+      "n_pos": 242,
+      "prevalence": 0.92
+    },
+    "ngc_2168": {
+      "n": 1247,
+      "n_pos": 0,
+      "prevalence": 0.0
+    },
+    "ngc_2632": {
+      "n": 685,
+      "n_pos": 632,
+      "prevalence": 0.923
+    }
+  },
+  "cross_checks": {
+    "pleiades_malofeeva_overlap": "863/952",
+    "hyades_brandner_singles_in_g15": 261,
+    "hyades_literature_pos_g15": 114
+  },
+  "split_m34": {
+    "holdout_in_train": false,
+    "id_overlap": 0,
+    "n_train": 3154,
+    "n_test": 263
+  },
+  "holdout_audit": {
+    "ngc_1039": {
+      "truthSet": "Malofeeva IR",
+      "best_f1": {
+        "threshold": 0.05,
+        "f1": 0.9584158415841584,
+        "precision": 0.9201520912547528,
+        "recall": 1.0,
+        "specificity": 0.0,
+        "n": 263,
+        "n_pos": 242
+      },
+      "fixed_t0.5": {
+        "f1": 0.40764331210191085,
+        "precision": 0.8888888888888888,
+        "recall": 0.2644628099173554,
+        "specificity": 0.6190476190476191
+      },
+      "predict_all_positive": {
+        "f1": 0.9584158415841584,
+        "precision": 0.9201520912547528,
+        "recall": 1.0,
+        "specificity": 0.0,
+        "n_pos": 242,
+        "n": 263
+      },
+      "beats_all_pos_f1": false
+    },
+    "melotte_22": {
+      "truthSet": "Malofeeva IR",
+      "best_f1": {
+        "threshold": 0.2,
+        "f1": 0.9520132377275234,
+        "precision": 0.9084210526315789,
+        "recall": 1.0,
+        "specificity": 0.02247191011235955,
+        "n": 952,
+        "n_pos": 863
+      },
+      "fixed_t0.5": {
+        "f1": 0.3946902654867257,
+        "precision": 0.8352059925093633,
+        "recall": 0.25840092699884126,
+        "specificity": 0.5056179775280899
+      },
+      "predict_all_positive": {
+        "f1": 0.9509641873278237,
+        "precision": 0.9065126050420168,
+        "recall": 1.0,
+        "specificity": 0.0,
+        "n_pos": 863,
+        "n": 952
+      },
+      "beats_all_pos_f1": true
+    },
+    "melotte_25": {
+      "truthSet": "Brandner non-single",
+      "best_f1": {
+        "threshold": 0.75,
+        "f1": 0.4376470588235294,
+        "precision": 0.2990353697749196,
+        "recall": 0.8157894736842105,
+        "specificity": 0.456359102244389,
+        "n": 515,
+        "n_pos": 114
+      },
+      "fixed_t0.5": {
+        "f1": 0.3572567783094099,
+        "precision": 0.21832358674463936,
+        "recall": 0.9824561403508771,
+        "specificity": 0.0
+      },
+      "predict_all_positive": {
+        "f1": 0.3624801271860095,
+        "precision": 0.22135922330097088,
+        "recall": 1.0,
+        "specificity": 0.0,
+        "n_pos": 114,
+        "n": 515
+      },
+      "beats_all_pos_f1": true
+    },
+    "ngc_2632": {
+      "truthSet": "Malofeeva IR",
+      "best_f1": {
+        "threshold": 0.1,
+        "f1": 0.9619482496194824,
+        "precision": 0.9266862170087976,
+        "recall": 1.0,
+        "specificity": 0.05660377358490566,
+        "n": 685,
+        "n_pos": 632
+      },
+      "fixed_t0.5": {
+        "f1": 0.4941995359628771,
+        "precision": 0.9260869565217391,
+        "recall": 0.3370253164556962,
+        "specificity": 0.6792452830188679
+      },
+      "predict_all_positive": {
+        "f1": 0.9597570235383448,
+        "precision": 0.9226277372262773,
+        "recall": 1.0,
+        "specificity": 0.0,
+        "n_pos": 632,
+        "n": 685
+      },
+      "beats_all_pos_f1": true
+    }
+  },
+  "interpretation": "Malofeeva clusters are ~90% positive; best-F1 threshold often \u22480.05 predicts all members positive, matching the predict-all-positive F1 baseline. Hyades (~22% positive) is the main cluster where model F1 can exceed that baseline. Report fixed threshold (0.5) and specificity, not best-F1 alone, on Malofeeva holdouts."
+}

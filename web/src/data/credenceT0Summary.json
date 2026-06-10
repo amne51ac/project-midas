@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "modelVersion": "credence-mlp-v3-t0",
+    "evalNote": "Benchmark v3: Malofeeva paper quantile q isolines; train without W2\u2212BP. Primary: \u0394F1 @ t=0.5 vs all-positive. Headline = 3 Malofeeva folds."
+  },
+  "defaultHoldout": {
+    "clusterIds": [
+      "melotte_22"
+    ],
+    "trainClusterIds": [
+      "ic_2602",
+      "melotte_25",
+      "ngc_1039",
+      "ngc_2168",
+      "ngc_2632"
+    ],
+    "truthSet": "Malofeeva TID binary",
+    "nTest": 952,
+    "nPos": 436,
+    "precision": 0.383,
+    "recall": 0.404,
+    "specificity": 0.45,
+    "f1": 0.393,
+    "f1AllPositiveBaseline": 0.628
+  },
+  "model": {
+    "nTrain": 2568,
+    "nVal": 453
+  },
+  "leaveOneClusterOut": [
+    {
+      "clusterId": "ic_2602",
+      "clusterName": "IC 2602",
+      "truthSet": "RUWE high",
+      "nTest": 311,
+      "nPos": 5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "f1": 0.0,
+      "f1At05": 0.0,
+      "f1ValTuned": 0.0,
+      "f1AllPositiveBaseline": 0.032,
+      "deltaF1": -0.032,
+      "evalTier": "ruwe_weak",
+      "headline": false,
+      "beatsAllPosBaseline": false
+    },
+    {
+      "clusterId": "melotte_22",
+      "clusterName": "Pleiades",
+      "truthSet": "Malofeeva TID paper q isolines",
+      "nTest": 163,
+      "nPos": 32,
+      "precision": 0.239,
+      "recall": 0.656,
+      "specificity": 0.489,
+      "f1": 0.35,
+      "f1At05": 0.35,
+      "f1ValTuned": 0.328,
+      "f1AllPositiveBaseline": 0.328,
+      "deltaF1": 0.022,
+      "evalTier": "malofeeva_tid",
+      "headline": true,
+      "beatsAllPosBaseline": true
+    },
+    {
+      "clusterId": "melotte_25",
+      "clusterName": "Hyades",
+      "truthSet": "Brandner non-single",
+      "nTest": 375,
+      "nPos": 114,
+      "precision": 0.275,
+      "recall": 0.219,
+      "specificity": 0.747,
+      "f1": 0.244,
+      "f1At05": 0.244,
+      "f1ValTuned": 0.243,
+      "f1AllPositiveBaseline": 0.466,
+      "deltaF1": -0.222,
+      "evalTier": "hyades_provisional",
+      "headline": false,
+      "beatsAllPosBaseline": false
+    },
+    {
+      "clusterId": "ngc_1039",
+      "clusterName": "M34 (NGC 1039)",
+      "truthSet": "Malofeeva TID paper q isolines",
+      "nTest": 108,
+      "nPos": 50,
+      "precision": 0.7,
+      "recall": 0.14,
+      "specificity": 0.948,
+      "f1": 0.233,
+      "f1At05": 0.233,
+      "f1ValTuned": 0.258,
+      "f1AllPositiveBaseline": 0.633,
+      "deltaF1": -0.4,
+      "evalTier": "malofeeva_tid",
+      "headline": true,
+      "beatsAllPosBaseline": false
+    },
+    {
+      "clusterId": "ngc_2168",
+      "clusterName": "M35",
+      "truthSet": "RUWE high",
+      "nTest": 1247,
+      "nPos": 43,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "f1": 0.0,
+      "f1At05": 0.0,
+      "f1ValTuned": 0.0,
+      "f1AllPositiveBaseline": 0.067,
+      "deltaF1": -0.067,
+      "evalTier": "ruwe_weak",
+      "headline": false,
+      "beatsAllPosBaseline": false
+    },
+    {
+      "clusterId": "ngc_2632",
+      "clusterName": "Praesepe",
+      "truthSet": "Malofeeva TID paper q isolines",
+      "nTest": 161,
+      "nPos": 69,
+      "precision": 0.0,
+      "recall": 0.0,
+      "specificity": 1.0,
+      "f1": 0.0,
+      "f1At05": 0.0,
+      "f1ValTuned": 0.6,
+      "f1AllPositiveBaseline": 0.6,
+      "deltaF1": -0.6,
+      "evalTier": "malofeeva_tid",
+      "headline": true,
+      "beatsAllPosBaseline": false
+    }
+  ]
+}

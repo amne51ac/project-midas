@@ -1,0 +1,46 @@
+{
+  "finding": "VizieR fig* tables list all stars in the Malofeeva IR diagram sample (Gaia, W2BPKs, HW2W1) \u2014 not a binary flag column. Previous ingest treated in-table as malofeeva=1 (~90% positive). TID envelope calibrated to published binary fraction per cluster Paper q=0/q=0.2 quantile isolines (q88/q62 regression, serialized); case-a label; G in {'melotte_22': (5.5, 12.0), 'ngc_1039': (8.5, 14.5), 'ngc_2632': (6.0, 12.5)}. Eval universe: in-sample + tid_mass_ok.",
+  "hyades_sources": {
+    "malofeeva_ae6338_vizier": "not available",
+    "torres_rv_vizier": "not available",
+    "brandner_non_single": "in use for melotte_25"
+  },
+  "clusters": {
+    "melotte_22": {
+      "n_members": 952,
+      "n_in_malofeeva_table": 863,
+      "n_eval_universe": 163,
+      "eval_universe_pos_rate": 0.196,
+      "old_label_pos_rate": 0.907,
+      "new_tid_pos_rate": 0.034,
+      "target_binary_frac": 0.55,
+      "q0_shift": 0.40000000000000013,
+      "case_a_binary_frac": 0.558,
+      "case_b_binary_frac": 0.619
+    },
+    "ngc_1039": {
+      "n_members": 263,
+      "n_in_malofeeva_table": 242,
+      "n_eval_universe": 108,
+      "eval_universe_pos_rate": 0.463,
+      "old_label_pos_rate": 0.856,
+      "new_tid_pos_rate": 0.217,
+      "target_binary_frac": 0.52,
+      "q0_shift": 0.40000000000000013,
+      "case_a_binary_frac": 0.514,
+      "case_b_binary_frac": 0.613
+    },
+    "ngc_2632": {
+      "n_members": 685,
+      "n_in_malofeeva_table": 632,
+      "n_eval_universe": 161,
+      "eval_universe_pos_rate": 0.429,
+      "old_label_pos_rate": 0.923,
+      "new_tid_pos_rate": 0.101,
+      "target_binary_frac": 0.58,
+      "q0_shift": 0.44999999999999996,
+      "case_a_binary_frac": 0.566,
+      "case_b_binary_frac": 0.619
+    }
+  }
+}

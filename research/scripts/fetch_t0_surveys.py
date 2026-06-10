@@ -42,13 +42,13 @@ def fetch_gaia(cluster: T0Cluster) -> int:
     return len(table)
 
 
-def fetch_allwise(cluster: T0Cluster) -> int:
+def fetch_allwise(cluster: T0Cluster, *, force: bool = False) -> int:
     import astropy.units as u
     from astroquery.vizier import Vizier
     from astropy.coordinates import SkyCoord
 
     out = allwise_path(cluster)
-    if out.exists():
+    if out.exists() and not force:
         print(f"  AllWISE skip {cluster.cluster_id}")
         return 0
     Vizier.ROW_LIMIT = -1
@@ -67,10 +67,11 @@ def fetch_allwise(cluster: T0Cluster) -> int:
                 "dec": float(row["DEJ2000"]),
                 "w1_mag": float(row["W1mag"]) if row["W1mag"] == row["W1mag"] else "",
                 "w2_mag": float(row["W2mag"]) if row["W2mag"] == row["W2mag"] else "",
+                "h_mag": float(row["Hmag"]) if row["Hmag"] == row["Hmag"] else "",
             }
         )
     with open(out, "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=["wise_id", "ra", "dec", "w1_mag", "w2_mag"])
+        w = csv.DictWriter(f, fieldnames=["wise_id", "ra", "dec", "w1_mag", "w2_mag", "h_mag"])
         w.writeheader()
         w.writerows(rows)
     print(f"  AllWISE {cluster.cluster_id}: {len(rows)} → {out}")
@@ -82,6 +83,7 @@ def main() -> None:
     p.add_argument("--cluster", action="append", help="cluster_id (repeatable); default all T0")
     p.add_argument("--gaia-only", action="store_true")
     p.add_argument("--wise-only", action="store_true")
+    p.add_argument("--force", action="store_true", help="Re-download even if cache exists")
     args = p.parse_args()
 
     clusters = T0_CLUSTERS
@@ -94,7 +96,7 @@ def main() -> None:
         if not args.wise_only:
             fetch_gaia(cluster)
         if not args.gaia_only:
-            fetch_allwise(cluster)
+            fetch_allwise(cluster, force=args.force)
 
 
 if __name__ == "__main__":

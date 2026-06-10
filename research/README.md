@@ -251,6 +251,7 @@ T0 pipeline (cluster-held-out infer):
 ```bash
 python scripts/fetch_t0_cg.py
 python scripts/fetch_t0_surveys.py    # Gaia + AllWISE per cluster
+python scripts/fetch_t0_literature.py # Malofeeva IR + Brandner Hyades singles
 python scripts/build_t0_join.py
 python scripts/train_credence_t0.py --holdout ngc_1039 --retrain
 ```

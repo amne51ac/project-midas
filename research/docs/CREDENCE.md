@@ -33,11 +33,13 @@ Checkpoint: `data/processed/credence_model.pt`
 ```bash
 python scripts/fetch_t0_cg.py
 python scripts/fetch_t0_surveys.py          # optional: --cluster melotte_22
+python scripts/fetch_t0_literature.py       # Malofeeva IR + Brandner Hyades
 python scripts/build_t0_join.py
 python scripts/train_credence_t0.py --holdout ngc_1039 --retrain
+python scripts/validate_credence_t0.py --loo --epochs 50
 ```
 
-Example: hold out M34 → train on Pleiades, Hyades, Praesepe, M35, IC 2602 → test F1 vs Malofeeva on M34 only (~0.15 with RUWE weak labels on train clusters; in-sample M34 F1 ~0.96).
+Example: hold out M34 with literature labels on train clusters → test F1 vs Malofeeva on M34 (~0.96 after Pleiades/Praesepe Malofeeva ingest; was ~0.18 with RUWE-only training).
 
 ## Usage (M34)
 

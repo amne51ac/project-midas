@@ -1,0 +1,41 @@
+{
+  "clusters": {
+    "melotte_22": {
+      "asset": "/Users/markmilhouse/stars research/project-midas/research/data/processed/malofeeva_tid/melotte_22.json",
+      "source": "paper_quantile",
+      "q0_quantile": 0.88,
+      "q02_quantile": 0.62,
+      "q0_shift": 0.40000000000000013,
+      "case_a_binary_frac": 0.5578684429641965,
+      "case_b_binary_frac": 0.6194837635303914,
+      "ridge_case_a_frac": 0.5029142381348876,
+      "ridge_vs_paper_case_a_delta": 0.055,
+      "loaded_ok": true
+    },
+    "ngc_1039": {
+      "asset": "/Users/markmilhouse/stars research/project-midas/research/data/processed/malofeeva_tid/ngc_1039.json",
+      "source": "paper_quantile",
+      "q0_quantile": 0.88,
+      "q02_quantile": 0.62,
+      "q0_shift": 0.40000000000000013,
+      "case_a_binary_frac": 0.5135623869801085,
+      "case_b_binary_frac": 0.6130198915009042,
+      "ridge_case_a_frac": 0.5424954792043399,
+      "ridge_vs_paper_case_a_delta": -0.029,
+      "loaded_ok": true
+    },
+    "ngc_2632": {
+      "asset": "/Users/markmilhouse/stars research/project-midas/research/data/processed/malofeeva_tid/ngc_2632.json",
+      "source": "paper_quantile",
+      "q0_quantile": 0.88,
+      "q02_quantile": 0.62,
+      "q0_shift": 0.44999999999999996,
+      "case_a_binary_frac": 0.5656565656565656,
+      "case_b_binary_frac": 0.6191919191919192,
+      "ridge_case_a_frac": 0.601010101010101,
+      "ridge_vs_paper_case_a_delta": -0.035,
+      "loaded_ok": true
+    }
+  },
+  "out_dir": "/Users/markmilhouse/stars research/project-midas/research/data/processed/malofeeva_tid"
+}

@@ -45,6 +45,7 @@ def main() -> None:
         run("build_web_wd_check.py")
     run("build_web_credence.py")
     run("build_web_atlas.py")
+    run("build_web_t0_summary.py")
     print("\nDone — web/src/data/ updated. Run `cd ../web && npm run build` to deploy.")
 
 

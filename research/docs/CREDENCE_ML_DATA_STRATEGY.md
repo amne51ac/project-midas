@@ -200,6 +200,7 @@ Full census from the start is appropriate **only** when split by purpose:
 | `midas/credence/engine.py` | Done — `run_credence_t0()` |
 | `scripts/fetch_t0_cg.py` | Done — VizieR CG members |
 | `scripts/fetch_t0_surveys.py` | Done — Gaia + AllWISE cones |
+| `scripts/fetch_t0_literature.py` | Done — Malofeeva IR + Brandner Hyades |
 | `scripts/build_t0_join.py` | Done |
 | `scripts/train_credence_t0.py` | Done |
 | `scripts/validate_credence_t0.py` | Done — holdout + optional LOO |
@@ -211,9 +212,11 @@ Full census from the start is appropriate **only** when split by purpose:
 **Setup:** Train on 5 clusters (Pleiades, Hyades, Praesepe, M35, IC 2602) — 3,710 members.  
 Hold out **M34** (263 members). Training uses **RUWE** weak labels off M34; M34 **not** in training gradients.
 
-**Held-out M34 vs Malofeeva (tuned threshold):** P≈0.83, R≈0.10, **F1≈0.18** (vs F1≈0.96 in-sample on M34). LOO report: `credence_t0_cv.json` via `validate_credence_t0.py --loo`.
+**Held-out M34 vs Malofeeva (tuned threshold):** P≈0.86, R≈0.10, **F1≈0.18** (vs F1≈0.96 in-sample on M34).
 
-This is the expected gap when generalizing across clusters without M34-specific supervision. Next: literature labels per cluster, LOO report (`validate_credence_t0.py --loo`), calibration.
+**LOO audit (see `scripts/audit_credence_t0.py`):** Split integrity is correct (no holdout IDs in train). Malofeeva label ingest is verified (Pleiades 863/952 Gaia overlap). **However:** M34/Pleiades/Praesepe are ~90% literature-positive, so best-F1 threshold ≈ 0.05 predicts all members → **F1 ≈ predict-all-positive baseline** (M34: 0.958 vs 0.958). At fixed threshold 0.5, M34 holdout F1 ≈ 0.44 (recall ~29%). **Hyades Brandner** (~22% pos) is the meaningful metric: model F1 ≈ 0.44 vs all-pos baseline ≈ 0.36.
+
+**Do not treat Malofeeva best-F1 LOO as independent validation** — labels correlate with W2−BP inputs and prevalence is extreme.
 
 ```bash
 python scripts/fetch_t0_cg.py

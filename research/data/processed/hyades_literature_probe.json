@@ -1,0 +1,44 @@
+{
+  "summary": "Hyades gold labels pending ae6338/Torres on VizieR; Brandner singles in use as proxy.",
+  "label_mode": "brandner_proxy",
+  "gold_binary_n": 0,
+  "gold_sources": {
+    "malofeeva_ae6338": "J/ApJ/984/58/table1",
+    "torres_hyades_rv": "J/ApJS/283/81/table1"
+  },
+  "candidates": {
+    "malofeeva_ae6338": {
+      "source": "J/ApJ/984/58",
+      "available": false,
+      "n_rows": 0,
+      "columns": []
+    },
+    "malofeeva_ae6338_tables": {
+      "source": "J/ApJ/984/58/table1",
+      "available": false,
+      "n_rows": 0,
+      "columns": []
+    },
+    "torres_hyades_rv": {
+      "source": "J/ApJS/283/81",
+      "available": false,
+      "n_rows": 0,
+      "columns": []
+    },
+    "torres_hyades_table": {
+      "source": "J/ApJS/283/81/table1",
+      "available": false,
+      "n_rows": 0,
+      "columns": []
+    },
+    "brandner_hyades": {
+      "source": "J/AJ/165/108/table1",
+      "available": true,
+      "n_rows": 602,
+      "columns": [
+        "Gaia"
+      ]
+    }
+  },
+  "changes_since_last_probe": []
+}

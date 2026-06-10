@@ -1,0 +1,59 @@
+# Credence T0 benchmark regression — runs on push/PR to main
+
+name: Credence T0 benchmark
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'research/midas/credence/**'
+      - 'research/scripts/validate_credence_t0.py'
+      - 'research/scripts/check_benchmark_regression.py'
+      - 'research/scripts/audit_malofeeva_labels.py'
+      - 'research/data/processed/credence_t0_cv.json'
+      - 'research/data/processed/credence_t0_regression_floors.json'
+      - 'research/data/processed/malofeeva_tid/**'
+      - '.github/workflows/credence-t0-benchmark.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'research/midas/credence/**'
+      - 'research/scripts/**'
+      - 'research/data/processed/credence_t0_cv.json'
+      - 'research/data/processed/credence_t0_regression_floors.json'
+  workflow_dispatch:
+
+jobs:
+  benchmark-regression:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            research/requirements.txt
+            research/requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -r requirements-dev.txt
+
+      - name: Build paper q isolines
+        run: python scripts/build_malofeeva_paper_isolines.py
+
+      - name: Audit Malofeeva labels
+        run: python scripts/audit_malofeeva_labels.py
+
+      - name: Regression check (pinned LOO floors)
+        run: python scripts/check_benchmark_regression.py
+
+      - name: Smoke LOO (single headline fold)
+        run: python scripts/validate_credence_t0.py --holdout melotte_22 --epochs 25 --retrain

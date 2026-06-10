@@ -1,0 +1,98 @@
+{
+  "binary_no_w2bp": {
+    "feature_mode": "binary_no_w2bp",
+    "headline_mean_delta_f1": -0.49367563695277106,
+    "folds": {
+      "ic_2602": {
+        "f1": 0.0,
+        "delta_f1": -0.03164556962025316,
+        "n": 311,
+        "n_pos": 5,
+        "headline": false
+      },
+      "melotte_22": {
+        "f1": 0.48936170212765956,
+        "delta_f1": -0.2804496186270575,
+        "n": 163,
+        "n_pos": 102,
+        "headline": true
+      },
+      "melotte_25": {
+        "f1": 0.0,
+        "delta_f1": -0.4662576687116564,
+        "n": 375,
+        "n_pos": 114,
+        "headline": false
+      },
+      "ngc_1039": {
+        "f1": 0.1875,
+        "delta_f1": -0.4954268292682926,
+        "n": 108,
+        "n_pos": 56,
+        "headline": true
+      },
+      "ngc_2168": {
+        "f1": 0.0,
+        "delta_f1": -0.06666666666666667,
+        "n": 1247,
+        "n_pos": 43,
+        "headline": false
+      },
+      "ngc_2632": {
+        "f1": 0.037037037037037035,
+        "delta_f1": -0.705150462962963,
+        "n": 161,
+        "n_pos": 95,
+        "headline": true
+      }
+    }
+  },
+  "full_w2bp": {
+    "feature_mode": "full",
+    "headline_mean_delta_f1": -0.7199459769082547,
+    "folds": {
+      "ic_2602": {
+        "f1": 0.0,
+        "delta_f1": -0.03164556962025316,
+        "n": 311,
+        "n_pos": 5,
+        "headline": false
+      },
+      "melotte_22": {
+        "f1": 0.0,
+        "delta_f1": -0.769811320754717,
+        "n": 163,
+        "n_pos": 102,
+        "headline": true
+      },
+      "melotte_25": {
+        "f1": 0.017391304347826087,
+        "delta_f1": -0.4488663643638303,
+        "n": 375,
+        "n_pos": 114,
+        "headline": false
+      },
+      "ngc_1039": {
+        "f1": 0.03508771929824561,
+        "delta_f1": -0.647839109970047,
+        "n": 108,
+        "n_pos": 56,
+        "headline": true
+      },
+      "ngc_2168": {
+        "f1": 0.0,
+        "delta_f1": -0.06666666666666667,
+        "n": 1247,
+        "n_pos": 43,
+        "headline": false
+      },
+      "ngc_2632": {
+        "f1": 0.0,
+        "delta_f1": -0.7421875,
+        "n": 161,
+        "n_pos": 95,
+        "headline": true
+      }
+    }
+  }
+}

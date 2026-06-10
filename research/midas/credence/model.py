@@ -8,21 +8,26 @@ import torch.nn as nn
 MODEL_VERSION = "credence-mlp-v1"
 HIDDEN_DIM = 64
 CLUSTER_DIM = 6
+DEFAULT_DROPOUT = 0.1
+GAIA_FEAT_DIM = 6
+WISE_FEAT_DIM = 2
 
 
 class CredenceInferModel(nn.Module):
     """Gaia + WISE encoders, cluster context, multi-head credence outputs."""
 
-    def __init__(self, hidden: int = HIDDEN_DIM) -> None:
+    def __init__(self, hidden: int = HIDDEN_DIM, dropout: float = DEFAULT_DROPOUT) -> None:
         super().__init__()
+        self.hidden = hidden
+        self.dropout_p = dropout
         self.gaia_enc = nn.Sequential(
-            nn.Linear(3 + 3, hidden),
+            nn.Linear(GAIA_FEAT_DIM + GAIA_FEAT_DIM, hidden),
             nn.ReLU(),
             nn.Linear(hidden, hidden),
             nn.ReLU(),
         )
         self.wise_enc = nn.Sequential(
-            nn.Linear(1 + 1, hidden // 2),
+            nn.Linear(WISE_FEAT_DIM + WISE_FEAT_DIM, hidden // 2),
             nn.ReLU(),
             nn.Linear(hidden // 2, hidden // 2),
             nn.ReLU(),
@@ -31,7 +36,7 @@ class CredenceInferModel(nn.Module):
         self.trunk = nn.Sequential(
             nn.Linear(trunk_in, hidden),
             nn.ReLU(),
-            nn.Dropout(0.1),
+            nn.Dropout(dropout),
             nn.Linear(hidden, hidden),
             nn.ReLU(),
         )

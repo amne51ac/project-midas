@@ -1,0 +1,41 @@
+{
+  "version": "credence_t0_v2",
+  "label_version": "malofeeva_tid_qisolines_v3",
+  "headline_cluster_ids": [
+    "melotte_22",
+    "ngc_1039",
+    "ngc_2632"
+  ],
+  "ruwe_weak_cluster_ids": [
+    "ic_2602",
+    "ngc_2168"
+  ],
+  "primary_metric": "f1_at_0.5_delta_vs_all_positive",
+  "train_features": [
+    "g",
+    "bp_rp",
+    "ruwe",
+    "parallax",
+    "pmra",
+    "pmdec",
+    "h_w2"
+  ],
+  "train_feature_mode": "binary_no_w2bp",
+  "eval_rules": {
+    "malofeeva_tid": "q=0 isoline case (a); score in-sample & tid_mass_ok; F1@0.5 vs all-pos",
+    "hyades_provisional": "Brandner G\u226415; non-headline",
+    "ruwe_weak": "Non-headline; track only"
+  },
+  "ablations": {
+    "full_w2bp": "FeatureMode.FULL \u2014 includes W2\u2212BP (expect label leakage)",
+    "binary_no_w2bp": "FeatureMode.BINARY_NO_W2BP \u2014 default T0 train/infer"
+  },
+  "tiers": {
+    "ic_2602": "ruwe_weak",
+    "melotte_22": "malofeeva_tid",
+    "melotte_25": "hyades_provisional",
+    "ngc_1039": "malofeeva_tid",
+    "ngc_2168": "ruwe_weak",
+    "ngc_2632": "malofeeva_tid"
+  }
+}

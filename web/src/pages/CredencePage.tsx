@@ -30,7 +30,7 @@ export function CredencePage() {
     roadmap,
   } = CREDENCE;
 
-  const { benchmark, coverage, model } = infer;
+  const { benchmark, coverage, model, t0 } = infer;
 
   return (
     <>
@@ -361,6 +361,81 @@ export function CredencePage() {
               </div>
             </dl>
           </div>
+
+          <h3 className="credence-section__title">T0 cluster-held-out (credence-mlp-v2-t0)</h3>
+          <p className="section__prose">{t0.meta.evalNote}</p>
+          {t0.defaultHoldout && (
+            <p className="section__prose">
+              Default holdout ({t0.defaultHoldout.clusterIds.join(', ')}): {t0.defaultHoldout.truthSet} ·
+              n={t0.defaultHoldout.nTest} (n_pos={t0.defaultHoldout.nPos}) · F1@0.5={t0.defaultHoldout.f1.toFixed(3)}
+              {typeof t0.defaultHoldout.specificity === 'number' && (
+                <> · spec={t0.defaultHoldout.specificity.toFixed(3)}</>
+              )}
+              {typeof t0.defaultHoldout.f1AllPositiveBaseline === 'number' && (
+                <> · all-pos baseline={t0.defaultHoldout.f1AllPositiveBaseline.toFixed(3)}</>
+              )}
+            </p>
+          )}
+          {t0.leaveOneClusterOut.length > 0 && (
+            <div className="credence-table-wrap">
+              <table className="credence-table credence-table--wide">
+                <thead>
+                  <tr>
+                    <th scope="col">Held-out cluster</th>
+                    <th scope="col">Truth proxy</th>
+                    <th scope="col">n</th>
+                    <th scope="col">n_pos</th>
+                    <th scope="col">F1 @0.5</th>
+                    <th scope="col">Spec</th>
+                    <th scope="col">ΔF1</th>
+                    <th scope="col">All-pos F1</th>
+                    <th scope="col">Val-tuned F1</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {t0.leaveOneClusterOut.map((row) => (
+                    <tr
+                      key={row.clusterId}
+                      className={row.clusterId === 'ngc_1039' ? 'credence-table__highlight' : undefined}
+                    >
+                      <th scope="row">{row.clusterName}</th>
+                      <td>{row.truthSet}</td>
+                      <td>{row.nTest}</td>
+                      <td>{row.nPos ?? '—'}</td>
+                      <td>{row.f1At05?.toFixed(3) ?? row.f1.toFixed(3)}</td>
+                      <td>{row.specificity?.toFixed(3) ?? '—'}</td>
+                      <td>
+                        {typeof row.deltaF1 === 'number' ? (
+                          <span className={row.deltaF1 >= 0 ? 'credence-delta-pos' : undefined}>
+                            {row.deltaF1 >= 0 ? '+' : ''}
+                            {row.deltaF1.toFixed(3)}
+                          </span>
+                        ) : (
+                          '—'
+                        )}
+                        {row.headline === false && (
+                          <span title="Non-headline tier (provisional or weak proxy)"> ·</span>
+                        )}
+                      </td>
+                      <td>{row.f1AllPositiveBaseline?.toFixed(3) ?? '—'}</td>
+                      <td>
+                        {row.f1ValTuned?.toFixed(3) ?? '—'}
+                        {row.beatsAllPosBaseline === false && (
+                          <span title="Does not beat predict-all-positive baseline"> ≈ baseline</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="credence-eval-caveat">{t0.meta.evalNote}</p>
+            </div>
+          )}
+          <p className="findings-section__link">
+            <a href="/atlas">Open Credence Atlas</a>
+            {' · '}
+            <a href={CREDENCE_LINKS.mlStrategy}>ML data strategy</a>
+          </p>
           <p className="findings-section__link">
             <a href={CREDENCE_LINKS.module}>midas/credence/</a>
             {' · '}

@@ -58,13 +58,34 @@ def leave_one_cluster_out_folds(
     rows: list[CredenceRow],
     *,
     min_proba: float = 0.7,
+    cluster_ids: list[str] | None = None,
 ) -> list[tuple[str, ClusterSplit]]:
-    """One fold per cluster present in member rows."""
+    """One fold per cluster present in member rows (optionally filtered)."""
     pool = member_rows(rows, min_proba=min_proba)
-    cluster_ids = sorted({r.cluster_id for r in pool})
+    ids = sorted({r.cluster_id for r in pool})
+    if cluster_ids is not None:
+        allowed = frozenset(cluster_ids)
+        ids = [cid for cid in ids if cid in allowed]
     folds: list[tuple[str, ClusterSplit]] = []
-    for cid in cluster_ids:
+    for cid in ids:
         folds.append(
             (cid, cluster_holdout_split(rows, holdout_cluster_ids=[cid], min_proba=min_proba))
         )
     return folds
+
+
+def nested_loo_headline_folds(
+    rows: list[CredenceRow],
+    *,
+    headline_cluster_ids: frozenset[str] | None = None,
+    min_proba: float = 0.7,
+) -> list[tuple[str, ClusterSplit]]:
+    """Outer LOO folds restricted to headline Malofeeva clusters (nested tuning)."""
+    from midas.credence.benchmark import HEADLINE_CLUSTER_IDS
+
+    headline = headline_cluster_ids or HEADLINE_CLUSTER_IDS
+    return leave_one_cluster_out_folds(
+        rows,
+        min_proba=min_proba,
+        cluster_ids=sorted(headline),
+    )

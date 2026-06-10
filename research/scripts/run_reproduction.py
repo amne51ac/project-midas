@@ -7,7 +7,7 @@ Stages (run from research/ with venv active):
     python scripts/run_reproduction.py --stage core      # Phases I–II
     python scripts/run_reproduction.py --stage phase3
     python scripts/run_reproduction.py --stage phase4
-    python scripts/run_reproduction.py --stage web
+    python scripts/run_reproduction.py --stage credence_t0
     python scripts/run_reproduction.py --stage all
 
 See REPRODUCTION.md for prerequisites and outputs.
@@ -75,6 +75,17 @@ def stage_phase4(*, ebv: float) -> None:
     run("build_web_wd_check.py")
 
 
+def stage_credence_t0(*, epochs: int = 55, loo: bool = True) -> None:
+    run("build_malofeeva_paper_isolines.py")
+    run("probe_hyades_literature.py")
+    run("write_benchmark_manifest.py")
+    run("audit_malofeeva_labels.py")
+    if loo:
+        run("validate_credence_t0.py", "--loo", "--epochs", str(epochs))
+    run("check_benchmark_regression.py")
+    run("build_web_t0_summary.py")
+
+
 def stage_web() -> None:
     run("build_web_all.py")
 
@@ -83,7 +94,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
         "--stage",
-        choices=("check", "core", "phase3", "phase4", "web", "all"),
+        choices=("check", "core", "phase3", "phase4", "credence_t0", "web", "all"),
         default="all",
     )
     parser.add_argument("--ebv", type=float, default=0.07)
@@ -91,6 +102,12 @@ def main() -> None:
         "--fetch-gaia",
         action="store_true",
         help="Force Gaia cone query even if gaia_m34.csv exists (needs network)",
+    )
+    parser.add_argument("--credence-epochs", type=int, default=55, help="LOO epochs for credence_t0 stage")
+    parser.add_argument(
+        "--skip-credence-loo",
+        action="store_true",
+        help="Skip LOO retrain in credence_t0 stage (regression check only)",
     )
     parser.add_argument(
         "--skip-gaia",
@@ -112,6 +129,8 @@ def main() -> None:
         stage_phase3(ebv=args.ebv)
     if args.stage in ("phase4", "all"):
         stage_phase4(ebv=args.ebv)
+    if args.stage in ("credence_t0", "all"):
+        stage_credence_t0(epochs=args.credence_epochs, loo=not args.skip_credence_loo)
     if args.stage in ("web", "all"):
         stage_web()
 
