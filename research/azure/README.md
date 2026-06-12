@@ -32,7 +32,41 @@ cd research
 python azure/midas_submit_seed_sweep.py --seeds 20
 ```
 
-## Cleanup (important)
+Results upload to Blob (`midas-results/results/<job-id>/…`) automatically. **Do not scale the pool down before collecting** if you rely on Batch stdout (nodes lose task files on deallocate).
+
+```bash
+python azure/midas_collect_results.py --job-id midas-seed-XXXXXXXX
+python scripts/aggregate_seed_sweep.py --input data/processed/azure_results
+```
+
+**Local replay** (no Azure charges):
+
+```bash
+python scripts/run_seed_sweep.py --seeds 20
+python scripts/aggregate_seed_sweep.py
+```
+
+## T1 ingest (Track C)
+
+```bash
+# 1. Build registry from Cantat-Gaudin table1 (~2k clusters)
+python scripts/bootstrap_t1_registry.py --pilot 50
+
+# 2. Local pilot (keep --workers low for Gaia TAP)
+python scripts/run_t1_ingest.py --registry data/registry/t1_pilot.csv --limit 10 --workers 2
+
+# 3. QC
+python scripts/qc_t1_ingest.py
+
+# 4. Azure Batch (rebuild image first — includes registry CSV)
+./midas_build_image.sh
+python azure/midas_submit_t1_ingest.py --registry data/registry/t1_pilot.csv --limit 50
+python scripts/qc_t1_ingest.py --blob-prefix processed/t1/members/midas-t1-XXXX/
+```
+
+Output: `data/processed/t1/members/{cluster_id}.parquet` (+ Blob mirror).
+
+Full registry: `data/registry/t1_clusters.csv` (~1,900 clusters with ≥30 CG members).
 
 **After jobs finish**, scale the pool to zero (stops compute charges):
 

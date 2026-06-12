@@ -3961,6 +3961,17 @@ body.atlas-route {
   cursor: grabbing;
 }
 
+.atlas-immersive__labels {
+  position: fixed;
+  top: var(--nav-primary-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: visible;
+}
+
 .atlas-immersive__vignette {
   pointer-events: none;
   position: fixed;
@@ -4296,6 +4307,50 @@ body.atlas-route {
 
 .atlas-detail__interpret p:last-child {
   margin-bottom: 0;
+}
+
+.atlas-sky-label {
+  display: inline-block;
+  padding: 0.1rem 0.32rem;
+  border-radius: 2px;
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--ink) 78%, transparent);
+  background: rgba(9, 9, 9, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+  box-shadow: none;
+}
+
+.atlas-sky-label--constellation {
+  font-size: 0.64rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink-muted) 88%, var(--accent) 12%);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(9, 9, 9, 0.38);
+}
+
+.atlas-sky-label--constellation-secondary {
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink-muted) 92%, transparent);
+  border-color: rgba(255, 255, 255, 0.05);
+  background: rgba(9, 9, 9, 0.22);
+  opacity: 0.72;
+}
+
+.atlas-sky-label--dso {
+  color: color-mix(in srgb, #c8dce8 70%, transparent);
+  border-color: rgba(255, 255, 255, 0.08);
+  font-size: 0.58rem;
 }
 
 @media (max-width: 900px) {

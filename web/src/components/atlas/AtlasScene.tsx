@@ -1,18 +1,21 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, type MutableRefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Line, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
-import type { AtlasBrightStar } from '../../data/atlasSkyOverlay';
+import type { AtlasConstellation } from '../../data/atlasConstellationData';
+import type { AtlasReferenceObject } from '../../data/atlasReferenceObjects';
 import type { AtlasBundle, AtlasCluster, AtlasStar } from '../../data/atlasTypes';
 import {
   SKY_RADIUS,
-  SKY_TEXTURE_Y_ROT,
   type AtlasColorMode,
   buildStarBuffers,
   clusterRingPoints,
+  pickBrightStar,
+  pickMemberStar,
   raDecToVector3,
 } from '../../utils/atlasSphere';
 import { BrightStarLayer, ConstellationLayer } from './AtlasSkyLayers';
+import { SizedPoints } from './SizedPoints';
 import type { AtlasPick } from './atlasPickTypes';
 
 interface FlyTarget {
@@ -31,8 +34,9 @@ interface Props {
   onSelect: (pick: AtlasPick | null) => void;
   showConstellations: boolean;
   showBrightStars: boolean;
-  brightStars: AtlasBrightStar[];
-  constellations: { id: string; name: string; points: [number, number][] }[];
+  brightStars: AtlasReferenceObject[];
+  constellations: AtlasConstellation[];
+  labelPortal: MutableRefObject<HTMLElement>;
 }
 
 export const FOV_MIN = 8;
@@ -51,41 +55,24 @@ function SkySphere() {
   }, [texture]);
 
   return (
-    <mesh rotation={[0, SKY_TEXTURE_Y_ROT, 0]} scale={[-1, 1, 1]}>
+    <mesh scale={[-1, 1, 1]}>
       <sphereGeometry args={[SKY_RADIUS, 128, 64]} />
       <meshBasicMaterial map={texture} side={THREE.BackSide} toneMapped={false} />
     </mesh>
   );
 }
 
-function DataStars({
-  stars,
-  colorMode,
-  pointsRef,
-}: {
-  stars: AtlasStar[];
-  colorMode: AtlasColorMode;
-  pointsRef: React.RefObject<THREE.Points>;
-}) {
+function DataStars({ stars, colorMode }: { stars: AtlasStar[]; colorMode: AtlasColorMode }) {
   const buffers = useMemo(() => buildStarBuffers(stars, colorMode), [stars, colorMode]);
 
   return (
-    <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[buffers.positions, 3]} />
-        <bufferAttribute attach="attributes-color" args={[buffers.colors, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={4.2}
-        sizeAttenuation
-        vertexColors
-        transparent
-        opacity={0.98}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-        toneMapped={false}
-      />
-    </points>
+    <SizedPoints
+      positions={buffers.positions}
+      colors={buffers.colors}
+      sizes={buffers.sizes}
+      opacity={0.98}
+      blending={THREE.AdditiveBlending}
+    />
   );
 }
 
@@ -96,13 +83,7 @@ function ClusterRing({ cluster }: { cluster: AtlasCluster }) {
   );
 
   return (
-    <Line
-      points={points}
-      color="#9a9a9a"
-      transparent
-      opacity={0.35}
-      lineWidth={1}
-    />
+    <Line points={points} color="#9a9a9a" transparent opacity={0.18} lineWidth={1} />
   );
 }
 
@@ -130,8 +111,6 @@ function PlanetariumControls({
   onComplete,
   onHover,
   onSelect,
-  dataStarsRef,
-  brightStarsRef,
   memberStars,
   brightStars,
   showBrightStars,
@@ -140,10 +119,8 @@ function PlanetariumControls({
   onComplete: () => void;
   onHover: (pick: AtlasPick | null) => void;
   onSelect: (pick: AtlasPick | null) => void;
-  dataStarsRef: React.RefObject<THREE.Points>;
-  brightStarsRef: React.RefObject<THREE.Points>;
   memberStars: AtlasStar[];
-  brightStars: AtlasBrightStar[];
+  brightStars: AtlasReferenceObject[];
   showBrightStars: boolean;
 }) {
   const { camera, gl } = useThree();
@@ -174,11 +151,6 @@ function PlanetariumControls({
     camera.lookAt(lookDir.current);
   };
 
-  const pickThreshold = () => {
-    const cam = camera as THREE.PerspectiveCamera;
-    return 0.45 * (cam.fov / 68);
-  };
-
   const pickAt = (clientX: number, clientY: number): AtlasPick | null => {
     const canvas = gl.domElement;
     const rect = canvas.getBoundingClientRect();
@@ -187,24 +159,14 @@ function PlanetariumControls({
       -((clientY - rect.top) / rect.height) * 2 + 1,
     );
     raycaster.setFromCamera(ndc.current, camera);
-    raycaster.params.Points = { threshold: pickThreshold() };
+    const fov = (camera as THREE.PerspectiveCamera).fov;
 
-    if (dataStarsRef.current) {
-      const memberHits = raycaster.intersectObject(dataStarsRef.current);
-      if (memberHits.length > 0) {
-        const idx = memberHits[0].index ?? 0;
-        const star = memberStars[idx];
-        if (star) return { type: 'member', star };
-      }
-    }
+    const member = pickMemberStar(raycaster.ray, memberStars, fov);
+    if (member) return { type: 'member', star: member };
 
-    if (showBrightStars && brightStarsRef.current) {
-      const brightHits = raycaster.intersectObject(brightStarsRef.current);
-      if (brightHits.length > 0) {
-        const idx = brightHits[0].index ?? 0;
-        const star = brightStars[idx];
-        if (star) return { type: 'bright', star };
-      }
+    if (showBrightStars) {
+      const bright = pickBrightStar(raycaster.ray, brightStars, fov);
+      if (bright) return { type: 'bright', star: bright };
     }
 
     return null;
@@ -306,18 +268,7 @@ function PlanetariumControls({
       canvas.removeEventListener('pointerleave', onPointerLeave);
       canvas.removeEventListener('wheel', onWheel);
     };
-  }, [
-    camera,
-    gl.domElement,
-    onHover,
-    onSelect,
-    memberStars,
-    brightStars,
-    showBrightStars,
-    dataStarsRef,
-    brightStarsRef,
-    raycaster,
-  ]);
+  }, [camera, gl.domElement, onHover, onSelect, memberStars, brightStars, showBrightStars, raycaster]);
 
   useFrame((_, delta) => {
     if (flyProgress.current != null) {
@@ -363,9 +314,8 @@ export function AtlasScene({
   showBrightStars,
   brightStars,
   constellations,
+  labelPortal,
 }: Props) {
-  const dataStarsRef = useRef<THREE.Points>(null!);
-  const brightStarsRef = useRef<THREE.Points>(null!);
   const activeHulls = bundle.clusters.filter((c) => activeClusters.has(c.id));
 
   return (
@@ -373,9 +323,11 @@ export function AtlasScene({
       <color attach="background" args={['#090909']} />
       <ambientLight intensity={0.15} />
       <SkySphere />
-      {showConstellations && <ConstellationLayer constellations={constellations} />}
-      {showBrightStars && <BrightStarLayer stars={brightStars} pointsRef={brightStarsRef} />}
-      <DataStars stars={visible} colorMode={colorMode} pointsRef={dataStarsRef} />
+      {showConstellations && (
+        <ConstellationLayer constellations={constellations} portal={labelPortal} />
+      )}
+      {showBrightStars && <BrightStarLayer stars={brightStars} portal={labelPortal} />}
+      <DataStars stars={visible} colorMode={colorMode} />
       {activeHulls.map((c) => (
         <ClusterRing key={c.id} cluster={c} />
       ))}
@@ -384,8 +336,6 @@ export function AtlasScene({
         onComplete={onFlyComplete}
         onHover={onHover}
         onSelect={onSelect}
-        dataStarsRef={dataStarsRef}
-        brightStarsRef={brightStarsRef}
         memberStars={visible}
         brightStars={brightStars}
         showBrightStars={showBrightStars}

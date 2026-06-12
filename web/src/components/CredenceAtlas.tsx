@@ -1,7 +1,7 @@
-import { Suspense, useCallback, useMemo, useState } from 'react';
+import { Suspense, useCallback, useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { Canvas } from '@react-three/fiber';
 import type { AtlasBundle } from '../data/atlasTypes';
-import { ATLAS_BRIGHT_STARS, ATLAS_CONSTELLATIONS } from '../data/atlasSkyOverlay';
+import { ATLAS_CONSTELLATIONS, ATLAS_REFERENCE_OBJECTS } from '../data/atlasSkyOverlay';
 import { AtlasScene } from './atlas/AtlasScene';
 import { AtlasSciencePanel } from './atlas/AtlasSciencePanel';
 import { AtlasStarDetail } from './atlas/AtlasStarDetail';
@@ -26,6 +26,7 @@ export function CredenceAtlas({ bundle }: Props) {
   const [controlsOpen, setControlsOpen] = useState(true);
   const [scienceOpen, setScienceOpen] = useState(false);
   const [flyTarget, setFlyTarget] = useState<{ ra: number; dec: number } | null>(null);
+  const labelPortal = useRef<HTMLDivElement>(null) as MutableRefObject<HTMLDivElement>;
 
   const visible = useMemo(
     () =>
@@ -67,6 +68,8 @@ export function CredenceAtlas({ bundle }: Props) {
     <div
       className={`atlas-immersive${scienceOpen ? ' atlas-immersive--science-open' : ''}${selected ? ' atlas-immersive--detail-open' : ''}`}
     >
+      <div ref={labelPortal} className="atlas-immersive__labels" aria-hidden />
+
       <Canvas
         className="atlas-immersive__canvas"
         camera={{ position: [0, 0, 0], fov: 68, near: 0.1, far: SKY_FAR }}
@@ -85,8 +88,9 @@ export function CredenceAtlas({ bundle }: Props) {
             onSelect={handleSelect}
             showConstellations={showConstellations}
             showBrightStars={showBrightStars}
-            brightStars={ATLAS_BRIGHT_STARS}
+            brightStars={ATLAS_REFERENCE_OBJECTS}
             constellations={ATLAS_CONSTELLATIONS}
+            labelPortal={labelPortal}
           />
         </Suspense>
       </Canvas>
@@ -221,7 +225,7 @@ export function CredenceAtlas({ bundle }: Props) {
       </aside>
 
       <footer className="atlas-immersive__credit">
-        Sky: ESO / S. Brunier · GigaGalaxy Zoom (CC BY 4.0)
+        Sky: NASA/GSFC SVS · Tycho Catalog Skymap
       </footer>
     </div>
   );

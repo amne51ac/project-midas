@@ -11,7 +11,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY midas ./midas
 COPY scripts ./scripts
-COPY azure/worker.py ./azure/worker.py
+COPY azure/worker.py azure/midas_blob.py ./azure/
+COPY data/registry ./data/registry
 COPY data/processed/t0_join_ir.csv ./data/processed/t0_join_ir.csv
 COPY data/processed/m34_join_ir.csv ./data/processed/m34_join_ir.csv
 COPY data/processed/malofeeva_tid ./data/processed/malofeeva_tid

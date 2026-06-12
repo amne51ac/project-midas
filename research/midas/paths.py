@@ -10,6 +10,8 @@ ARCHIVE = ROOT.parent / "Midas"
 
 RAW = RESEARCH / "data" / "raw"
 PROCESSED = RESEARCH / "data" / "processed"
+REGISTRY = RESEARCH / "data" / "registry"
+T1_DIR = PROCESSED / "t1"
 
 MIDAS_CSV = "Midas Raw Data.csv"
 MEMBERS_CSV = "Members.csv"

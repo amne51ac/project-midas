@@ -1,6 +1,13 @@
-import type { AtlasBrightStar } from '../../data/atlasSkyOverlay';
+import type { AtlasReferenceObject } from '../../data/atlasReferenceObjects';
 import type { AtlasCluster, AtlasStar } from '../../data/atlasTypes';
 import type { AtlasPick } from './atlasPickTypes';
+
+const KIND_LABEL: Record<AtlasReferenceObject['kind'], string> = {
+  star: 'Bright star · Navigation layer',
+  galaxy: 'Galaxy · Deep sky',
+  nebula: 'Nebula · Deep sky',
+  cluster: 'Star cluster · Deep sky',
+};
 
 interface Props {
   pick: AtlasPick;
@@ -67,10 +74,10 @@ function MemberDetail({ star, clusters }: { star: AtlasStar; clusters: AtlasClus
   );
 }
 
-function BrightDetail({ star }: { star: AtlasBrightStar }) {
+function ReferenceDetail({ star }: { star: AtlasReferenceObject }) {
   return (
     <>
-      <p className="atlas-detail__kind">Named star · Navigation layer</p>
+      <p className="atlas-detail__kind">{KIND_LABEL[star.kind]}</p>
       <h3 className="atlas-detail__title">{star.name}</h3>
       <dl className="atlas-detail__grid">
         <div>
@@ -86,6 +93,10 @@ function BrightDetail({ star }: { star: AtlasBrightStar }) {
         <div>
           <dt>Apparent mag</dt>
           <dd>{star.mag.toFixed(1)}</dd>
+        </div>
+        <div>
+          <dt>Type</dt>
+          <dd>{star.kind}</dd>
         </div>
       </dl>
       {star.note && <p className="atlas-detail__interpret">{star.note}</p>}
@@ -107,7 +118,7 @@ export function AtlasStarDetail({ pick, clusters, pinned, onClose }: Props) {
       {pick.type === 'member' ? (
         <MemberDetail star={pick.star} clusters={clusters} />
       ) : (
-        <BrightDetail star={pick.star} />
+        <ReferenceDetail star={pick.star} />
       )}
     </aside>
   );

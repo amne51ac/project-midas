@@ -46,6 +46,14 @@ def main() -> None:
     image = cfg["MIDAS_AZURE_IMAGE"]
     storage = cfg["MIDAS_AZURE_STORAGE"]
 
+    key_out = subprocess.run(
+        ["az", "storage", "account", "keys", "list", "-g", rg, "-n", storage, "-o", "tsv", "--query", "[0].value"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    storage_key = key_out.stdout.strip()
+
     job_id = f"midas-seed-{int(time.time())}"
     tasks: list[dict] = []
 
@@ -60,7 +68,9 @@ def main() -> None:
                     "MIDAS_SEED": str(seed),
                     "MIDAS_FEATURE_MODE": fm,
                     "MIDAS_EPOCHS": str(args.epochs),
-                    "MIDAS_AZURE_OUTPUT": f"/mnt/batch/tasks/shared/{tid}.json",
+                    "MIDAS_AZURE_STORAGE": storage,
+                    "MIDAS_STORAGE_KEY": storage_key,
+                    "MIDAS_BLOB_NAME": blob,
                 }
                 tasks.append({"id": tid, "env": env, "blob": blob})
 

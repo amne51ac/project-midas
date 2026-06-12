@@ -4,7 +4,7 @@ Images in `web/public/images/` used on the site.
 
 | File | Source | License / terms |
 |------|--------|-----------------|
-| `all-sky-milkyway.jpg` | [ESO GigaGalaxy Zoom — Milky Way panorama](https://www.eso.org/public/images/eso0932a/) (6000×3000, via Wikimedia) | CC BY 4.0 — credit **ESO / S. Brunier** |
+| `all-sky-milkyway.jpg` | [NASA SVS Tycho Catalog Skymap](https://svs.gsfc.nasa.gov/3442/) (`TychoSkymap.t5_04096x02048.jpg`, 4096×2048) | Public domain — credit **NASA/GSFC Scientific Visualization Studio** (Tom Bridgman). Celestial plate carrée in equatorial coordinates for alignment with RA/Dec overlays. |
 
 | File | Source | License / terms |
 |------|--------|-----------------|

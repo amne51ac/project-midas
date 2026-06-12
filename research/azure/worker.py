@@ -36,6 +36,14 @@ def _write_result(name: str, payload: dict) -> None:
         local.write_text(json.dumps(payload, indent=2))
         print(f"Wrote {local}")
 
+    blob_name = os.environ.get("MIDAS_BLOB_NAME")
+    if blob_name:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from midas_blob import upload_json
+
+        upload_json(blob_name, payload)
+        print(f"Uploaded blob {blob_name}")
+
 
 def task_loo_seed() -> None:
     holdout = os.environ["MIDAS_HOLDOUT"]
@@ -63,6 +71,37 @@ def task_loo_seed() -> None:
         "headline": is_headline_cluster(holdout),
     }
     _write_result(f"loo_{holdout}_s{seed}_{feature_mode}.json", payload)
+    print(json.dumps(payload))
+
+
+def task_ingest_cluster() -> None:
+    from midas.credence.t1_build import ingest_cluster, parquet_path
+    from midas.credence.t1_registry import T1_PILOT_CSV, get_cluster
+
+    cid = os.environ["MIDAS_CLUSTER_ID"]
+    registry = os.environ.get("MIDAS_T1_REGISTRY", str(T1_PILOT_CSV))
+    force = os.environ.get("MIDAS_FORCE", "0") == "1"
+    cluster = get_cluster(cid, registry=Path(registry))
+    payload = ingest_cluster(cluster, force=force)
+    payload["task"] = "ingest_cluster"
+
+    parquet = parquet_path(cid)
+    blob_parquet = os.environ.get("MIDAS_BLOB_PARQUET")
+    if blob_parquet:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from midas_blob import upload_file
+
+        upload_file(parquet, blob_parquet)
+        payload["blob_parquet"] = blob_parquet
+        print(f"Uploaded parquet {blob_parquet}")
+
+    qc_blob = os.environ.get("MIDAS_BLOB_NAME")
+    if qc_blob:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from midas_blob import upload_json
+
+        upload_json(qc_blob, payload)
+        print(f"Uploaded QC {qc_blob}")
     print(json.dumps(payload))
 
 
@@ -102,6 +141,8 @@ def main() -> None:
     task = os.environ.get("MIDAS_TASK", "loo_seed")
     if task == "loo_seed":
         task_loo_seed()
+    elif task == "ingest_cluster":
+        task_ingest_cluster()
     elif task == "m34_bvr":
         task_m34_bvr()
     else:

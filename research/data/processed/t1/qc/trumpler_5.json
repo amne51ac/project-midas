@@ -1,0 +1,19 @@
+{
+  "cluster_id": "trumpler_5",
+  "cg_name": "Trumpler_5",
+  "n_rows": 2051,
+  "n_cg_member": 2051,
+  "n_with_gaia": 2051,
+  "n_with_w2": 1276,
+  "n_with_ruwe": 1877,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6221,
+  "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/trumpler_5.parquet",
+  "parquet_bytes": 160688,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 2053,
+    "gaia": 22192,
+    "wise": 8707
+  }
+}
