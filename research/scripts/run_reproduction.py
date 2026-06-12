@@ -79,6 +79,7 @@ def stage_credence_t0(*, epochs: int = 55, loo: bool = True) -> None:
     run("build_malofeeva_paper_isolines.py")
     run("write_t0_train_config.py")
     run("audit_tid_label_cases.py")
+    run("benchmark_m34_science.py", "--epochs", str(epochs))
     run("probe_hyades_literature.py")
     run("write_benchmark_manifest.py")
     run("audit_malofeeva_labels.py")

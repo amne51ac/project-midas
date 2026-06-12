@@ -1,6 +1,7 @@
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { CREDENCE, CREDENCE_LINKS, GITHUB_REPO } from '../data/credence';
+import m34Science from '../data/credenceM34Science.json';
 
 function VerdictBadge({ verdict }: { verdict: 'recommended' | 'future' | 'not-recommended' }) {
   const labels = {
@@ -456,6 +457,63 @@ export function CredencePage() {
               </table>
               <p className="credence-eval-caveat">{t0.meta.evalNote}</p>
             </div>
+          )}
+
+          {m34Science.variants?.length > 0 && (
+            <>
+              <h4 className="credence-section__subtitle">M34 science holdout (ngc_1039)</h4>
+              <p className="section__prose">
+                Cluster-held-out on M34 with legacy Midas Q baseline (BVR pipeline, 108/108 mapped).
+                {m34Science.bvr_coverage && (
+                  <>
+                    {' '}
+                    Legacy BVR (bv0/mv0) available for {m34Science.bvr_coverage.n_with_legacy_bvr}/
+                    {m34Science.bvr_coverage.n_eval} eval-universe stars — not yet in the neural feature
+                    tensor.
+                  </>
+                )}
+              </p>
+              <div className="credence-table-wrap">
+                <table className="credence-table credence-table--wide">
+                  <thead>
+                    <tr>
+                      <th scope="col">Config</th>
+                      <th scope="col">Label case</th>
+                      <th scope="col">n_pos</th>
+                      <th scope="col">Credence ΔF1</th>
+                      <th scope="col">Legacy Q ΔF1</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {m34Science.variants.flatMap((variant) =>
+                      Object.values(variant.label_cases).map((block) => (
+                        <tr key={`${variant.variant}-${block.label_case}`}>
+                          <td>{variant.variant}</td>
+                          <td>({block.label_case})</td>
+                          <td>
+                            {block.n_pos}/{block.n}
+                          </td>
+                          <td>
+                            <span
+                              className={
+                                block.delta_f1_credence >= 0 ? 'credence-delta-pos' : undefined
+                              }
+                            >
+                              {block.delta_f1_credence >= 0 ? '+' : ''}
+                              {block.delta_f1_credence.toFixed(3)}
+                            </span>
+                          </td>
+                          <td>
+                            {block.delta_f1_legacy_q >= 0 ? '+' : ''}
+                            {block.delta_f1_legacy_q.toFixed(3)}
+                          </td>
+                        </tr>
+                      )),
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
           <p className="findings-section__link">
             <a href="/atlas">Open Credence Atlas</a>

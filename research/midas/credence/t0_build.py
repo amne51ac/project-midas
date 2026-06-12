@@ -285,8 +285,8 @@ def write_t0_join(rows: list[dict], path: Path = T0_JOIN_CSV) -> None:
         w.writerows(rows)
 
 
-def apply_literature_flags(rows: list[dict]) -> None:
-    """Cross-match VizieR literature; Malofeeva = TID binary (not in-table=positive)."""
+def apply_literature_flags(rows: list[dict], *, label_case: str = "a") -> None:
+    """Cross-match VizieR literature; Malofeeva = TID binary (case a or b isoline)."""
     tid_env: dict[str, object] = {}
     tid_rows: dict[str, dict] = {}
     brandner: set[str] | None = None
@@ -317,7 +317,14 @@ def apply_literature_flags(rows: list[dict]) -> None:
                 continue
             row["malofeeva_in_sample"] = 1
             env = tid_env.get(cid)
-            is_bin = env.is_binary(lit_row.hw2w1, lit_row.w2_bpks) if env else False
+            if env:
+                is_bin = (
+                    env.is_binary_case_b(lit_row.hw2w1, lit_row.w2_bpks)
+                    if label_case == "b"
+                    else env.is_binary_case_a(lit_row.hw2w1, lit_row.w2_bpks)
+                )
+            else:
+                is_bin = False
             row["malofeeva"] = int(is_bin and row["tid_mass_ok"])
             row["literature_set"] = "malofeeva_tid_paper_qisolines"
             continue

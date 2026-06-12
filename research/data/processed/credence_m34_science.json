@@ -1,0 +1,308 @@
+{
+  "holdout_cluster": "ngc_1039",
+  "bvr_coverage": {
+    "n_eval": 108,
+    "n_with_legacy_bvr": 108,
+    "frac": 1.0
+  },
+  "variants": [
+    {
+      "variant": "v6_default",
+      "train_config": {
+        "epochs": 50,
+        "lr": 0.001,
+        "weight_decay": 0.0001,
+        "hidden": 128,
+        "dropout": 0.1,
+        "val_fraction": 0.15,
+        "seed": 42,
+        "w_binary": 1.0,
+        "w_cmd": 0.15,
+        "w_ir": 0.05,
+        "w_ruwe": 0.15,
+        "pos_weight": 1.0,
+        "early_stop_patience": 20,
+        "val_metric": "macro_f1",
+        "cluster_balance": false,
+        "feature_mode": "binary_no_w2bp"
+      },
+      "n_test_holdout": 263,
+      "n_eval_universe": 108,
+      "label_cases": {
+        "a": {
+          "label_case": "a",
+          "truth_set": "Malofeeva TID case (a)",
+          "universe": "Malofeeva TID paper q isolines (in-sample, mass cut)",
+          "n": 108,
+          "n_pos": 50,
+          "pos_rate": 0.46296296296296297,
+          "n_q_mapped": 108,
+          "credence": {
+            "label": "Credence p_binary",
+            "threshold": 0.5,
+            "n": 108,
+            "n_pos": 50,
+            "precision": 0.7142857142857143,
+            "recall": 0.2,
+            "specificity": 0.9310344827586207,
+            "f1": 0.3125,
+            "confusion": {
+              "tp": 10,
+              "fp": 4,
+              "tn": 54,
+              "fn": 40,
+              "n": 108
+            }
+          },
+          "legacy_q": {
+            "label": "Legacy Midas Q",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 50,
+            "precision": 1.0,
+            "recall": 0.3,
+            "specificity": 1.0,
+            "f1": 0.4615384615384615,
+            "confusion": {
+              "tp": 15,
+              "fp": 0,
+              "tn": 58,
+              "fn": 35,
+              "n": 108
+            }
+          },
+          "all_positive_baseline": {
+            "label": "All positive",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 50,
+            "precision": 0.46296296296296297,
+            "recall": 1.0,
+            "specificity": 0.0,
+            "f1": 0.6329113924050632,
+            "confusion": {
+              "tp": 50,
+              "fp": 58,
+              "tn": 0,
+              "fn": 0,
+              "n": 108
+            }
+          },
+          "delta_f1_credence": -0.3204113924050632,
+          "delta_f1_legacy_q": -0.1713729308666017
+        },
+        "b": {
+          "label_case": "b",
+          "truth_set": "Malofeeva TID case (b)",
+          "universe": "Malofeeva TID paper q isolines (in-sample, mass cut)",
+          "n": 108,
+          "n_pos": 53,
+          "pos_rate": 0.49074074074074076,
+          "n_q_mapped": 108,
+          "credence": {
+            "label": "Credence p_binary",
+            "threshold": 0.5,
+            "n": 108,
+            "n_pos": 53,
+            "precision": 0.7142857142857143,
+            "recall": 0.18867924528301888,
+            "specificity": 0.9272727272727272,
+            "f1": 0.2985074626865672,
+            "confusion": {
+              "tp": 10,
+              "fp": 4,
+              "tn": 51,
+              "fn": 43,
+              "n": 108
+            }
+          },
+          "legacy_q": {
+            "label": "Legacy Midas Q",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 53,
+            "precision": 0.8666666666666667,
+            "recall": 0.24528301886792453,
+            "specificity": 0.9636363636363636,
+            "f1": 0.3823529411764706,
+            "confusion": {
+              "tp": 13,
+              "fp": 2,
+              "tn": 53,
+              "fn": 40,
+              "n": 108
+            }
+          },
+          "all_positive_baseline": {
+            "label": "All positive",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 53,
+            "precision": 0.49074074074074076,
+            "recall": 1.0,
+            "specificity": 0.0,
+            "f1": 0.6583850931677019,
+            "confusion": {
+              "tp": 53,
+              "fp": 55,
+              "tn": 0,
+              "fn": 0,
+              "n": 108
+            }
+          },
+          "delta_f1_credence": -0.3598776304811347,
+          "delta_f1_legacy_q": -0.27603215199123127
+        }
+      }
+    },
+    {
+      "variant": "nested_oracle",
+      "train_config": {
+        "epochs": 50,
+        "lr": 0.003,
+        "weight_decay": 0.0001,
+        "hidden": 64,
+        "dropout": 0.1,
+        "val_fraction": 0.15,
+        "seed": 10051,
+        "w_binary": 1.0,
+        "w_cmd": 0.15,
+        "w_ir": 0.05,
+        "w_ruwe": 0.05,
+        "pos_weight": 0.5,
+        "early_stop_patience": 20,
+        "val_metric": "macro_f1",
+        "cluster_balance": false,
+        "feature_mode": "binary_no_w2bp"
+      },
+      "n_test_holdout": 263,
+      "n_eval_universe": 108,
+      "label_cases": {
+        "a": {
+          "label_case": "a",
+          "truth_set": "Malofeeva TID case (a)",
+          "universe": "Malofeeva TID paper q isolines (in-sample, mass cut)",
+          "n": 108,
+          "n_pos": 50,
+          "pos_rate": 0.46296296296296297,
+          "n_q_mapped": 108,
+          "credence": {
+            "label": "Credence p_binary",
+            "threshold": 0.5,
+            "n": 108,
+            "n_pos": 50,
+            "precision": 0.6818181818181818,
+            "recall": 0.3,
+            "specificity": 0.8793103448275862,
+            "f1": 0.4166666666666667,
+            "confusion": {
+              "tp": 15,
+              "fp": 7,
+              "tn": 51,
+              "fn": 35,
+              "n": 108
+            }
+          },
+          "legacy_q": {
+            "label": "Legacy Midas Q",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 50,
+            "precision": 1.0,
+            "recall": 0.3,
+            "specificity": 1.0,
+            "f1": 0.4615384615384615,
+            "confusion": {
+              "tp": 15,
+              "fp": 0,
+              "tn": 58,
+              "fn": 35,
+              "n": 108
+            }
+          },
+          "all_positive_baseline": {
+            "label": "All positive",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 50,
+            "precision": 0.46296296296296297,
+            "recall": 1.0,
+            "specificity": 0.0,
+            "f1": 0.6329113924050632,
+            "confusion": {
+              "tp": 50,
+              "fp": 58,
+              "tn": 0,
+              "fn": 0,
+              "n": 108
+            }
+          },
+          "delta_f1_credence": -0.21624472573839654,
+          "delta_f1_legacy_q": -0.1713729308666017
+        },
+        "b": {
+          "label_case": "b",
+          "truth_set": "Malofeeva TID case (b)",
+          "universe": "Malofeeva TID paper q isolines (in-sample, mass cut)",
+          "n": 108,
+          "n_pos": 53,
+          "pos_rate": 0.49074074074074076,
+          "n_q_mapped": 108,
+          "credence": {
+            "label": "Credence p_binary",
+            "threshold": 0.5,
+            "n": 108,
+            "n_pos": 53,
+            "precision": 0.7727272727272727,
+            "recall": 0.32075471698113206,
+            "specificity": 0.9090909090909091,
+            "f1": 0.45333333333333337,
+            "confusion": {
+              "tp": 17,
+              "fp": 5,
+              "tn": 50,
+              "fn": 36,
+              "n": 108
+            }
+          },
+          "legacy_q": {
+            "label": "Legacy Midas Q",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 53,
+            "precision": 0.8666666666666667,
+            "recall": 0.24528301886792453,
+            "specificity": 0.9636363636363636,
+            "f1": 0.3823529411764706,
+            "confusion": {
+              "tp": 13,
+              "fp": 2,
+              "tn": 53,
+              "fn": 40,
+              "n": 108
+            }
+          },
+          "all_positive_baseline": {
+            "label": "All positive",
+            "threshold": null,
+            "n": 108,
+            "n_pos": 53,
+            "precision": 0.49074074074074076,
+            "recall": 1.0,
+            "specificity": 0.0,
+            "f1": 0.6583850931677019,
+            "confusion": {
+              "tp": 53,
+              "fp": 55,
+              "tn": 0,
+              "fn": 0,
+              "n": 108
+            }
+          },
+          "delta_f1_credence": -0.20505175983436852,
+          "delta_f1_legacy_q": -0.27603215199123127
+        }
+      }
+    }
+  ]
+}

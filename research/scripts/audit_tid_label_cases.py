@@ -83,8 +83,8 @@ def main() -> None:
         }
         if cid in FOCUS:
             entry["note"] = (
-                "M34/Praesepe focus: case (b) lowers positive rate; "
-                "check if model recall@0.5 improves under less strict boundary."
+                "M34/Praesepe focus: case (b) raises positive rate on eval universe; "
+                "run benchmark_m34_science.py to see if Credence recall improves under case (b) truth."
                 if cid in FOCUS
                 else ""
             )
@@ -101,7 +101,8 @@ def main() -> None:
         "rationale": (
             f"M34 case_b pos {m34.get('case_b_pos_rate', '?')} vs case_a {m34.get('case_a_pos_rate', '?')}; "
             f"Praesepe case_b {pra.get('case_b_pos_rate', '?')} vs case_a {pra.get('case_a_pos_rate', '?')}. "
-            "Case (b) is stricter (fewer positives). Switch only if paper methodology requires q=0.2 boundary."
+            "Case (b) uses q=0.2 boundary (more positives on M34 eval universe). "
+            "Keep case (a) for production unless paper methodology requires case (b)."
         ),
     }
 

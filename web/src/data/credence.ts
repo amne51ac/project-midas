@@ -409,7 +409,7 @@ export const CREDENCE = {
     'M34 F1 uses Malofeeva as training target and benchmark — not cluster-held-out.',
     'Random 224/39 train/val on one cluster does not prove cross-cluster generalization.',
     'T0 headline metric: ΔF1 @ t=0.5 vs predict-all-positive on Malofeeva paper-quantile labels (M34, Pleiades, Praesepe).',
-    'M34 still below baseline; Praesepe marginally above all-positive @ t=0.5 with v6 defaults.',
+    'M34 holdout: Credence ΔF1 −0.32 vs legacy Midas Q −0.17 (case-a labels); recall bottleneck, not threshold.',
     'Per-fold nested oracle ceiling ≈ −0.04 ΔF1 (not deployable as one global config); val threshold tuning does not beat t=0.5.',
     'Hyades eval is provisional (Brandner); RUWE tiers on M35/IC2602 are weak sanity checks only.',
     'Membership catalogs disagree at faint limits; credences must show uncertainty.',
