@@ -2,6 +2,8 @@
 
 Analysis code, notebooks, and data for the M34 binary-membership revival.
 
+**Reproduce outputs:** [`REPRODUCTION.md`](REPRODUCTION.md) · **Archive & preservation:** [`ARCHIVE.md`](ARCHIVE.md)
+
 ## Layout
 
 ```

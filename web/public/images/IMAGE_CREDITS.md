@@ -4,6 +4,10 @@ Images in `web/public/images/` used on the site.
 
 | File | Source | License / terms |
 |------|--------|-----------------|
+| `all-sky-milkyway.jpg` | [ESO GigaGalaxy Zoom — Milky Way panorama](https://www.eso.org/public/images/eso0932a/) (6000×3000, via Wikimedia) | CC BY 4.0 — credit **ESO / S. Brunier** |
+
+| File | Source | License / terms |
+|------|--------|-----------------|
 | `m34-noirlab-1996.jpg` | [NOIRLab noao-m34](https://noirlab.edu/public/images/noao-m34/) (screen) | Credit required: REU program / NOIRLab / NSF / AURA |
 | `m34-hero.jpg` | [NOIRLab noao-m34](https://noirlab.edu/public/images/noao-m34/) (large, 2048×2048) | Same — site hero image |
 | `m34-ccd-2005.jpg` | [Wikimedia: M34a.jpg](https://commons.wikimedia.org/wiki/File:M34a.jpg) (Ole Nielsen) | CC BY-SA 2.5 |

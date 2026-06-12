@@ -94,11 +94,21 @@ def main() -> None:
     }
     print(f"Legacy BVR coverage on eval universe: {results['bvr_coverage']}")
 
+    from midas.credence.data import FeatureMode
+
     print("=== M34 science: v6 default (train case-a labels) ===")
     cfg_default = default_t0_train_config(epochs=args.epochs)
     v_default = _run_variant(rows, label="v6_default", config=cfg_default, retrain=True)
     results["variants"].append(v_default)
     for block in v_default["label_cases"].values():
+        _print_case(block)
+
+    print("\n=== M34 science: FeatureMode.M34_BVR (legacy bv0/mv0) ===")
+    cfg_bvr = default_t0_train_config(epochs=args.epochs)
+    cfg_bvr = TrainConfig(**{**cfg_bvr.__dict__, "feature_mode": FeatureMode.M34_BVR.value})
+    v_bvr = _run_variant(rows, label="m34_bvr", config=cfg_bvr, retrain=True)
+    results["variants"].append(v_bvr)
+    for block in v_bvr["label_cases"].values():
         _print_case(block)
 
     if not args.no_oracle and NESTED.exists():

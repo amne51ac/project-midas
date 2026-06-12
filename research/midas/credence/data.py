@@ -31,6 +31,11 @@ class FeatureMode(str, Enum):
 
     FULL = "full"
     BINARY_NO_W2BP = "binary_no_w2bp"  # drop W2−BP from IR plane — reduces label leakage
+    M34_BVR = "m34_bvr"  # BINARY_NO_W2BP + legacy bv0/mv0 (active on ngc_1039 only)
+
+
+def uses_legacy_cmd(feature_mode: FeatureMode) -> bool:
+    return feature_mode == FeatureMode.M34_BVR
 
 
 @dataclass
@@ -57,6 +62,8 @@ class CredenceRow:
     ra: float | None = None
     dec: float | None = None
     Q: float | None = None
+    bv0: float | None = None
+    mv0: float | None = None
 
 
 @dataclass
@@ -79,6 +86,10 @@ class FeatureStats:
     h_mag_std: float
     h_w2_mean: float
     h_w2_std: float
+    bv0_mean: float = 0.0
+    bv0_std: float = 1.0
+    mv0_mean: float = 0.0
+    mv0_std: float = 1.0
 
 
 @dataclass
@@ -104,6 +115,34 @@ def _float(v: str | None) -> float | None:
         return None
 
 
+def _load_m34_bvr_by_gaia() -> dict[int, tuple[float | None, float | None]]:
+    """Legacy Midas dereddened CMD (bv0, mv0) keyed by Gaia source_id."""
+    path = PROCESSED / "m34_join_ir.csv"
+    out: dict[int, tuple[float | None, float | None]] = {}
+    if not path.exists():
+        return out
+    with open(path) as f:
+        for row in csv.DictReader(f):
+            gid = (row.get("gaia_source_id") or "").strip()
+            if not gid or not gid.isdigit():
+                continue
+            bv0 = _float(row.get("bv0"))
+            mv0 = _float(row.get("mv0"))
+            if bv0 is not None or mv0 is not None:
+                out[int(gid)] = (bv0, mv0)
+    return out
+
+
+_M34_BVR_CACHE: dict[int, tuple[float | None, float | None]] | None = None
+
+
+def m34_bvr_by_gaia() -> dict[int, tuple[float | None, float | None]]:
+    global _M34_BVR_CACHE
+    if _M34_BVR_CACHE is None:
+        _M34_BVR_CACHE = _load_m34_bvr_by_gaia()
+    return _M34_BVR_CACHE
+
+
 def _load_gaia_bp_rp() -> dict[str, tuple[float, float]]:
     if not GAIA_CSV.exists():
         return {}
@@ -126,6 +165,11 @@ def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> Credence
     star_id = str(rec.get("star_id", "")).strip()
     midas_id = int(star_id) if star_id.isdigit() else hash(star_id) % (10**9)
     ruwe = _float(rec.get("ruwe"))
+    bv0, mv0 = None, None
+    if str(rec.get("cluster_id") or "") == M34_CLUSTER_ID and star_id.isdigit():
+        bvr = m34_bvr_by_gaia().get(int(star_id))
+        if bvr:
+            bv0, mv0 = bvr
     return CredenceRow(
         midas_id=midas_id,
         cluster_id=str(rec.get("cluster_id") or "ngc_1039"),
@@ -150,6 +194,8 @@ def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> Credence
         ra=_float(rec.get("ra")),
         dec=_float(rec.get("dec")),
         Q=pipeline_q.get(midas_id) if pipeline_q else None,
+        bv0=bv0,
+        mv0=mv0,
     )
 
 
@@ -274,6 +320,10 @@ def compute_feature_stats(rows: list[CredenceRow]) -> FeatureStats:
     pmdec_m, pmdec_s = _ms(pmdec, 5.0)
     h_m, h_s = _ms(h_mag_arr, 10.0)
     hw_m, hw_s = _ms(h_w2_arr, 1.0)
+    bv0_arr = np.array([r.bv0 for r in members if r.bv0 is not None], dtype=np.float64)
+    mv0_arr = np.array([r.mv0 for r in members if r.mv0 is not None], dtype=np.float64)
+    bv0_m, bv0_s = _ms(bv0_arr, 0.5)
+    mv0_m, mv0_s = _ms(mv0_arr, 5.0)
     return FeatureStats(
         g_mean=g_m,
         g_std=g_s,
@@ -293,6 +343,10 @@ def compute_feature_stats(rows: list[CredenceRow]) -> FeatureStats:
         h_mag_std=h_s,
         h_w2_mean=hw_m,
         h_w2_std=hw_s,
+        bv0_mean=bv0_m,
+        bv0_std=bv0_s,
+        mv0_mean=mv0_m,
+        mv0_std=mv0_s,
     )
 
 
@@ -347,7 +401,7 @@ def row_features(
 
     ir_val = hw if hw_ok else (hm if hm_ok else 0.0)
     ir_ok = hw_ok or hm_ok
-    if feature_mode == FeatureMode.BINARY_NO_W2BP:
+    if feature_mode in (FeatureMode.BINARY_NO_W2BP, FeatureMode.M34_BVR):
         wise = np.array([ir_val, 0.0], dtype=np.float32)
         wise_mask = np.array([float(ir_ok), 0.0], dtype=np.float32)
     else:
@@ -356,13 +410,22 @@ def row_features(
 
     p_member = float(row.cg_proba if row.cg_proba is not None else 0.0)
 
-    return {
+    out = {
         "gaia": gaia,
         "gaia_mask": gaia_mask,
         "wise": wise,
         "wise_mask": wise_mask,
         "p_member": np.array([p_member], dtype=np.float32),
     }
+    if uses_legacy_cmd(feature_mode):
+        m34_active = row.cluster_id == M34_CLUSTER_ID and row.bv0 is not None and row.mv0 is not None
+        bv, bv_ok = _norm(row.bv0, stats.bv0_mean, stats.bv0_std)
+        mv, mv_ok = _norm(row.mv0, stats.mv0_mean, stats.mv0_std)
+        if not m34_active:
+            bv, mv, bv_ok, mv_ok = 0.0, 0.0, 0.0, 0.0
+        out["legacy_cmd"] = np.array([bv, mv], dtype=np.float32)
+        out["legacy_cmd_mask"] = np.array([bv_ok, mv_ok], dtype=np.float32)
+    return out
 
 
 def batch_tensors(
@@ -378,7 +441,7 @@ def batch_tensors(
         ctx_batch = np.stack([cluster_context(stats, cluster_id=r.cluster_id) for r in rows])
     else:
         ctx_batch = np.tile(ctx, (n, 1))
-    return {
+    batch = {
         "gaia": np.stack([f["gaia"] for f in feats]),
         "gaia_mask": np.stack([f["gaia_mask"] for f in feats]),
         "wise": np.stack([f["wise"] for f in feats]),
@@ -386,6 +449,10 @@ def batch_tensors(
         "p_member": np.stack([f["p_member"] for f in feats]),
         "cluster_ctx": ctx_batch,
     }
+    if feats and "legacy_cmd" in feats[0]:
+        batch["legacy_cmd"] = np.stack([f["legacy_cmd"] for f in feats])
+        batch["legacy_cmd_mask"] = np.stack([f["legacy_cmd_mask"] for f in feats])
+    return batch
 
 
 def eval_truth(row: CredenceRow, *, mode: str = "auto") -> bool:

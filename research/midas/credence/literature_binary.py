@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import os
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
@@ -193,6 +194,11 @@ def fetch_hyades_gold_binary_ids(*, cache: bool = True) -> set[str] | None:
     """Return Gaia IDs flagged binary from ae6338/Torres when available on VizieR."""
     cache_path = LIT_DIR / "hyades_gold_binary_ids.txt"
     probe_cache = LIT_DIR / "hyades_gold_probe_unavailable.marker"
+    if os.environ.get("MIDAS_AZURE"):
+        if cache_path.exists():
+            ids = {line.strip() for line in cache_path.read_text().splitlines() if line.strip()}
+            return ids if ids else None
+        return None
     if cache and probe_cache.exists():
         return None
     if cache and cache_path.exists():

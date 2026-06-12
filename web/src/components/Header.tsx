@@ -58,12 +58,14 @@ export function Header() {
     document.documentElement.classList.toggle('is-home-route', isHome);
     document.documentElement.classList.toggle('is-continued-route', isContinued);
     document.documentElement.classList.toggle('is-credence-route', isCredence);
+    document.documentElement.classList.toggle('is-atlas-route', isAtlas);
     return () => {
       document.documentElement.classList.remove('is-home-route');
       document.documentElement.classList.remove('is-continued-route');
       document.documentElement.classList.remove('is-credence-route');
+      document.documentElement.classList.remove('is-atlas-route');
     };
-  }, [isHome, isContinued, isCredence]);
+  }, [isHome, isContinued, isCredence, isAtlas]);
 
   useEffect(() => {
     if (!menuOpen) return;

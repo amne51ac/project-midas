@@ -82,7 +82,7 @@ python scripts/build_web_all.py                  # web JSON only
 cd ../web && npm run build
 ```
 
-Summary: [`research/README.md`](research/README.md) · columns: [`research/DATA_DICTIONARY.md`](research/DATA_DICTIONARY.md)
+Summary: [`research/README.md`](research/README.md) · columns: [`research/DATA_DICTIONARY.md`](research/DATA_DICTIONARY.md) · archive: [`research/ARCHIVE.md`](research/ARCHIVE.md)
 
 ## License
 

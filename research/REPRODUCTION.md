@@ -149,3 +149,5 @@ Primary references for external truth sets:
 - `data/processed/*_summary.json` — regenerate via phase scripts  
 
 Web JSON in `web/src/data/` is the portable, site-ready subset.
+
+**Full storage map, Zenodo plan, and preservation checklist:** [`ARCHIVE.md`](ARCHIVE.md)

@@ -26,6 +26,7 @@ from midas.credence.data import (
     label_vectors,
     load_rows_with_q,
     member_rows,
+    uses_legacy_cmd,
 )
 from midas.credence.literature_binary import MALOFeeva_VIZIER
 from midas.credence.benchmark import eval_universe, eval_tier, universe_label
@@ -198,6 +199,10 @@ def _feature_stats_from_meta(meta: dict) -> FeatureStats:
         "h_mag_std": 2.0,
         "h_w2_mean": 0.0,
         "h_w2_std": 1.0,
+        "bv0_mean": 0.0,
+        "bv0_std": 1.0,
+        "mv0_mean": 5.0,
+        "mv0_std": 2.0,
     }
     for k, v in defaults.items():
         fs.setdefault(k, v)
@@ -217,11 +222,13 @@ def _to_torch(batch: dict[str, np.ndarray], device: torch.device) -> dict[str, t
 
 
 def _trunk_forward(model: CredenceInferModel, tens: dict[str, torch.Tensor]) -> torch.Tensor:
-    gaia_in = torch.cat([tens["gaia"], tens["gaia_mask"]], dim=-1)
-    wise_in = torch.cat([tens["wise"], tens["wise_mask"]], dim=-1)
-    g = model.gaia_enc(gaia_in)
-    w = model.wise_enc(wise_in)
-    x = torch.cat([g, w, tens["cluster_ctx"], tens["p_member"]], dim=-1)
+    g = model.gaia_enc(torch.cat([tens["gaia"], tens["gaia_mask"]], dim=-1))
+    w = model.wise_enc(torch.cat([tens["wise"], tens["wise_mask"]], dim=-1))
+    parts = [g, w]
+    if model.legacy_cmd:
+        leg_in = torch.cat([tens["legacy_cmd"], tens["legacy_cmd_mask"]], dim=-1)
+        parts.append(model.legacy_enc(leg_in))
+    x = torch.cat([*parts, tens["cluster_ctx"], tens["p_member"]], dim=-1)
     return model.trunk(x)
 
 
@@ -348,9 +355,13 @@ def train_model(
         split_meta = {"split": "random_member", "holdout_cluster_ids": []}
 
     device = _device()
-    model = CredenceInferModel(hidden=cfg.hidden, dropout=cfg.dropout).to(device)
-    opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
     fmode = FeatureMode(cfg.feature_mode)
+    model = CredenceInferModel(
+        hidden=cfg.hidden,
+        dropout=cfg.dropout,
+        legacy_cmd=uses_legacy_cmd(fmode),
+    ).to(device)
+    opt = torch.optim.AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
 
     train_batch = batch_tensors(train_rows, stats, ctx=None, feature_mode=fmode)
     train_labels = label_vectors(train_rows)
@@ -445,6 +456,7 @@ def train_model(
         "best_val_f1": best_val_f1,
         "val_metric": cfg.val_metric,
         "feature_mode": cfg.feature_mode,
+        "legacy_cmd": uses_legacy_cmd(fmode),
         "n_train": len(train_rows),
         "n_val": len(val_rows),
         "feature_stats": asdict(stats),
@@ -466,9 +478,11 @@ def load_model(checkpoint: Path | None = None) -> tuple[CredenceInferModel, Feat
     ckpt = torch.load(path, map_location=device, weights_only=False)
     meta = ckpt["meta"]
     stats = _feature_stats_from_meta(meta)
+    fmode = FeatureMode(meta.get("feature_mode", FeatureMode.FULL.value))
     model = CredenceInferModel(
         hidden=meta.get("hidden_dim", HIDDEN_DIM),
         dropout=meta.get("dropout", DEFAULT_DROPOUT),
+        legacy_cmd=bool(meta.get("legacy_cmd", uses_legacy_cmd(fmode))),
     )
     model.load_state_dict(ckpt["state_dict"])
     model.to(device)
