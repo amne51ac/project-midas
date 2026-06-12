@@ -17,7 +17,7 @@ from midas.credence.literature_binary import (
     hyades_brandner_non_single,
     hyades_gold_binary,
 )
-from midas.credence.malofeeva_tid import build_cluster_tid_envelope, tid_lookup, tid_mass_ok
+from midas.credence.malofeeva_tid import build_cluster_tid_isolines, tid_lookup, tid_mass_ok
 from midas.credence.t0_registry import T0Cluster, T0_CLUSTERS
 from midas.membership import cg_member_flag, DEFAULT_CG_MEMBER_THRESHOLD
 from midas.paths import PROCESSED
@@ -293,8 +293,12 @@ def apply_literature_flags(rows: list[dict]) -> None:
 
     for cid in MALOFeeva_VIZIER:
         lit = fetch_malofeeva_table(cid)
-        g_map = {str(r.get("star_id") or ""): _float(str(r.get("phot_g_mean_mag") or "")) for r in rows if r.get("cluster_id") == cid}
-        env = build_cluster_tid_envelope(cid, lit, g_by_gaia=g_map)
+        g_map = {
+            str(r.get("star_id") or ""): _float(str(r.get("phot_g_mean_mag") or ""))
+            for r in rows
+            if r.get("cluster_id") == cid
+        }
+        env = build_cluster_tid_isolines(cid, lit, g_by_gaia=g_map)
         if env is not None:
             tid_env[cid] = env
         tid_rows[cid] = tid_lookup(lit)

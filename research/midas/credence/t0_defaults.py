@@ -1,4 +1,4 @@
-"""Default T0 training hyperparameters (nested LOO consensus)."""
+"""Default T0 training hyperparameters (from nested LOO consensus)."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 NESTED_TUNE_JSON = PROCESSED / "credence_t0_nested_tune.json"
 
-# Validated hybrid: v4 lr/pos_weight (Pleiades +ΔF1) + nested early-stop, hidden=128, w_ruwe=0.15.
+# v6: v5 hybrid hyperparams + no isotonic calibration at eval.
 DEFAULT_T0_TRAIN_KWARGS: dict = {
     "epochs": 80,
     "lr": 1e-3,
@@ -31,6 +31,7 @@ DEFAULT_T0_TRAIN_KWARGS: dict = {
     "pos_weight": 1.0,
     "early_stop_patience": 20,
     "val_metric": "macro_f1",
+    "cluster_balance": False,
     "feature_mode": "binary_no_w2bp",
 }
 
@@ -43,7 +44,7 @@ def _cfg(**overrides) -> TrainConfig:
 
 
 def nested_tune_median_config(path: Path | None = None) -> TrainConfig:
-    """Median of per-fold best configs (diagnostic; may hurt low-prevalence folds)."""
+    """Median of per-fold best configs (diagnostic)."""
     path = path or NESTED_TUNE_JSON
     if not path.exists():
         return _cfg()
@@ -76,7 +77,7 @@ def nested_tune_median_config(path: Path | None = None) -> TrainConfig:
 
 
 def default_t0_train_config(*, epochs: int | None = None, tune_path: Path | None = None) -> TrainConfig:
-    """Active T0 TrainConfig (validated hybrid from nested LOO insights)."""
+    """Active T0 TrainConfig."""
     cfg = _cfg()
     if epochs is not None:
         cfg = replace(cfg, epochs=epochs)

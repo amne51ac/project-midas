@@ -1,7 +1,8 @@
 {
-  "model_version": "credence-mlp-v5-t0",
+  "model_version": "credence-mlp-v6-t0",
   "source": "nested_loo_hybrid_v4_lr_early_stop",
-  "nested_tune_outer_mean_delta_f1": -0.047356192268686204,
+  "nested_tune_outer_mean_delta_f1": 0.030264283580655377,
+  "nested_oracle_headline_mean_delta_f1": -0.03807456511971905,
   "config": {
     "epochs": 80,
     "lr": 0.001,
@@ -17,6 +18,7 @@
     "pos_weight": 1.0,
     "early_stop_patience": 20,
     "val_metric": "macro_f1",
+    "cluster_balance": false,
     "feature_mode": "binary_no_w2bp"
   }
 }

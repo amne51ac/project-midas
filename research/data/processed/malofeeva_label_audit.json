@@ -14,7 +14,7 @@
       "old_label_pos_rate": 0.907,
       "new_tid_pos_rate": 0.034,
       "target_binary_frac": 0.55,
-      "q0_shift": 0.40000000000000013,
+      "q0_shift": 0.40000000000000036,
       "case_a_binary_frac": 0.558,
       "case_b_binary_frac": 0.619
     },
@@ -26,7 +26,7 @@
       "old_label_pos_rate": 0.856,
       "new_tid_pos_rate": 0.217,
       "target_binary_frac": 0.52,
-      "q0_shift": 0.40000000000000013,
+      "q0_shift": 0.40000000000000036,
       "case_a_binary_frac": 0.514,
       "case_b_binary_frac": 0.613
     },
@@ -34,12 +34,12 @@
       "n_members": 685,
       "n_in_malofeeva_table": 632,
       "n_eval_universe": 161,
-      "eval_universe_pos_rate": 0.429,
+      "eval_universe_pos_rate": 0.453,
       "old_label_pos_rate": 0.923,
-      "new_tid_pos_rate": 0.101,
+      "new_tid_pos_rate": 0.107,
       "target_binary_frac": 0.58,
-      "q0_shift": 0.44999999999999996,
-      "case_a_binary_frac": 0.566,
+      "q0_shift": 0.40000000000000036,
+      "case_a_binary_frac": 0.613,
       "case_b_binary_frac": 0.619
     }
   }

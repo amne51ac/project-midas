@@ -58,6 +58,7 @@ export interface DisplayFeature {
 }
 
 const b = credenceSummary.benchmark;
+const t0 = credenceT0Summary;
 
 export const CREDENCE = {
   name: 'Credence',
@@ -75,7 +76,12 @@ export const CREDENCE = {
     {
       label: 'M34 infer',
       value: `${b.n} CG members`,
-      detail: `F1 ≈ ${b.credence.f1.toFixed(2)} (in-sample; T0 cluster CV next)`,
+      detail: `F1 ≈ ${b.credence.f1.toFixed(2)} in-sample prototype`,
+    },
+    {
+      label: 'T0 LOO benchmark',
+      value: `${t0.meta.modelVersion}`,
+      detail: `Headline mean ΔF1 ${t0.meta.headlineMeanDeltaF1 >= 0 ? '+' : ''}${t0.meta.headlineMeanDeltaF1.toFixed(3)} vs all-positive @ t=0.5 (${t0.meta.headlineBeatsBaseline}/3 Malofeeva folds beat baseline)`,
     },
   ],
 
@@ -200,8 +206,8 @@ export const CREDENCE = {
         'Heads: p_binary (primary), p_cmd, p_ir, p_ruwe',
       ],
       next: [
-        'T0 multi-cluster training with cluster-held-out evaluation',
-        'Uncertainty calibration and isotonic p_binary tuning at scale',
+        'T0 LOO harness live — credence-mlp-v6-t0, paper-quantile Malofeeva labels, W2−BP firewall',
+        'Stabilize training variance; per-fold threshold tuning on Praesepe/M34',
         'Optional Gaia XP encoder; spectroscopic fine-tune (T3+)',
       ],
     },
@@ -221,9 +227,10 @@ export const CREDENCE = {
           note: 'Leaks cluster structure; labels do not scale with member count.',
         },
         {
-          approach: 'T0: 5–10 clusters, cluster-held-out',
-          verdict: 'Recommended next',
-          note: '~10⁴–10⁵ stars; train on N−1 clusters, test on held-out cluster(s).',
+          approach: 'T0: 6 clusters, leave-one-out',
+          verdict: 'Baseline established',
+          note:
+            `${t0.meta.modelVersion}: headline mean ΔF1 ${t0.meta.headlineMeanDeltaF1 >= 0 ? '+' : ''}${t0.meta.headlineMeanDeltaF1.toFixed(3)} @ t=0.5 vs all-positive on Malofeeva TID folds; Pleiades beats baseline.`,
         },
         {
           approach: 'T1/T2 scale after harness',
@@ -322,7 +329,7 @@ export const CREDENCE = {
       `CG members P ≥ ${credenceSummary.meta.cgTrainProba}: ` +
         `${credenceSummary.model.nTrain} train / ${credenceSummary.model.nVal} val · ` +
         `${credenceSummary.model.epochs} epochs · hidden ${credenceSummary.model.hiddenDim}`,
-    t0: credenceT0Summary,
+    t0,
   },
 
   display: {
@@ -401,7 +408,10 @@ export const CREDENCE = {
   limitations: [
     'M34 F1 uses Malofeeva as training target and benchmark — not cluster-held-out.',
     'Random 224/39 train/val on one cluster does not prove cross-cluster generalization.',
-    'T0 LOO: Malofeeva IR on M34/Pleiades/Praesepe; Brandner non-single on Hyades; RUWE elsewhere (weak).',
+    'T0 headline metric: ΔF1 @ t=0.5 vs predict-all-positive on Malofeeva paper-quantile labels (M34, Pleiades, Praesepe).',
+    'M34 still below baseline; Praesepe marginally above all-positive @ t=0.5 with v6 defaults.',
+    'Per-fold nested oracle ceiling ≈ −0.04 ΔF1 (not deployable as one global config); val threshold tuning does not beat t=0.5.',
+    'Hyades eval is provisional (Brandner); RUWE tiers on M35/IC2602 are weak sanity checks only.',
     'Membership catalogs disagree at faint limits; credences must show uncertainty.',
     'Legacy Midas-depth BVR exists for ~10¹ clusters, not galaxy scale.',
   ],
@@ -410,7 +420,8 @@ export const CREDENCE = {
     'v0: credence-mlp-v1 on M34 — infer plumbing (done)',
     'v1: Credence Atlas on T0 — /atlas live with pan/zoom (done)',
     'v2: T0 ingest (6 clusters) + cluster-held-out credence-mlp-v2 (done)',
-    'v3: Literature binary labels per cluster + calibration',
+    'v3-t0: Benchmark v3 — paper-quantile labels, LOO, regression floors, CI hook (done)',
+    'v3b: Threshold/calibration tuning; nested-oracle ceiling documented',
     'v4: T1 scale (~3×10⁵), region tiles',
     'v5: T2 production infer (~10⁶) + Zenodo release',
     'v6: Gaia XP encoder; spectroscopic fine-tune on gold labels',

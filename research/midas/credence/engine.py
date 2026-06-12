@@ -27,6 +27,7 @@ from midas.credence.data import (
     load_rows_with_q,
     member_rows,
 )
+from midas.credence.literature_binary import MALOFeeva_VIZIER
 from midas.credence.benchmark import eval_universe, eval_tier, universe_label
 from midas.credence.calibrate import apply_calibration, fit_isotonic
 from midas.credence.model import MODEL_VERSION, CredenceInferModel, DEFAULT_DROPOUT, HIDDEN_DIM
@@ -41,7 +42,7 @@ CREDENCE_CHECKPOINT = PROCESSED / "credence_model.pt"
 T0_CHECKPOINT = PROCESSED / "credence_model_t0.pt"
 T0_SUMMARY_JSON = PROCESSED / "credence_t0_summary.json"
 T0_VECTORS_CSV = PROCESSED / "credence_t0_vectors.csv"
-T0_MODEL_VERSION = "credence-mlp-v5-t0"
+T0_MODEL_VERSION = "credence-mlp-v6-t0"
 CREDENCE_VECTORS_CSV = PROCESSED / "credence_vectors.csv"
 
 DEFAULT_EPOCHS = 120
@@ -66,7 +67,8 @@ class TrainConfig:
     w_ruwe: float = 0.10
     pos_weight: float = 1.0  # multiply BCE positive-class weight (1 = off)
     early_stop_patience: int = 0  # 0 = disabled; epochs without val F1 improvement
-    val_metric: str = "macro_f1"  # macro_f1 | pooled_f1
+    val_metric: str = "macro_f1"  # macro_f1 | pooled_f1 | macro_delta_f1
+    cluster_balance: bool = False  # upweight positives in high-prevalence train clusters
     feature_mode: str = FeatureMode.BINARY_NO_W2BP.value
 
 
@@ -106,6 +108,81 @@ def _val_f1_macro(
         f1, _ = _val_f1(model, sub, stats, device=device, feature_mode=feature_mode)
         f1s.append(f1)
     return float(np.mean(f1s)) if f1s else 0.0
+
+
+def _cluster_balance_factors(rows: list[CredenceRow]) -> np.ndarray:
+    """Upweight positive labels in high-prevalence Malofeeva train clusters."""
+    by_cluster: dict[str, list[CredenceRow]] = {}
+    for row in rows:
+        if row.cluster_id in MALOFeeva_VIZIER:
+            if not row.malofeeva_in_sample or not row.tid_mass_ok:
+                continue
+        by_cluster.setdefault(row.cluster_id, []).append(row)
+
+    pos_rate: dict[str, float] = {}
+    for cid, sub in by_cluster.items():
+        pos_rate[cid] = sum(r.malofeeva for r in sub) / max(len(sub), 1)
+
+    factors: list[float] = []
+    for row in rows:
+        if row.cluster_id in MALOFeeva_VIZIER and (not row.malofeeva_in_sample or not row.tid_mass_ok):
+            factors.append(1.0)
+            continue
+        if row.cluster_id in MALOFeeva_VIZIER and row.malofeeva:
+            pr = pos_rate.get(row.cluster_id, 0.5)
+            factors.append(min(1.4, 0.35 / max(pr, 0.10)))
+        else:
+            factors.append(1.0)
+    return np.array(factors, dtype=np.float32)
+
+
+def _val_specificity_macro(
+    model: CredenceInferModel,
+    val_rows: list[CredenceRow],
+    stats: FeatureStats,
+    *,
+    device: torch.device,
+    min_cluster_n: int = 8,
+    feature_mode: FeatureMode = FeatureMode.FULL,
+) -> float:
+    by_cluster: dict[str, list[CredenceRow]] = {}
+    for row in val_rows:
+        by_cluster.setdefault(row.cluster_id, []).append(row)
+    specs: list[float] = []
+    for sub in by_cluster.values():
+        if len(sub) < min_cluster_n:
+            continue
+        _, spec = _val_f1(model, sub, stats, device=device, feature_mode=feature_mode)
+        specs.append(spec)
+    return float(np.mean(specs)) if specs else 0.0
+
+
+def _early_stop_score(
+    model: CredenceInferModel,
+    val_rows: list[CredenceRow],
+    stats: FeatureStats,
+    cfg: TrainConfig,
+    *,
+    device: torch.device,
+    feature_mode: FeatureMode,
+) -> tuple[float, float, float, float]:
+    """Return (score, val_f1, val_macro, val_delta) for logging."""
+    val_f1, val_spec = _val_f1(model, val_rows, stats, device=device, feature_mode=feature_mode)
+    val_macro = _val_f1_macro(model, val_rows, stats, device=device, feature_mode=feature_mode)
+    val_vecs = infer_vectors(model, val_rows, stats, device=device, feature_mode=feature_mode)
+    val_delta = val_delta_f1_macro(val_rows, val_vecs)
+    spec_macro = _val_specificity_macro(
+        model, val_rows, stats, device=device, feature_mode=feature_mode
+    )
+
+    if cfg.val_metric == "macro_delta_f1":
+        # Reject trivial predict-all-positive (ΔF1≈0, spec≈0) on validation.
+        score = val_delta if spec_macro >= 0.20 else val_macro
+    elif cfg.val_metric == "macro_f1":
+        score = val_macro
+    else:
+        score = val_f1
+    return score, val_f1, val_macro, val_delta
 
 
 def _feature_stats_from_meta(meta: dict) -> FeatureStats:
@@ -202,6 +279,19 @@ def infer_vectors(
     return vectors
 
 
+def _set_train_seed(seed: int) -> None:
+    """Make weight init and val split reproducible across LOO folds and reruns."""
+    import random
+
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+
 def train_model(
     rows: list[CredenceRow],
     *,
@@ -225,6 +315,8 @@ def train_model(
         cfg.lr = lr
         cfg.val_fraction = val_fraction
         cfg.seed = seed
+
+    _set_train_seed(cfg.seed)
 
     split_meta: dict | None = None
     if holdout_cluster_ids:
@@ -267,7 +359,10 @@ def train_model(
     y_cmd = torch.from_numpy(train_labels["y_cmd"]).to(device)
     y_ir = torch.from_numpy(train_labels["y_ir"]).to(device)
     y_ruwe = torch.from_numpy(train_labels["y_ruwe"]).to(device)
-    w = torch.from_numpy(train_labels["weight"]).to(device)
+    w_np = train_labels["weight"].copy()
+    if cfg.cluster_balance:
+        w_np = w_np * _cluster_balance_factors(train_rows)
+    w = torch.from_numpy(w_np).to(device)
 
     n_pos = float(y_bin.sum().item())
     n_neg = float(len(y_bin) - n_pos)
@@ -293,9 +388,10 @@ def train_model(
         loss.backward()
         opt.step()
 
-        val_f1, val_spec = _val_f1(model, val_rows, stats, device=device, feature_mode=fmode)
-        val_macro = _val_f1_macro(model, val_rows, stats, device=device, feature_mode=fmode)
-        score = val_macro if cfg.val_metric == "macro_f1" else val_f1
+        score, val_f1, val_macro, val_delta = _early_stop_score(
+            model, val_rows, stats, cfg, device=device, feature_mode=fmode
+        )
+        val_spec = _val_specificity_macro(model, val_rows, stats, device=device, feature_mode=fmode)
         if score > best_val_f1 + 1e-5:
             best_val_f1 = score
             best_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
@@ -310,7 +406,8 @@ def train_model(
                     "loss": float(loss.item()),
                     "val_f1": val_f1,
                     "val_f1_macro": val_macro,
-                    "val_specificity": val_spec,
+                    "val_delta_f1_macro": val_delta,
+                    "val_specificity_macro": val_spec,
                 }
             )
 
@@ -344,6 +441,7 @@ def train_model(
         },
         "pos_weight": cfg.pos_weight,
         "raw_pos_weight": raw_pos_w,
+        "cluster_balance": cfg.cluster_balance,
         "best_val_f1": best_val_f1,
         "val_metric": cfg.val_metric,
         "feature_mode": cfg.feature_mode,
@@ -491,6 +589,27 @@ def pick_threshold_on_val(
     return grid[0]["threshold"] if grid else DEFAULT_BINARY_THRESHOLD
 
 
+def pick_threshold_val_delta(
+    val_rows: list[CredenceRow],
+    vectors: dict[int, CredenceVector],
+    *,
+    truth_mode: str = "auto",
+) -> float:
+    """Select threshold maximizing ΔF1 vs all-positive on validation (matches primary metric)."""
+    best_t = DEFAULT_BINARY_THRESHOLD
+    best_delta = -999.0
+    for t in np.arange(0.05, 0.96, 0.05):
+        primary = evaluate_vectors(
+            val_rows, vectors, members_only=False, threshold=float(t), truth_mode=truth_mode
+        )
+        baseline = all_positive_baseline(val_rows, truth_mode=truth_mode)
+        delta = primary["f1"] - baseline["f1"]
+        if delta > best_delta + 1e-5:
+            best_delta = delta
+            best_t = float(t)
+    return best_t
+
+
 def summarize_holdout(
     split: ClusterSplit,
     vectors: dict[int, CredenceVector],
@@ -524,6 +643,19 @@ def summarize_holdout(
         truth_mode=truth_mode,
     )
     val_tuned["threshold_source"] = "validation_max_f1"
+    val_tuned["delta_f1_vs_baseline"] = val_tuned["f1"] - baseline["f1"]
+
+    val_dt = pick_threshold_val_delta(split.val, vectors, truth_mode=truth_mode)
+    val_delta_tuned = evaluate_vectors(
+        test_rows,
+        vectors,
+        members_only=False,
+        cluster_ids=holdout_ids,
+        threshold=val_dt,
+        truth_mode=truth_mode,
+    )
+    val_delta_tuned["threshold_source"] = "validation_max_delta_f1"
+    val_delta_tuned["delta_f1_vs_baseline"] = val_delta_tuned["f1"] - baseline["f1"]
 
     test_grid = sweep_threshold(test_rows, vectors, members_only=False, truth_mode=truth_mode)[:5]
     test_best_t = test_grid[0]["threshold"] if test_grid else DEFAULT_BINARY_THRESHOLD
@@ -542,6 +674,8 @@ def summarize_holdout(
         "all_positive_baseline": baseline,
         "val_tuned_threshold": val_tuned,
         "val_selected_threshold": val_t,
+        "val_delta_tuned_threshold": val_delta_tuned,
+        "val_delta_selected_threshold": val_dt,
         "diagnostic_test_best_f1": test_best,
         "test_threshold_grid_top5": test_grid,
         # Backward-compatible aliases
@@ -753,6 +887,7 @@ def run_credence_t0(
     checkpoint: Path | None = T0_CHECKPOINT,
     write_json: Path | None = T0_SUMMARY_JSON,
     config: TrainConfig | None = None,
+    apply_isotonic: bool = False,
 ) -> dict:
     """Train with cluster holdout; evaluate on held-out cluster members."""
     from midas.credence.data import load_t0_credence_rows
@@ -781,7 +916,7 @@ def run_credence_t0(
         model_version=T0_MODEL_VERSION,
         feature_mode=train_meta.get("feature_mode", FeatureMode.BINARY_NO_W2BP.value),
     )
-    calibrator = fit_isotonic(split.val, vectors)
+    calibrator = fit_isotonic(split.val, vectors) if apply_isotonic else None
     if calibrator is not None:
         vectors = apply_calibration(vectors, calibrator)
 
@@ -831,6 +966,7 @@ def print_credence_t0_report(summary: dict) -> None:
     primary = hv["primary"]
     baseline = hv["all_positive_baseline"]
     val_tuned = hv["val_tuned_threshold"]
+    val_delta_tuned = hv["val_delta_tuned_threshold"]
     print(f"\n=== Credence T0 ({summary['meta']['version']}) ===")
     print(f"Holdout: {summary['meta']['holdout_cluster_ids']}")
     print(f"Train clusters: {summary['meta']['train_cluster_ids']}")
@@ -843,8 +979,12 @@ def print_credence_t0_report(summary: dict) -> None:
     )
     print(f"  Predict-all-positive baseline F1={baseline['f1']:.3f}")
     print(
-        f"  Val-tuned (t={val_tuned['threshold']:.2f}): "
-        f"F1={val_tuned['f1']:.3f}  spec={val_tuned['specificity']:.3f}"
+        f"  Val-tuned F1 (t={val_tuned['threshold']:.2f}): "
+        f"F1={val_tuned['f1']:.3f}  ΔF1={val_tuned.get('delta_f1_vs_baseline', 0):+.3f}"
+    )
+    print(
+        f"  Val-tuned ΔF1 (t={val_delta_tuned['threshold']:.2f}): "
+        f"F1={val_delta_tuned['f1']:.3f}  ΔF1={val_delta_tuned.get('delta_f1_vs_baseline', 0):+.3f}"
     )
 
 

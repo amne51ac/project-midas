@@ -74,6 +74,7 @@ def main() -> None:
     outer_results: dict[str, dict] = {}
     outer_deltas: list[float] = []
 
+    fold_idx = 0
     for outer_cid, split in nested_loo_headline_folds(rows):
         cname = T0_BY_ID.get(outer_cid)
         print(f"\n=== Outer holdout {outer_cid} ({cname.name if cname else outer_cid}) ===")
@@ -85,7 +86,8 @@ def main() -> None:
         trials: list[dict] = []
 
         for i in range(args.trials):
-            cfg = _sample_config(rng, epochs=args.epochs, seed=args.seed + i)
+            trial_seed = args.seed + fold_idx * 10_000 + i
+            cfg = _sample_config(rng, epochs=args.epochs, seed=trial_seed)
             model, stats, meta = train_model(
                 rows,
                 holdout_cluster_ids=[outer_cid],
@@ -126,6 +128,7 @@ def main() -> None:
         }
         if best_test:
             outer_deltas.append(best_test["test_delta_f1"])
+        fold_idx += 1
 
     payload = {
         "method": "nested_loo_headline",

@@ -1,0 +1,81 @@
+{
+  "method": "nested_tune_oracle_per_fold",
+  "headline_mean_delta_f1": -0.03807456511971905,
+  "folds": {
+    "melotte_22": {
+      "clusterName": "Pleiades",
+      "f1": 0.45714285714285713,
+      "delta_f1": 0.12893772893772892,
+      "n": 163,
+      "n_pos": 32,
+      "config": {
+        "epochs": 50,
+        "lr": 0.003,
+        "weight_decay": 0.0,
+        "hidden": 128,
+        "dropout": 0.0,
+        "val_fraction": 0.15,
+        "seed": 60,
+        "w_binary": 1.0,
+        "w_cmd": 0.3,
+        "w_ir": 0.0,
+        "w_ruwe": 0.25,
+        "pos_weight": 1.0,
+        "early_stop_patience": 20,
+        "val_metric": "macro_f1",
+        "cluster_balance": false,
+        "feature_mode": "binary_no_w2bp"
+      }
+    },
+    "ngc_1039": {
+      "clusterName": "M34 (NGC 1039)",
+      "f1": 0.4166666666666667,
+      "delta_f1": -0.21624472573839654,
+      "n": 108,
+      "n_pos": 50,
+      "config": {
+        "epochs": 50,
+        "lr": 0.003,
+        "weight_decay": 0.0001,
+        "hidden": 64,
+        "dropout": 0.1,
+        "val_fraction": 0.15,
+        "seed": 10051,
+        "w_binary": 1.0,
+        "w_cmd": 0.15,
+        "w_ir": 0.05,
+        "w_ruwe": 0.05,
+        "pos_weight": 0.5,
+        "early_stop_patience": 20,
+        "val_metric": "macro_f1",
+        "cluster_balance": false,
+        "feature_mode": "binary_no_w2bp"
+      }
+    },
+    "ngc_2632": {
+      "clusterName": "Praesepe",
+      "f1": 0.5970149253731344,
+      "delta_f1": -0.02691669855848955,
+      "n": 161,
+      "n_pos": 73,
+      "config": {
+        "epochs": 50,
+        "lr": 0.003,
+        "weight_decay": 0.001,
+        "hidden": 128,
+        "dropout": 0.0,
+        "val_fraction": 0.15,
+        "seed": 20044,
+        "w_binary": 1.0,
+        "w_cmd": 0.15,
+        "w_ir": 0.05,
+        "w_ruwe": 0.15,
+        "pos_weight": 0.5,
+        "early_stop_patience": 20,
+        "val_metric": "macro_f1",
+        "cluster_balance": false,
+        "feature_mode": "binary_no_w2bp"
+      }
+    }
+  }
+}

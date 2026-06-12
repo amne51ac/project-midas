@@ -73,8 +73,11 @@ def main() -> None:
                     "f1": round(m.get("f1", 0), 3),
                     "f1At05": round(m.get("f1_at_0.5", m.get("f1", 0)), 3),
                     "f1ValTuned": round(m.get("f1_val_tuned", 0), 3),
+                    "f1ValDeltaTuned": round(m.get("f1_val_delta_tuned", 0), 3),
+                    "valDeltaTunedThreshold": m.get("val_delta_tuned_threshold"),
                     "f1AllPositiveBaseline": round(m.get("f1_all_positive_baseline", 0), 3),
                     "deltaF1": round(m.get("delta_f1_vs_baseline", 0), 3),
+                    "deltaF1ValDeltaTuned": round(m.get("delta_f1_val_delta_tuned", 0), 3),
                     "evalTier": m.get("eval_tier"),
                     "headline": m.get("headline", False),
                     "beatsAllPosBaseline": bool(m.get("beats_all_pos_baseline")),
@@ -99,17 +102,33 @@ def main() -> None:
         }
 
     train_cfg_note = "nested LOO hybrid (early-stop + hidden=128)"
+    headline_deltas = [r["deltaF1"] for r in loo if r.get("headline")]
     if TRAIN_CONFIG_JSON.exists():
         tc = json.loads(TRAIN_CONFIG_JSON.read_text())
         train_cfg_note = tc.get("source", train_cfg_note)
+
+    nested_oracle_mean = None
+    nested_tune_mean = None
+    oracle_path = PROCESSED / "credence_t0_nested_oracle.json"
+    tune_path = PROCESSED / "credence_t0_nested_tune.json"
+    if oracle_path.exists():
+        nested_oracle_mean = json.loads(oracle_path.read_text()).get("headline_mean_delta_f1")
+    if tune_path.exists():
+        nested_tune_mean = json.loads(tune_path.read_text()).get("outer_mean_test_delta_f1")
 
     payload = {
         "meta": {
             "modelVersion": T0_MODEL_VERSION,
             "train_config": train_cfg_note,
+            "headlineMeanDeltaF1": round(sum(headline_deltas) / len(headline_deltas), 3)
+            if headline_deltas
+            else None,
+            "headlineBeatsBaseline": sum(1 for r in loo if r.get("headline") and r.get("beatsAllPosBaseline")),
+            "nestedOracleMeanDeltaF1": round(nested_oracle_mean, 3) if nested_oracle_mean is not None else None,
+            "nestedTuneOuterMeanDeltaF1": round(nested_tune_mean, 3) if nested_tune_mean is not None else None,
             "evalNote": (
-                "Benchmark v3: Malofeeva paper quantile q isolines; credence-mlp-v5-t0 hybrid train config "
-                "(no W2−BP). Primary: ΔF1 @ t=0.5 vs all-positive. Pleiades headline fold beats baseline."
+                "Benchmark v3: paper quantile q isolines; credence-mlp-v6-t0 (v5 hybrid train, "
+                "isotonic off). Primary: ΔF1 @ t=0.5 vs all-positive."
             ),
         },
         "defaultHoldout": holdout,

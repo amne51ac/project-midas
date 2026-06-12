@@ -30,6 +30,13 @@ def main() -> None:
             if (PROCESSED / "credence_t0_nested_tune.json").exists()
             else None
         ),
+        "nested_oracle_headline_mean_delta_f1": (
+            json.loads((PROCESSED / "credence_t0_nested_oracle.json").read_text()).get(
+                "headline_mean_delta_f1"
+            )
+            if (PROCESSED / "credence_t0_nested_oracle.json").exists()
+            else None
+        ),
         "config": asdict(cfg),
     }
     OUT.write_text(json.dumps(payload, indent=2))

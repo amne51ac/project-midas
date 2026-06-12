@@ -32,6 +32,7 @@ def _fold_metrics(summary: dict, split_test_len: int) -> dict:
     primary = hv["primary"]
     baseline = hv["all_positive_baseline"]
     val_tuned = hv["val_tuned_threshold"]
+    val_delta_tuned = hv["val_delta_tuned_threshold"]
     diagnostic = hv["diagnostic_test_best_f1"]
     return {
         "truthSet": primary.get("truthSet"),
@@ -42,6 +43,11 @@ def _fold_metrics(summary: dict, split_test_len: int) -> dict:
         "f1_at_0.5": primary["f1"],
         "f1_val_tuned": val_tuned["f1"],
         "val_tuned_threshold": val_tuned["threshold"],
+        "f1_val_delta_tuned": val_delta_tuned["f1"],
+        "val_delta_tuned_threshold": val_delta_tuned["threshold"],
+        "delta_f1_val_delta_tuned": val_delta_tuned.get(
+            "delta_f1_vs_baseline", val_delta_tuned["f1"] - baseline["f1"]
+        ),
         "f1_test_best_diagnostic": diagnostic["f1"],
         "f1_all_positive_baseline": baseline["f1"],
         "delta_f1_vs_baseline": primary.get("delta_f1_vs_baseline", primary["f1"] - baseline["f1"]),

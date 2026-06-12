@@ -21,6 +21,9 @@ Q02_ISOLINE_PERCENTILE = 55.0  # legacy approximate q=0.2 locus
 Q0_QUANTILE = 0.88
 Q02_QUANTILE = 0.62
 PAPER_ISOLINE_GRID = 48
+Q0_SHIFT_MIN = -2.5
+Q0_SHIFT_MAX = 2.5
+Q0_SHIFT_STEPS = 51
 
 TID_ISOLINE_DIR = PROCESSED / "malofeeva_tid"
 
@@ -220,7 +223,7 @@ def _fit_q0_shift(
 ) -> float:
     best_shift = 0.0
     best_err = float("inf")
-    for shift in np.linspace(-0.8, 0.8, 33):
+    for shift in np.linspace(Q0_SHIFT_MIN, Q0_SHIFT_MAX, Q0_SHIFT_STEPS):
         iso = TidIsolines(
             cluster_id="",
             q0_hw2w1=q0_h,
@@ -244,9 +247,15 @@ def build_paper_quantile_isolines(
     *,
     g_by_gaia: dict[str, float | None] | None = None,
     margin: float = DEFAULT_ENVELOPE_MARGIN,
+    calibration_gaia_ids: set[str] | None = None,
 ) -> TidIsolines | None:
     """Fit q=0 / q=0.2 isolines via quantile regression on mass-cut sample."""
     pool = _filter_mass(cluster_id, rows, g_by_gaia)
+    cal_pool = pool
+    if calibration_gaia_ids:
+        aligned = [r for r in pool if r.gaia_id in calibration_gaia_ids]
+        if len(aligned) >= 20:
+            cal_pool = aligned
     pts = [(r.hw2w1, r.w2_bpks) for r in pool if r.hw2w1 is not None and r.w2_bpks is not None]
     q0 = _quantile_isoline_curve(pts, quantile=Q0_QUANTILE)
     q02 = _quantile_isoline_curve(pts, quantile=Q02_QUANTILE)
@@ -255,7 +264,7 @@ def build_paper_quantile_isolines(
     q0_h, q0_w = q0
     q02_h, q02_w = q02
     target = TID_TARGET_BINARY_FRAC.get(cluster_id, 0.55)
-    shift = _fit_q0_shift(pool, q0_h, q0_w, target, margin, q02_h, q02_w)
+    shift = _fit_q0_shift(cal_pool, q0_h, q0_w, target, margin, q02_h, q02_w)
     iso = TidIsolines(
         cluster_id=cluster_id,
         q0_hw2w1=q0_h,
@@ -342,13 +351,22 @@ def build_cluster_tid_isolines(
     g_by_gaia: dict[str, float | None] | None = None,
     margin: float = DEFAULT_ENVELOPE_MARGIN,
     source: IsolineSource | str = IsolineSource.PAPER_QUANTILE,
+    calibration_gaia_ids: set[str] | None = None,
+    force_rebuild: bool = False,
 ) -> TidIsolines | None:
     src = IsolineSource(source) if isinstance(source, str) else source
     if src == IsolineSource.PAPER_QUANTILE:
-        cached = load_paper_isolines(cluster_id)
-        if cached is not None:
-            return cached
-        iso = build_paper_quantile_isolines(cluster_id, rows, g_by_gaia=g_by_gaia, margin=margin)
+        if not force_rebuild:
+            cached = load_paper_isolines(cluster_id)
+            if cached is not None:
+                return cached
+        iso = build_paper_quantile_isolines(
+            cluster_id,
+            rows,
+            g_by_gaia=g_by_gaia,
+            margin=margin,
+            calibration_gaia_ids=calibration_gaia_ids,
+        )
         if iso is not None:
             write_paper_isolines(iso)
         return iso
@@ -364,8 +382,16 @@ def build_cluster_tid_envelope(
     rows: list[LiteratureRow],
     *,
     g_by_gaia: dict[str, float | None] | None = None,
+    calibration_gaia_ids: set[str] | None = None,
+    force_rebuild: bool = False,
 ) -> TidIsolines | None:
-    return build_cluster_tid_isolines(cluster_id, rows, g_by_gaia=g_by_gaia)
+    return build_cluster_tid_isolines(
+        cluster_id,
+        rows,
+        g_by_gaia=g_by_gaia,
+        calibration_gaia_ids=calibration_gaia_ids,
+        force_rebuild=force_rebuild,
+    )
 
 
 def tid_lookup(rows: list[LiteratureRow]) -> dict[str, LiteratureRow]:

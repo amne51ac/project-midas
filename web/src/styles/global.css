@@ -3612,6 +3612,14 @@ code {
   border-bottom-color: color-mix(in srgb, var(--accent) 25%, var(--rule));
 }
 
+.credence-table__beat-baseline {
+  background: color-mix(in srgb, var(--ok, #2d6a4f) 10%, transparent);
+}
+
+.credence-delta-pos {
+  color: var(--ok, #2d6a4f);
+}
+
 .credence-planes {
   display: flex;
   flex-wrap: wrap;

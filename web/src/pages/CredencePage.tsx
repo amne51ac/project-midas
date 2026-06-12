@@ -362,8 +362,28 @@ export function CredencePage() {
             </dl>
           </div>
 
-          <h3 className="credence-section__title">T0 cluster-held-out (credence-mlp-v2-t0)</h3>
+          <h3 className="credence-section__title">T0 cluster-held-out ({t0.meta.modelVersion})</h3>
           <p className="section__prose">{t0.meta.evalNote}</p>
+          {typeof t0.meta.headlineMeanDeltaF1 === 'number' && (
+            <p className="section__prose">
+              Headline mean ΔF1 (3 Malofeeva folds):{' '}
+              <strong className={t0.meta.headlineMeanDeltaF1 >= 0 ? 'credence-delta-pos' : undefined}>
+                {t0.meta.headlineMeanDeltaF1 >= 0 ? '+' : ''}
+                {t0.meta.headlineMeanDeltaF1.toFixed(3)}
+              </strong>
+              {typeof t0.meta.headlineBeatsBaseline === 'number' && (
+                <> · {t0.meta.headlineBeatsBaseline}/3 folds beat all-positive baseline</>
+              )}
+              {typeof t0.meta.nestedOracleMeanDeltaF1 === 'number' && (
+                <>
+                  {' '}
+                  · per-fold nested-oracle ceiling{' '}
+                  {t0.meta.nestedOracleMeanDeltaF1 >= 0 ? '+' : ''}
+                  {t0.meta.nestedOracleMeanDeltaF1.toFixed(3)}
+                </>
+              )}
+            </p>
+          )}
           {t0.defaultHoldout && (
             <p className="section__prose">
               Default holdout ({t0.defaultHoldout.clusterIds.join(', ')}): {t0.defaultHoldout.truthSet} ·
@@ -396,7 +416,13 @@ export function CredencePage() {
                   {t0.leaveOneClusterOut.map((row) => (
                     <tr
                       key={row.clusterId}
-                      className={row.clusterId === 'ngc_1039' ? 'credence-table__highlight' : undefined}
+                      className={
+                        row.beatsAllPosBaseline
+                          ? 'credence-table__beat-baseline'
+                          : row.clusterId === 'ngc_1039'
+                            ? 'credence-table__highlight'
+                            : undefined
+                      }
                     >
                       <th scope="row">{row.clusterName}</th>
                       <td>{row.truthSet}</td>
