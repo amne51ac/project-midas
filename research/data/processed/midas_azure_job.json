@@ -1,0 +1,7 @@
+{
+  "job_id": "midas-seed-1781236170",
+  "n_tasks": 30,
+  "pool": "midas-credence-pool",
+  "storage": "midascredencest",
+  "note": "After job completes, scale pool to 0: az batch pool resize --pool-id midas-credence-pool --target-low-priority-nodes 0"
+}
