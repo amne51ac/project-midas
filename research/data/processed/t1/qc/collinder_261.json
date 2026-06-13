@@ -1,0 +1,21 @@
+{
+  "cluster_id": "collinder_261",
+  "cg_name": "Collinder_261",
+  "n_rows": 1799,
+  "n_cg_member": 1799,
+  "n_with_gaia": 1799,
+  "n_with_w2": 587,
+  "n_with_ruwe": 1770,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.3263,
+  "parquet_path": "/app/research/data/processed/t1/members/collinder_261.parquet",
+  "parquet_bytes": 134071,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 1801,
+    "gaia": 66472,
+    "wise": 5831
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781315767/collinder_261.parquet"
+}

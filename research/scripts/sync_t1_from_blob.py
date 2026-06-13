@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -48,61 +49,70 @@ def _storage_key() -> str:
     return out.stdout.strip()
 
 
+def _list_blobs(account: str, prefix: str, key: str) -> list[str]:
+    out = subprocess.run(
+        [
+            "az",
+            "storage",
+            "blob",
+            "list",
+            "--account-name",
+            account,
+            "--container-name",
+            "midas-results",
+            "--prefix",
+            prefix,
+            "--account-key",
+            key,
+            "-o",
+            "json",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return [b["name"] for b in json.loads(out.stdout)]
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument(
-        "--job-id",
-        default="midas-t1-1781315767",
-        help="Batch job id (blob prefix processed/t1/members/<job-id>/)",
-    )
+    p.add_argument("--job-id", default="midas-t1-1781315767")
     p.add_argument("--account", default="midascredencest")
     args = p.parse_args()
 
     key = _storage_key()
-    prefix = f"processed/t1/members/{args.job_id}/"
+    os.environ["MIDAS_AZURE_STORAGE"] = args.account
+    os.environ["MIDAS_STORAGE_KEY"] = key
+
+    from midas_blob import _client
+
+    client = _client()
+    container = client.get_container_client("midas-results")
+
+    pq_prefix = f"processed/t1/members/{args.job_id}/"
     qc_prefix = f"processed/t1/qc/{args.job_id}/"
     MEMBERS.mkdir(parents=True, exist_ok=True)
     QC.mkdir(parents=True, exist_ok=True)
 
-    subprocess.run(
-        [
-            "az",
-            "storage",
-            "blob",
-            "download-batch",
-            "--destination",
-            str(MEMBERS),
-            "--source",
-            f"{args.account}/midas-results/{prefix}",
-            "--pattern",
-            "*.parquet",
-            "--account-key",
-            key,
-        ],
-        check=True,
-    )
-    subprocess.run(
-        [
-            "az",
-            "storage",
-            "blob",
-            "download-batch",
-            "--destination",
-            str(QC),
-            "--source",
-            f"{args.account}/midas-results/{qc_prefix}",
-            "--pattern",
-            "*.json",
-            "--account-key",
-            key,
-        ],
-        check=True,
-    )
-    n_parquet = len(list(MEMBERS.glob("*.parquet")))
-    n_qc = len(list(QC.glob("*.json")))
+    n_pq = n_qc = 0
+    for blob_name in _list_blobs(args.account, pq_prefix, key):
+        if not blob_name.endswith(".parquet"):
+            continue
+        local = MEMBERS / Path(blob_name).name
+        with open(local, "wb") as f:
+            f.write(container.download_blob(blob_name).readall())
+        n_pq += 1
+
+    for blob_name in _list_blobs(args.account, qc_prefix, key):
+        if not blob_name.endswith(".json"):
+            continue
+        local = QC / Path(blob_name).name
+        local.write_bytes(container.download_blob(blob_name).readall())
+        n_qc += 1
+
     meta = {
         "job_id": args.job_id,
-        "n_parquet": n_parquet,
+        "n_parquet": n_pq,
         "n_qc": n_qc,
         "members_dir": str(MEMBERS),
     }

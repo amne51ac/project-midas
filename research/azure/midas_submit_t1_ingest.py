@@ -18,6 +18,11 @@ sys.path.insert(0, str(RESEARCH))
 from midas.credence.t1_registry import T1_PILOT_CSV, T1_REGISTRY_CSV, load_registry
 
 
+def _task_id(cluster_id: str) -> str:
+    safe = cluster_id.replace("+", "_plus_").replace(".", "_")
+    return f"t1-{safe}"[:64]
+
+
 def _load_config() -> dict[str, str]:
     cfg: dict[str, str] = {}
     for line in (SCRIPT_DIR / "midas_config.env").read_text().splitlines():
@@ -110,7 +115,7 @@ def main() -> None:
     skipped = 0
     errors: list[str] = []
     for cluster in clusters:
-        tid = f"t1-{cluster.cluster_id}"[:64]
+        tid = _task_id(cluster.cluster_id)
         if tid in existing:
             skipped += 1
             continue

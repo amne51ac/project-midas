@@ -1,0 +1,14 @@
+{
+  "ingest": {
+    "pilotJobId": "midas-t1-1781315767",
+    "pilotSucceeded": 49,
+    "pilotTotal": 50,
+    "memberRows": 44545,
+    "fullRegistryClusters": 1611,
+    "blobPrefix": "processed/t1/members/midas-t1-1781315767/"
+  },
+  "model": {
+    "version": "credence-mlp-v8-t1",
+    "headlineMeanDeltaF1": null
+  }
+}

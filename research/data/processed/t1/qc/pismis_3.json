@@ -1,0 +1,21 @@
+{
+  "cluster_id": "pismis_3",
+  "cg_name": "Pismis_3",
+  "n_rows": 980,
+  "n_cg_member": 980,
+  "n_with_gaia": 980,
+  "n_with_w2": 660,
+  "n_with_ruwe": 956,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6735,
+  "parquet_path": "/app/research/data/processed/t1/members/pismis_3.parquet",
+  "parquet_bytes": 81906,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 982,
+    "gaia": 19629,
+    "wise": 6105
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781315767/pismis_3.parquet"
+}

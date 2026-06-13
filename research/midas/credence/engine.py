@@ -521,6 +521,21 @@ def evaluate_vectors(
         subset = [r for r in subset if r.cluster_id in allowed]
     if use_benchmark_universe:
         subset = eval_universe(subset, cluster_ids=cluster_ids)
+    if not subset:
+        return {
+            "label": "Credence (empty eval universe)",
+            "truthSet": "none",
+            "universe": "empty",
+            "evalTier": None,
+            "n": 0,
+            "n_pos": 0,
+            "threshold": threshold,
+            "confusion": asdict(confusion_matrix(np.array([], dtype=bool), np.array([], dtype=bool))),
+            "precision": 0.0,
+            "recall": 0.0,
+            "specificity": 0.0,
+            "f1": 0.0,
+        }
     y_true = np.array([eval_truth(r, mode=truth_mode) for r in subset])
     y_pred = np.array([eval_score(r, vectors[r.midas_id]) >= threshold for r in subset])
     scores = np.array([eval_score(r, vectors[r.midas_id]) for r in subset])
@@ -590,6 +605,8 @@ def val_delta_f1_macro(
             threshold=threshold,
             truth_mode=truth_mode,
         )
+        if primary["n"] < min_cluster_n:
+            continue
         baseline = all_positive_baseline(sub, truth_mode=truth_mode, cluster_ids=[cid])
         deltas.append(primary["f1"] - baseline["f1"])
     return float(np.mean(deltas)) if deltas else 0.0

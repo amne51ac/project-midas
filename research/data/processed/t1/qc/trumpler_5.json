@@ -8,12 +8,14 @@
   "n_with_ruwe": 1877,
   "gaia_frac": 1.0,
   "w2_frac": 0.6221,
-  "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/trumpler_5.parquet",
+  "parquet_path": "/app/research/data/processed/t1/members/trumpler_5.parquet",
   "parquet_bytes": 160688,
   "fetched": true,
   "fetch_counts": {
     "cg": 2053,
     "gaia": 22192,
     "wise": 8707
-  }
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781315767/trumpler_5.parquet"
 }

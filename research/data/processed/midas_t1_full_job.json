@@ -1,11 +1,10 @@
 {
   "job_id": "midas-t1-1781364581",
-  "n_tasks": 4,
-  "n_submitted": 4,
-  "n_skipped": 0,
-  "n_errors": 0,
+  "n_tasks": 1611,
+  "n_submitted": 1607,
+  "n_submit_errors": 4,
   "registry": "data/registry/t1_clusters.csv",
   "blob_prefix": "processed/t1/members/midas-t1-1781364581/",
   "qc_prefix": "processed/t1/qc/midas-t1-1781364581/",
-  "errors": []
+  "note": "4 Skiff clusters need resubmit after task-id sanitization fix"
 }

@@ -2,7 +2,8 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { CREDENCE, CREDENCE_LINKS, GITHUB_REPO } from '../data/credence';
 import m34Science from '../data/credenceM34Science.json';
-import { T0 } from '../utils/tierLabel';
+import t1Pilot from '../data/credenceT1Pilot.json';
+import { T0, T1 } from '../utils/tierLabel';
 
 function VerdictBadge({ verdict }: { verdict: 'recommended' | 'future' | 'not-recommended' }) {
   const labels = {
@@ -363,6 +364,23 @@ export function CredencePage() {
               </div>
             </dl>
           </div>
+
+          <h3 className="credence-section__title">{T1} pilot ingest &amp; v8-t1</h3>
+          <p className="section__prose">
+            Azure Batch pilot: {t1Pilot.ingest.pilotSucceeded}/{t1Pilot.ingest.pilotTotal} clusters ·{' '}
+            {t1Pilot.ingest.memberRows.toLocaleString()} CG member rows in Blob Parquet. Full registry:{' '}
+            {t1Pilot.ingest.fullRegistryClusters.toLocaleString()} clusters queued for scale ingest.
+          </p>
+          {typeof t1Pilot.model.headlineMeanDeltaF1 === 'number' && (
+            <p className="section__prose">
+              v8-t1 pretrained → frozen {T0} LOO headline mean ΔF1:{' '}
+              <strong>{t1Pilot.model.headlineMeanDeltaF1 >= 0 ? '+' : ''}
+              {t1Pilot.model.headlineMeanDeltaF1.toFixed(3)}</strong>
+            </p>
+          )}
+          <p className="section__prose">
+            <a href="/atlas">Open Credence Atlas</a> — {T1} pilot clusters when atlas bundle is built.
+          </p>
 
           <h3 className="credence-section__title">{T0} cluster-held-out ({t0.meta.modelVersion})</h3>
           <p className="section__prose">{t0.meta.evalNote}</p>

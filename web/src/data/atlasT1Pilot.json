@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "tier": "T1-pilot",
+    "nClusters": 0,
+    "nStars": 0,
+    "ingestJobId": "midas-t1-1781315767",
+    "note": "Run scripts/build_web_atlas_t1.py after v8-t1 training"
+  },
+  "clusters": [],
+  "stars": []
+}

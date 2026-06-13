@@ -1,0 +1,21 @@
+{
+  "cluster_id": "trumpler_19",
+  "cg_name": "Trumpler_19",
+  "n_rows": 629,
+  "n_cg_member": 629,
+  "n_with_gaia": 629,
+  "n_with_w2": 234,
+  "n_with_ruwe": 582,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.372,
+  "parquet_path": "/app/research/data/processed/t1/members/trumpler_19.parquet",
+  "parquet_bytes": 51276,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 631,
+    "gaia": 61664,
+    "wise": 5095
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781315767/trumpler_19.parquet"
+}

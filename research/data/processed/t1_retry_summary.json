@@ -1,0 +1,88 @@
+{
+  "clusters": [
+    {
+      "cluster_id": "ngc_7789",
+      "error": "Gaia fetch failed for ngc_7789"
+    },
+    {
+      "cluster_id": "ngc_5822",
+      "cg_name": "NGC_5822",
+      "n_rows": 634,
+      "n_cg_member": 634,
+      "n_with_gaia": 634,
+      "n_with_w2": 424,
+      "n_with_ruwe": 597,
+      "gaia_frac": 1.0,
+      "w2_frac": 0.6688,
+      "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/ngc_5822.parquet",
+      "parquet_bytes": 56197,
+      "fetched": true,
+      "fetch_counts": {
+        "cg": 636,
+        "gaia": 950632,
+        "wise": 61212
+      },
+      "blob_parquet": "processed/t1/members/midas-t1-1781315767/ngc_5822.parquet"
+    },
+    {
+      "cluster_id": "ngc_6705",
+      "cg_name": "NGC_6705",
+      "n_rows": 1183,
+      "n_cg_member": 1183,
+      "n_with_gaia": 1183,
+      "n_with_w2": 255,
+      "n_with_ruwe": 1179,
+      "gaia_frac": 1.0,
+      "w2_frac": 0.2156,
+      "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/ngc_6705.parquet",
+      "parquet_bytes": 89642,
+      "fetched": true,
+      "fetch_counts": {
+        "cg": 1185,
+        "gaia": 152353,
+        "wise": 4928
+      },
+      "blob_parquet": "processed/t1/members/midas-t1-1781315767/ngc_6705.parquet"
+    },
+    {
+      "cluster_id": "stock_2",
+      "cg_name": "Stock_2",
+      "n_rows": 1178,
+      "n_cg_member": 1178,
+      "n_with_gaia": 1178,
+      "n_with_w2": 982,
+      "n_with_ruwe": 1030,
+      "gaia_frac": 1.0,
+      "w2_frac": 0.8336,
+      "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/stock_2.parquet",
+      "parquet_bytes": 100449,
+      "fetched": true,
+      "fetch_counts": {
+        "cg": 1180,
+        "gaia": 744052,
+        "wise": 271112
+      },
+      "blob_parquet": "processed/t1/members/midas-t1-1781315767/stock_2.parquet"
+    },
+    {
+      "cluster_id": "upk_640",
+      "cg_name": "UPK_640",
+      "n_rows": 616,
+      "n_cg_member": 616,
+      "n_with_gaia": 616,
+      "n_with_w2": 396,
+      "n_with_ruwe": 269,
+      "gaia_frac": 1.0,
+      "w2_frac": 0.6429,
+      "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/upk_640.parquet",
+      "parquet_bytes": 44436,
+      "fetched": true,
+      "fetch_counts": {
+        "cg": 618,
+        "gaia": 3000000,
+        "wise": 310288
+      },
+      "blob_parquet": "processed/t1/members/midas-t1-1781315767/upk_640.parquet"
+    }
+  ]
+}

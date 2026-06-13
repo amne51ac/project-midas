@@ -104,8 +104,13 @@ class CredenceVector:
     model_version: str
 
 
-def _float(v: str | None) -> float | None:
-    v = (v or "").strip()
+def _float(v: str | float | int | None) -> float | None:
+    if v is None:
+        return None
+    if isinstance(v, (int, float)):
+        x = float(v)
+        return x if x == x else None
+    v = str(v).strip()
     if not v:
         return None
     try:
@@ -161,6 +166,17 @@ def _h_w2(row: CredenceRow) -> float | None:
     return row.h_mag
 
 
+def _bool_field(v) -> bool:
+    if isinstance(v, bool):
+        return v
+    if v is None:
+        return False
+    try:
+        return bool(int(v))
+    except (TypeError, ValueError):
+        return bool(v)
+
+
 def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> CredenceRow:
     star_id = str(rec.get("star_id", "")).strip()
     midas_id = int(star_id) if star_id.isdigit() else hash(star_id) % (10**9)
@@ -184,12 +200,12 @@ def _row_from_t0_rec(rec: dict, pipeline_q: dict[int, float] | None) -> Credence
         w2_mag=_float(rec.get("w2_mag")),
         h_w2=_float(rec.get("h_w2")),
         cg_proba=_float(rec.get("cg_proba")),
-        cg_member=bool(int(rec.get("cg_member") or 0)),
-        malofeeva=bool(int(rec.get("malofeeva") or 0)),
-        malofeeva_in_sample=bool(int(rec.get("malofeeva_in_sample") or 0)),
-        tid_mass_ok=bool(int(rec.get("tid_mass_ok") or 0)),
-        excel_binary=bool(int(rec.get("excel_binary") or 0)),
-        ruwe_high=bool(int(rec.get("ruwe_high") or 0))
+        cg_member=_bool_field(rec.get("cg_member")),
+        malofeeva=_bool_field(rec.get("malofeeva")),
+        malofeeva_in_sample=_bool_field(rec.get("malofeeva_in_sample")),
+        tid_mass_ok=_bool_field(rec.get("tid_mass_ok")),
+        excel_binary=_bool_field(rec.get("excel_binary")),
+        ruwe_high=_bool_field(rec.get("ruwe_high"))
         or (ruwe is not None and ruwe > RUWE_ASTROMETRIC_BINARY),
         ra=_float(rec.get("ra")),
         dec=_float(rec.get("dec")),
