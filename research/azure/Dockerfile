@@ -19,12 +19,15 @@ COPY data/processed/malofeeva_tid ./data/processed/malofeeva_tid
 COPY data/benchmarks ./data/benchmarks
 COPY data/processed/t0/literature ./data/processed/t0/literature
 
-RUN mkdir -p data/processed/azure_results data/processed/t0/literature \
-    && touch data/processed/t0/literature/hyades_gold_probe_unavailable.marker \
-    && chmod -R a+rwX data
-
 ENV PYTHONPATH=/app/research
 ENV MIDAS_AZURE=1
+ENV HOME=/tmp
+ENV XDG_CACHE_HOME=/tmp/.cache
+ENV ASTROPY_CACHE_DIR=/tmp/astropy
+
+RUN mkdir -p /tmp/.cache /tmp/astropy data/processed/azure_results data/processed/t0/literature \
+    && touch data/processed/t0/literature/hyades_gold_probe_unavailable.marker \
+    && chmod -R a+rwX /tmp data
 
 WORKDIR /app/research
-CMD ["python", "azure/worker.py"]
+CMD ["sh", "-c", "export HOME=/tmp XDG_CACHE_HOME=/tmp/.cache ASTROPY_CACHE_DIR=/tmp/astropy && python azure/worker.py"]

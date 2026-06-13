@@ -12,7 +12,7 @@ import numpy as np
 from midas.credence.literature_binary import MALOFeeva_VIZIER, clusters_with_literature, literature_truth_label
 from midas.credence.t0_registry import T0_BY_ID, get_cluster
 from midas.membership import DEFAULT_CG_MEMBER_THRESHOLD
-from midas.paths import PROCESSED
+from midas.paths import PROCESSED, T1_DIR
 from midas.validation import RUWE_ASTROMETRIC_BINARY
 
 JOIN_IR_CSV = PROCESSED / "m34_join_ir.csv"
@@ -216,6 +216,35 @@ def load_t0_credence_rows(
     return rows
 
 
+T1_MEMBERS_DIR = T1_DIR / "members"
+
+
+def load_t1_credence_rows(
+    *,
+    members_dir: Path | None = None,
+    pipeline_q: dict[int, float] | None = None,
+) -> list[CredenceRow]:
+    """Load CredenceRows from T1 Parquet shards (local path or synced Blob mirror)."""
+    import pyarrow.parquet as pq
+
+    root = members_dir or T1_MEMBERS_DIR
+    if not root.exists():
+        raise FileNotFoundError(
+            f"Missing T1 members dir {root}\n"
+            "Run: python scripts/sync_t1_from_blob.py or scripts/run_t1_ingest.py"
+        )
+    paths = sorted(root.glob("*.parquet"))
+    if not paths:
+        raise FileNotFoundError(f"No Parquet files in {root}")
+    rows: list[CredenceRow] = []
+    for path in paths:
+        for rec in pq.read_table(path).to_pylist():
+            rec = dict(rec)
+            rec.setdefault("cluster_id", path.stem)
+            rows.append(_row_from_t0_rec(rec, pipeline_q))
+    return rows
+
+
 def load_credence_rows(
     *,
     join_ir_path: Path | None = None,
@@ -356,11 +385,18 @@ def cluster_context(
     cluster_id: str = "ngc_1039",
 ) -> np.ndarray:
     """Hand cluster embedding from registry distance/age + local CMD stats."""
+    dist_pc, age_gyr = M34_DIST_PC, M34_AGE_GYR
     if cluster_id in T0_BY_ID:
         c = get_cluster(cluster_id)
         dist_pc, age_gyr = c.dist_pc, c.age_gyr
     else:
-        dist_pc, age_gyr = M34_DIST_PC, M34_AGE_GYR
+        try:
+            from midas.credence.t1_registry import get_cluster as get_t1
+
+            c = get_t1(cluster_id)
+            dist_pc, age_gyr = c.dist_pc, c.age_gyr
+        except (KeyError, FileNotFoundError):
+            pass
     return np.array(
         [
             stats.g_mean / 20.0,

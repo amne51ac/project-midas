@@ -44,6 +44,9 @@ T0_CHECKPOINT = PROCESSED / "credence_model_t0.pt"
 T0_SUMMARY_JSON = PROCESSED / "credence_t0_summary.json"
 T0_VECTORS_CSV = PROCESSED / "credence_t0_vectors.csv"
 T0_MODEL_VERSION = "credence-mlp-v6-t0"
+T1_CHECKPOINT = PROCESSED / "credence_model_v8_t1.pt"
+T1_SUMMARY_JSON = PROCESSED / "credence_v8_t1_summary.json"
+T1_MODEL_VERSION = "credence-mlp-v8-t1"
 CREDENCE_VECTORS_CSV = PROCESSED / "credence_vectors.csv"
 
 DEFAULT_EPOCHS = 120
@@ -971,6 +974,117 @@ def run_credence_t0(
     write_vectors_csv(rows, vectors, T0_VECTORS_CSV)
 
     return summary
+
+
+def train_credence_t1(
+    *,
+    members_dir: Path | None = None,
+    epochs: int = 80,
+    config: TrainConfig | None = None,
+    checkpoint: Path | None = T1_CHECKPOINT,
+    write_json: Path | None = T1_SUMMARY_JSON,
+) -> dict:
+    """Train v8-t1 on T1 Parquet members (random member val split; no T0 leakage)."""
+    from midas.credence.data import load_t1_credence_rows, member_rows
+
+    cfg = config or default_t0_train_config(epochs=epochs)
+    rows = load_t1_credence_rows(members_dir=members_dir)
+    pool = member_rows(rows)
+    n_clusters = len({r.cluster_id for r in pool})
+    model, stats, train_meta = train_model(
+        rows,
+        checkpoint=checkpoint or T1_CHECKPOINT,
+        holdout_cluster_ids=None,
+        model_version=T1_MODEL_VERSION,
+        config=cfg,
+    )
+    summary = {
+        "meta": {
+            "version": T1_MODEL_VERSION,
+            "detector": "Credence",
+            "engine": "model",
+            "train_tier": "T1",
+            "n_rows": len(rows),
+            "n_cg_members": len(pool),
+            "n_clusters": n_clusters,
+            "checkpoint": str((checkpoint or T1_CHECKPOINT).name),
+        },
+        "model": train_meta,
+    }
+    if write_json:
+        write_json.parent.mkdir(parents=True, exist_ok=True)
+        with open(write_json, "w") as f:
+            json.dump(summary, f, indent=2)
+    return summary
+
+
+def eval_credence_t0_pretrained(
+    *,
+    holdout_cluster_ids: list[str],
+    checkpoint: Path | None = T1_CHECKPOINT,
+    apply_isotonic: bool = False,
+) -> dict:
+    """Evaluate a pretrained model on T0 cluster holdout (frozen T0 benchmark)."""
+    from midas.credence.data import load_t0_credence_rows
+
+    if not (checkpoint or T1_CHECKPOINT).exists():
+        raise FileNotFoundError(f"Missing checkpoint {(checkpoint or T1_CHECKPOINT)}")
+    rows = load_t0_credence_rows()
+    split = cluster_holdout_split(rows, holdout_cluster_ids=holdout_cluster_ids)
+    model, stats, train_meta = load_model(checkpoint or T1_CHECKPOINT)
+    vectors = infer_vectors(
+        model,
+        rows,
+        stats,
+        model_version=train_meta.get("model_version", T1_MODEL_VERSION),
+        feature_mode=train_meta.get("feature_mode", FeatureMode.BINARY_NO_W2BP.value),
+    )
+    calibrator = fit_isotonic(split.val, vectors) if apply_isotonic else None
+    if calibrator is not None:
+        vectors = apply_calibration(vectors, calibrator)
+    return summarize_holdout(split, vectors, truth_mode="auto")
+
+
+def run_credence_t0_loo_pretrained(
+    *,
+    checkpoint: Path | None = T1_CHECKPOINT,
+    headline_only: bool = True,
+    write_json: Path | None = None,
+) -> dict:
+    """LOO on T0 headline folds using a T1-pretrained checkpoint (no retrain on T0)."""
+    from midas.credence.benchmark import HEADLINE_CLUSTER_IDS
+
+    folds = list(HEADLINE_CLUSTER_IDS) if headline_only else []
+    if not folds:
+        raise ValueError("No folds to evaluate")
+    results: list[dict] = []
+    for holdout in folds:
+        hv = eval_credence_t0_pretrained(
+            holdout_cluster_ids=[holdout],
+            checkpoint=checkpoint,
+        )
+        primary = hv["primary"]
+        baseline = hv["all_positive_baseline"]
+        results.append(
+            {
+                "holdout": holdout,
+                "f1": primary["f1"],
+                "delta_f1": primary["f1"] - baseline["f1"],
+                "n_test": primary["n"],
+            }
+        )
+    deltas = [r["delta_f1"] for r in results]
+    payload = {
+        "checkpoint": str((checkpoint or T1_CHECKPOINT).name),
+        "model_version": T1_MODEL_VERSION,
+        "folds": results,
+        "headline_mean_delta_f1": sum(deltas) / len(deltas) if deltas else None,
+    }
+    if write_json:
+        write_json.parent.mkdir(parents=True, exist_ok=True)
+        with open(write_json, "w") as f:
+            json.dump(payload, f, indent=2)
+    return payload
 
 
 def print_credence_t0_report(summary: dict) -> None:

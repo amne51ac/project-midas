@@ -96,14 +96,14 @@ export function HRDiagram({
       .call(d3.axisBottom(x).ticks(8))
       .call((sel) => sel.select('.domain').remove())
       .call((sel) =>
-        sel.selectAll('text').attr('font-family', 'Libre Franklin, sans-serif').attr('font-size', 10).attr('fill', '#8a98b4'),
+        sel.selectAll('text').attr('font-family', 'IBM Plex Sans, sans-serif').attr('font-size', 10).attr('fill', '#8a98b4'),
       );
 
     g.append('text')
       .attr('x', width / 2)
       .attr('y', height - 8)
       .attr('text-anchor', 'middle')
-      .attr('font-family', 'Libre Franklin, sans-serif')
+      .attr('font-family', 'IBM Plex Sans, sans-serif')
       .attr('font-size', 11)
       .attr('fill', '#9aa8c4')
       .text('B − V  →  hotter / bluer');
@@ -113,7 +113,7 @@ export function HRDiagram({
       .call(d3.axisLeft(y).ticks(8))
       .call((sel) => sel.select('.domain').remove())
       .call((sel) =>
-        sel.selectAll('text').attr('font-family', 'Libre Franklin, sans-serif').attr('font-size', 10).attr('fill', '#8a98b4'),
+        sel.selectAll('text').attr('font-family', 'IBM Plex Sans, sans-serif').attr('font-size', 10).attr('fill', '#8a98b4'),
       );
 
     g.append('text')
@@ -121,7 +121,7 @@ export function HRDiagram({
       .attr('x', -(height / 2))
       .attr('y', 16)
       .attr('text-anchor', 'middle')
-      .attr('font-family', 'Libre Franklin, sans-serif')
+      .attr('font-family', 'IBM Plex Sans, sans-serif')
       .attr('font-size', 11)
       .attr('fill', '#9aa8c4')
       .text('Mv  ↑  brighter');
@@ -188,7 +188,7 @@ export function HRDiagram({
       g.append('text')
         .attr('x', x(0.55))
         .attr('y', y(4.2))
-        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-family', 'IBM Plex Sans, sans-serif')
         .attr('font-size', 10)
         .attr('font-weight', 600)
         .attr('fill', '#9aa8c4')
@@ -208,7 +208,7 @@ export function HRDiagram({
       g.append('text')
         .attr('x', x(turnoff.bv) + 10)
         .attr('y', y(turnoff.mv) + 4)
-        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-family', 'IBM Plex Sans, sans-serif')
         .attr('font-size', 9)
         .attr('fill', '#e8c547')
         .text('turnoff ~2 M☉ (YY)');
@@ -225,7 +225,7 @@ export function HRDiagram({
       g.append('text')
         .attr('x', x(pTurnoff.bv) + 10)
         .attr('y', y(pTurnoff.mv) - 6)
-        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-family', 'IBM Plex Sans, sans-serif')
         .attr('font-size', 9)
         .attr('fill', PARSEC_COLOR)
         .text('PARSEC turnoff');
@@ -239,7 +239,7 @@ export function HRDiagram({
       g.append('text')
         .attr('x', x(0.35))
         .attr('y', y(3.5))
-        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-family', 'IBM Plex Sans, sans-serif')
         .attr('font-size', 9)
         .attr('fill', '#9ec5ff')
         .text('equal-mass binary track');
@@ -301,7 +301,7 @@ export function HRDiagram({
         g.append('text')
           .attr('x', legendX - 10)
           .attr('y', legendY + 3)
-          .attr('font-family', 'Libre Franklin, sans-serif')
+          .attr('font-family', 'IBM Plex Sans, sans-serif')
           .attr('font-size', 9)
           .attr('fill', '#9aa8c4')
           .text(ageIso.shortLabel);
@@ -318,7 +318,7 @@ export function HRDiagram({
       g.append('text')
         .attr('x', legendX - 10)
         .attr('y', legendY + 3)
-        .attr('font-family', 'Libre Franklin, sans-serif')
+        .attr('font-family', 'IBM Plex Sans, sans-serif')
         .attr('font-size', 9)
         .attr('fill', '#9aa8c4')
         .text('PARSEC');
@@ -342,7 +342,7 @@ export function HRDiagram({
         g.append('text')
           .attr('x', legendX - 10)
           .attr('y', legendY + 3)
-          .attr('font-family', 'Libre Franklin, sans-serif')
+          .attr('font-family', 'IBM Plex Sans, sans-serif')
           .attr('font-size', 8)
           .attr('fill', '#9aa8c4')
           .text(label);

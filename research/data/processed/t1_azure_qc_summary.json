@@ -1,0 +1,188 @@
+{
+  "source": "blob",
+  "prefix": "processed/t1/members/midas-t1-1781315767/",
+  "n_clusters": 45,
+  "total_bytes": 3640507,
+  "blobs": [
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/collinder_110.parquet",
+      "bytes": 75959
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/collinder_261.parquet",
+      "bytes": 134071
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/collinder_69.parquet",
+      "bytes": 58586
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ic_166.parquet",
+      "bytes": 59766
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ic_2714.parquet",
+      "bytes": 72025
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ic_4651.parquet",
+      "bytes": 70655
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/king_1.parquet",
+      "bytes": 55625
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/melotte_20.parquet",
+      "bytes": 55382
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/melotte_22.parquet",
+      "bytes": 77896
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/melotte_66.parquet",
+      "bytes": 65071
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_1647.parquet",
+      "bytes": 55332
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_188.parquet",
+      "bytes": 76629
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2099.parquet",
+      "bytes": 128892
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2112.parquet",
+      "bytes": 61452
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2141.parquet",
+      "bytes": 61754
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2158.parquet",
+      "bytes": 102433
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2168.parquet",
+      "bytes": 105515
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2194.parquet",
+      "bytes": 63183
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2287.parquet",
+      "bytes": 56945
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2323.parquet",
+      "bytes": 65786
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2360.parquet",
+      "bytes": 59454
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2437.parquet",
+      "bytes": 141840
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2447.parquet",
+      "bytes": 62493
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2477.parquet",
+      "bytes": 141982
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2506.parquet",
+      "bytes": 114084
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2516.parquet",
+      "bytes": 62019
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_2632.parquet",
+      "bytes": 63874
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_3114.parquet",
+      "bytes": 104058
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_3532.parquet",
+      "bytes": 155887
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6067.parquet",
+      "bytes": 65587
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6124.parquet",
+      "bytes": 105809
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6134.parquet",
+      "bytes": 59914
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6259.parquet",
+      "bytes": 58151
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6475.parquet",
+      "bytes": 44331
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6494.parquet",
+      "bytes": 61477
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6791.parquet",
+      "bytes": 122670
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6819.parquet",
+      "bytes": 114941
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_6939.parquet",
+      "bytes": 57625
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_7044.parquet",
+      "bytes": 54888
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ngc_7654.parquet",
+      "bytes": 79088
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/pismis_3.parquet",
+      "bytes": 81906
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/ruprecht_171.parquet",
+      "bytes": 55495
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/trumpler_19.parquet",
+      "bytes": 51276
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/trumpler_20.parquet",
+      "bytes": 58013
+    },
+    {
+      "name": "processed/t1/members/midas-t1-1781315767/trumpler_5.parquet",
+      "bytes": 160688
+    }
+  ]
+}

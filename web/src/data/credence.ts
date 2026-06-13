@@ -1,6 +1,7 @@
 import credenceSummary from './credenceSummary.json';
 import credenceT0Summary from './credenceT0Summary.json';
 import { homeSectionHref } from '../routing/appRoute';
+import { T0, T1, T2, T3 } from '../utils/tierLabel';
 
 export const GITHUB_REPO = 'https://github.com/amne51ac/project-midas';
 export const CREDENCE_ARCHITECTURE = `${GITHUB_REPO}/blob/main/research/docs/CREDENCE_ARCHITECTURE.md`;
@@ -72,14 +73,14 @@ export const CREDENCE = {
   glance: [
     { label: 'Pipeline', value: '4 steps', detail: 'Ingest · resolve · infer · display' },
     { label: 'Primary population', value: '~3.5k–7k OCs', detail: 'Known Gaia-era catalogs' },
-    { label: 'Scale target', value: '~10⁶ stars', detail: 'Member rows at T2 rollout' },
+    { label: 'Scale target', value: '~10⁶ stars', detail: `Member rows at ${T2} rollout` },
     {
       label: 'M34 infer',
       value: `${b.n} CG members`,
       detail: `F1 ≈ ${b.credence.f1.toFixed(2)} in-sample prototype`,
     },
     {
-      label: 'T0 LOO benchmark',
+      label: `${T0} LOO benchmark`,
       value: `${t0.meta.modelVersion}`,
       detail: `Headline mean ΔF1 ${t0.meta.headlineMeanDeltaF1 >= 0 ? '+' : ''}${t0.meta.headlineMeanDeltaF1.toFixed(3)} vs all-positive @ t=0.5 (${t0.meta.headlineBeatsBaseline}/3 Malofeeva folds beat baseline)`,
     },
@@ -138,7 +139,7 @@ export const CREDENCE = {
         deliverables: [
           'midas/credence/ — CredenceInferModel (Gaia + WISE encoders, multi-head)',
           'p_binary, p_cmd, p_ir, p_ruwe + membership weight',
-          'Cluster-held-out validation as T0 clusters join the store',
+          `Cluster-held-out validation as ${T0} clusters join the store`,
         ],
       },
       {
@@ -206,9 +207,9 @@ export const CREDENCE = {
         'Heads: p_binary (primary), p_cmd, p_ir, p_ruwe',
       ],
       next: [
-        'T0 LOO harness live — credence-mlp-v6-t0, paper-quantile Malofeeva labels, W2−BP firewall',
+        `${T0} LOO harness live — credence-mlp-v6-t0, paper-quantile Malofeeva labels, W2−BP firewall`,
         'Stabilize training variance; per-fold threshold tuning on Praesepe/M34',
-        'Optional Gaia XP encoder; spectroscopic fine-tune (T3+)',
+        `Optional Gaia XP encoder; spectroscopic fine-tune (${T3}+)`,
       ],
     },
     mlDataStrategy: {
@@ -227,13 +228,13 @@ export const CREDENCE = {
           note: 'Leaks cluster structure; labels do not scale with member count.',
         },
         {
-          approach: 'T0: 6 clusters, leave-one-out',
+          approach: `${T0}: 6 clusters, leave-one-out`,
           verdict: 'Baseline established',
           note:
             `${t0.meta.modelVersion}: headline mean ΔF1 ${t0.meta.headlineMeanDeltaF1 >= 0 ? '+' : ''}${t0.meta.headlineMeanDeltaF1.toFixed(3)} @ t=0.5 vs all-positive on Malofeeva TID folds; Pleiades beats baseline.`,
         },
         {
-          approach: 'T1/T2 scale after harness',
+          approach: `${T1}/${T2} scale after harness`,
           verdict: 'Production path',
           note: 'Pretrain on all Gaia+WISE members optional; eval still cluster-CV.',
         },
@@ -262,7 +263,7 @@ export const CREDENCE = {
     tiers: [
       {
         id: 't0',
-        label: 'T0 · Benchmark',
+        label: `${T0} · Benchmark`,
         clusters: '5–10',
         stars: '10⁴–10⁵',
         modalities: 'Gaia + WISE + literature labels',
@@ -270,7 +271,7 @@ export const CREDENCE = {
       },
       {
         id: 't1',
-        label: 'T1 · Bright census',
+        label: `${T1} · Bright census`,
         clusters: '~1,500–2,000',
         stars: '~2–3 × 10⁵',
         modalities: 'Gaia + WISE (G ≲ 18)',
@@ -278,7 +279,7 @@ export const CREDENCE = {
       },
       {
         id: 't2',
-        label: 'T2 · Hunt HQ OCs',
+        label: `${T2} · Hunt HQ OCs`,
         clusters: '~3,530',
         stars: '~10⁶',
         modalities: 'Gaia + WISE + cluster params',
@@ -286,7 +287,7 @@ export const CREDENCE = {
       },
       {
         id: 't3',
-        label: 'T3 · Full + XP',
+        label: `${T3} · Full + XP`,
         clusters: '~7,167',
         stars: '10⁶–10⁷',
         modalities: '+ Gaia XP, optional light curves',
@@ -353,7 +354,7 @@ export const CREDENCE = {
       },
       {
         title: 'Rollout',
-        body: 'v0 M34 → named clusters → region-loaded T1 census → share URLs.',
+        body: `v0 M34 → named clusters → region-loaded ${T1} census → share URLs.`,
       },
     ] satisfies DisplayFeature[],
     database: {
@@ -385,7 +386,7 @@ export const CREDENCE = {
       verdict: 'recommended',
       summary: '/atlas — planetarium display layer. Midas site keeps Phases I–IV as the paper trail.',
       pros: ['Shows the full ingest→display story', 'Starts from m34_join_ir + credence scores'],
-      cons: ['Tile infra before T2 scale'],
+      cons: [`Tile infra before ${T2} scale`],
     },
     {
       id: 'affiliated',
@@ -408,7 +409,7 @@ export const CREDENCE = {
   limitations: [
     'M34 F1 uses Malofeeva as training target and benchmark — not cluster-held-out.',
     'Random 224/39 train/val on one cluster does not prove cross-cluster generalization.',
-    'T0 headline metric: ΔF1 @ t=0.5 vs predict-all-positive on Malofeeva paper-quantile labels (M34, Pleiades, Praesepe).',
+    `${T0} headline metric: ΔF1 @ t=0.5 vs predict-all-positive on Malofeeva paper-quantile labels (M34, Pleiades, Praesepe).`,
     'M34 holdout: Credence ΔF1 −0.32 vs legacy Midas Q −0.17 (case-a labels); recall bottleneck, not threshold.',
     'Per-fold nested oracle ceiling ≈ −0.04 ΔF1 (not deployable as one global config); val threshold tuning does not beat t=0.5.',
     'Hyades eval is provisional (Brandner); RUWE tiers on M35/IC2602 are weak sanity checks only.',
@@ -418,12 +419,12 @@ export const CREDENCE = {
 
   roadmap: [
     'v0: credence-mlp-v1 on M34 — infer plumbing (done)',
-    'v1: Credence Atlas on T0 — /atlas live with pan/zoom (done)',
-    'v2: T0 ingest (6 clusters) + cluster-held-out credence-mlp-v2 (done)',
+    `v1: Credence Atlas on ${T0} — /atlas live with pan/zoom (done)`,
+    `v2: ${T0} ingest (6 clusters) + cluster-held-out credence-mlp-v2 (done)`,
     'v3-t0: Benchmark v3 — paper-quantile labels, LOO, regression floors, CI hook (done)',
     'v3b: Threshold/calibration tuning; nested-oracle ceiling documented',
-    'v4: T1 scale (~3×10⁵), region tiles',
-    'v5: T2 production infer (~10⁶) + Zenodo release',
+    `v4: ${T1} scale (~3×10⁵), region tiles`,
+    `v5: ${T2} production infer (~10⁶) + Zenodo release`,
     'v6: Gaia XP encoder; spectroscopic fine-tune on gold labels',
   ],
 };

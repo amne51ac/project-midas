@@ -1,0 +1,52 @@
+{
+  "registry": "data/registry/t1_pilot.csv",
+  "n_clusters": 3,
+  "n_ok": 2,
+  "n_failed": 1,
+  "total_rows": 3905,
+  "total_members": 3905,
+  "clusters": [
+    {
+      "cluster_id": "ngc_7789",
+      "error": "Gaia fetch failed for ngc_7789"
+    },
+    {
+      "cluster_id": "trumpler_5",
+      "cg_name": "Trumpler_5",
+      "n_rows": 2051,
+      "n_cg_member": 2051,
+      "n_with_gaia": 2051,
+      "n_with_w2": 1276,
+      "n_with_ruwe": 1877,
+      "gaia_frac": 1.0,
+      "w2_frac": 0.6221,
+      "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/trumpler_5.parquet",
+      "parquet_bytes": 160688,
+      "fetched": true,
+      "fetch_counts": {
+        "cg": 2053,
+        "gaia": 22192,
+        "wise": 8707
+      }
+    },
+    {
+      "cluster_id": "ngc_3532",
+      "cg_name": "NGC_3532",
+      "n_rows": 1854,
+      "n_cg_member": 1854,
+      "n_with_gaia": 1854,
+      "n_with_w2": 1397,
+      "n_with_ruwe": 1798,
+      "gaia_frac": 1.0,
+      "w2_frac": 0.7535,
+      "parquet_path": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members/ngc_3532.parquet",
+      "parquet_bytes": 155887,
+      "fetched": true,
+      "fetch_counts": {
+        "cg": 1856,
+        "gaia": 1886327,
+        "wise": 130840
+      }
+    }
+  ]
+}

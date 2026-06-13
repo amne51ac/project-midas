@@ -11,6 +11,13 @@ from pathlib import Path
 RESEARCH = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(RESEARCH))
 
+if os.environ.get("MIDAS_AZURE"):
+    os.environ["HOME"] = "/tmp"
+    os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
+    os.environ["ASTROPY_CACHE_DIR"] = "/tmp/astropy"
+    for p in ("/tmp/.cache", "/tmp/astropy"):
+        Path(p).mkdir(parents=True, exist_ok=True)
+
 from midas.credence.benchmark import HEADLINE_CLUSTER_IDS, is_headline_cluster
 from midas.credence.data import FeatureMode, load_t0_credence_rows
 from midas.credence.engine import TrainConfig, run_credence_t0

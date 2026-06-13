@@ -79,14 +79,14 @@ export function SkyMap({ stars, colorBy = 'mv' }: Props) {
       .call(d3.axisBottom(x).ticks(5).tickFormat((v) => `${v}`))
       .call((sel) => sel.select('.domain').remove())
       .call((sel) =>
-        sel.selectAll('text').attr('font-family', 'Libre Franklin, sans-serif').attr('fill', '#8a98b4'),
+        sel.selectAll('text').attr('font-family', 'IBM Plex Sans, sans-serif').attr('fill', '#8a98b4'),
       );
 
     g.append('text')
       .attr('x', width / 2)
       .attr('y', height - 6)
       .attr('text-anchor', 'middle')
-      .attr('font-family', 'Libre Franklin, sans-serif')
+      .attr('font-family', 'IBM Plex Sans, sans-serif')
       .attr('font-size', 10)
       .attr('fill', '#9aa8c4')
       .text('Survey X (arcsec offset)');
@@ -96,7 +96,7 @@ export function SkyMap({ stars, colorBy = 'mv' }: Props) {
       .call(d3.axisLeft(y).ticks(5))
       .call((sel) => sel.select('.domain').remove())
       .call((sel) =>
-        sel.selectAll('text').attr('font-family', 'Libre Franklin, sans-serif').attr('fill', '#8a98b4'),
+        sel.selectAll('text').attr('font-family', 'IBM Plex Sans, sans-serif').attr('fill', '#8a98b4'),
       );
   }, [stars, colorBy]);
 

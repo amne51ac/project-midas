@@ -2,6 +2,7 @@ import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { CREDENCE, CREDENCE_LINKS, GITHUB_REPO } from '../data/credence';
 import m34Science from '../data/credenceM34Science.json';
+import { T0 } from '../utils/tierLabel';
 
 function VerdictBadge({ verdict }: { verdict: 'recommended' | 'future' | 'not-recommended' }) {
   const labels = {
@@ -196,7 +197,7 @@ export function CredencePage() {
               ))}
             </ul>
             <p className="section__prose">
-              <strong>Protocol (T0+):</strong>
+              <strong>Protocol ({T0}+):</strong>
             </p>
             <ul className="findings-section__list section__prose">
               {design.mlDataStrategy.protocol.map((line) => (
@@ -363,7 +364,7 @@ export function CredencePage() {
             </dl>
           </div>
 
-          <h3 className="credence-section__title">T0 cluster-held-out ({t0.meta.modelVersion})</h3>
+          <h3 className="credence-section__title">{T0} cluster-held-out ({t0.meta.modelVersion})</h3>
           <p className="section__prose">{t0.meta.evalNote}</p>
           {typeof t0.meta.headlineMeanDeltaF1 === 'number' && (
             <p className="section__prose">
@@ -565,7 +566,7 @@ export function CredencePage() {
               Open Credence Atlas
             </a>
             {' '}
-            — T0 clusters colored by <code>p_binary</code> (display step).
+            — {T0} clusters colored by <code>p_binary</code> (display step).
           </p>
         </section>
 

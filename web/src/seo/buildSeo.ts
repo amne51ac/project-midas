@@ -1,3 +1,4 @@
+import { T0 } from '../utils/tierLabel';
 import sampleBundle from '../data/m34_sample.json';
 import catalogBundle from '../data/m34_catalogs.json';
 import { ROADMAP_PHASES, overallProgress, type RoadmapPhase } from '../data/roadmap';
@@ -184,16 +185,16 @@ export function getPageMeta(route: AppRoute): PageMeta {
     return {
       title: 'Credence · Project Midas',
       description:
-        'Credence — ingest, resolve, infer, and display open-cluster stars in a planetarium atlas. ' +
-        'T0 cluster-held-out infer; galaxy-scale tiers from Cantat-Gaudin and Hunt catalogs.',
+        `Credence — ingest, resolve, infer, and display open-cluster stars in a planetarium atlas. ` +
+        `${T0} cluster-held-out infer; galaxy-scale tiers from Cantat-Gaudin and Hunt catalogs.`,
     };
   }
 
   if (route.type === 'atlas') {
     return {
-      title: 'Credence Atlas · T0 clusters',
+      title: `Credence Atlas · ${T0} clusters`,
       description:
-        'Interactive sky map of six T0 open clusters — Cantat-Gaudin members colored by Credence infer (p_binary, P(member)).',
+        `Interactive sky map of six ${T0} open clusters — Cantat-Gaudin members colored by Credence infer (p_binary, P(member)).`,
     };
   }
 

@@ -1,5 +1,7 @@
 /** Named stars and deep-sky landmarks for Credence Atlas (J2000). */
 
+import { T0 } from '../utils/tierLabel';
+
 export type AtlasReferenceKind = 'star' | 'galaxy' | 'nebula' | 'cluster';
 
 export interface AtlasReferenceObject {
@@ -70,15 +72,15 @@ export const ATLAS_REFERENCE_OBJECTS: AtlasReferenceObject[] = [
   { id: 'gamma-cas', name: 'γ Cas', ra: 14.17, dec: 60.72, mag: 2.5, constellation: 'Cassiopeia', kind: 'star', label: true },
   { id: 'ruchbah', name: 'Ruchbah (δ Cas)', ra: 21.45, dec: 60.23, mag: 2.7, constellation: 'Cassiopeia', kind: 'star', label: true },
   { id: 'double-cluster', name: 'Double Cluster (χ Per)', ra: 34.75, dec: 57.15, mag: 3.7, constellation: 'Perseus', kind: 'cluster', label: true, note: 'NGC 869 & 884' },
-  { id: 'm34', name: 'M34 · NGC 1039', ra: 40.675, dec: 42.76, mag: 5.2, constellation: 'Perseus', kind: 'cluster', label: true, note: 'T0 benchmark · ~35′ wide' },
+  { id: 'm34', name: 'M34 · NGC 1039', ra: 40.675, dec: 42.76, mag: 5.2, constellation: 'Perseus', kind: 'cluster', label: true, note: `${T0} benchmark · ~35′ wide` },
   { id: 'delta-and', name: 'δ And', ra: 30.74, dec: 45.87, mag: 3.3, constellation: 'Andromeda', kind: 'star', label: true },
 
   // —— T0 benchmark clusters ——
-  { id: 'pleiades', name: 'Pleiades (M45)', ra: 56.75, dec: 24.12, mag: 1.6, constellation: 'Taurus', kind: 'cluster', label: true, note: 'T0 benchmark cluster' },
-  { id: 'hyades', name: 'Hyades', ra: 66.75, dec: 15.87, mag: 0.5, constellation: 'Taurus', kind: 'cluster', label: true, note: 'T0 benchmark cluster' },
-  { id: 'praesepe', name: 'Praesepe (M44)', ra: 130.08, dec: 19.78, mag: 3.7, constellation: 'Cancer', kind: 'cluster', label: true, note: 'T0 benchmark cluster' },
-  { id: 'm35', name: 'M35 (NGC 2168)', ra: 92.58, dec: 24.35, mag: 5.1, constellation: 'Gemini', kind: 'cluster', label: true, note: 'T0 benchmark cluster' },
-  { id: 'ic2602', name: 'IC 2602 · θ Car', ra: 161.0, dec: -64.4, mag: 1.9, constellation: 'Carina', kind: 'cluster', label: true, note: 'T0 benchmark · Southern Pleiades' },
+  { id: 'pleiades', name: 'Pleiades (M45)', ra: 56.75, dec: 24.12, mag: 1.6, constellation: 'Taurus', kind: 'cluster', label: true, note: `${T0} benchmark cluster` },
+  { id: 'hyades', name: 'Hyades', ra: 66.75, dec: 15.87, mag: 0.5, constellation: 'Taurus', kind: 'cluster', label: true, note: `${T0} benchmark cluster` },
+  { id: 'praesepe', name: 'Praesepe (M44)', ra: 130.08, dec: 19.78, mag: 3.7, constellation: 'Cancer', kind: 'cluster', label: true, note: `${T0} benchmark cluster` },
+  { id: 'm35', name: 'M35 (NGC 2168)', ra: 92.58, dec: 24.35, mag: 5.1, constellation: 'Gemini', kind: 'cluster', label: true, note: `${T0} benchmark cluster` },
+  { id: 'ic2602', name: 'IC 2602 · θ Car', ra: 161.0, dec: -64.4, mag: 1.9, constellation: 'Carina', kind: 'cluster', label: true, note: `${T0} benchmark · Southern Pleiades` },
 
   // —— Galaxies ——
   { id: 'm31', name: 'Andromeda Galaxy (M31)', ra: 10.685, dec: 41.269, mag: 3.4, constellation: 'Andromeda', kind: 'galaxy', label: true, note: 'Nearest major spiral · ~2.5 Mly' },

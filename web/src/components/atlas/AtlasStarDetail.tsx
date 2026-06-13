@@ -1,5 +1,6 @@
 import type { AtlasReferenceObject } from '../../data/atlasReferenceObjects';
 import type { AtlasCluster, AtlasStar } from '../../data/atlasTypes';
+import { T0 } from '../../utils/tierLabel';
 import type { AtlasPick } from './atlasPickTypes';
 
 const KIND_LABEL: Record<AtlasReferenceObject['kind'], string> = {
@@ -31,7 +32,7 @@ function MemberDetail({ star, clusters }: { star: AtlasStar; clusters: AtlasClus
 
   return (
     <>
-      <p className="atlas-detail__kind">Cluster member · Credence T0</p>
+      <p className="atlas-detail__kind">Cluster member · Credence {T0}</p>
       <h3 className="atlas-detail__title">{clusterName(clusters, star.clusterId)}</h3>
       <dl className="atlas-detail__grid">
         <div>
@@ -107,14 +108,13 @@ function ReferenceDetail({ star }: { star: AtlasReferenceObject }) {
 export function AtlasStarDetail({ pick, clusters, pinned, onClose }: Props) {
   return (
     <aside className={`atlas-detail${pinned ? ' atlas-detail--pinned' : ''}`} aria-live="polite">
-      <div className="atlas-detail__head">
-        <span className="atlas-detail__mode">{pinned ? 'Selected' : 'Preview'}</span>
-        {pinned && (
+      {pinned && (
+        <div className="atlas-detail__head">
           <button type="button" className="atlas-detail__close" onClick={onClose} aria-label="Close">
             ×
           </button>
-        )}
-      </div>
+        </div>
+      )}
       {pick.type === 'member' ? (
         <MemberDetail star={pick.star} clusters={clusters} />
       ) : (

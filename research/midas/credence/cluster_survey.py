@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import os
 import time
 import urllib.parse
 import urllib.request
@@ -33,6 +34,16 @@ AND phot_g_mean_mag IS NOT NULL
 ClusterLike = T0Cluster | T1Cluster
 
 
+def _azure_cache_dirs() -> None:
+    if not os.environ.get("MIDAS_AZURE"):
+        return
+    os.environ["HOME"] = "/tmp"
+    os.environ["XDG_CACHE_HOME"] = "/tmp/.cache"
+    os.environ["ASTROPY_CACHE_DIR"] = "/tmp/astropy"
+    for p in ("/tmp/.cache", "/tmp/astropy", "/tmp/.cache/astroquery"):
+        Path(p).mkdir(parents=True, exist_ok=True)
+
+
 def shard_dir(cluster: ClusterLike, *, tier: str = "auto") -> Path:
     if tier == "auto":
         tier = "t0" if isinstance(cluster, T0Cluster) else "t1"
@@ -52,6 +63,7 @@ def allwise_path(cluster: ClusterLike, *, tier: str = "auto") -> Path:
 
 
 def fetch_cg(cluster: ClusterLike, *, tier: str = "auto", force: bool = False) -> int:
+    _azure_cache_dirs()
     out = cg_path(cluster, tier=tier)
     if out.exists() and not force:
         return 0
@@ -84,10 +96,11 @@ def fetch_gaia(
     force: bool = False,
     max_retries: int = 5,
 ) -> int:
+    _azure_cache_dirs()
     from astroquery.gaia import Gaia
 
     Gaia.ROW_LIMIT = -1
-    Gaia.TIMEOUT = 600
+    Gaia.TIMEOUT = 900
     out = gaia_path(cluster, tier=tier)
     if out.exists() and not force:
         return 0
@@ -111,6 +124,7 @@ def fetch_gaia(
 
 
 def fetch_allwise(cluster: ClusterLike, *, tier: str = "auto", force: bool = False) -> int:
+    _azure_cache_dirs()
     import astropy.units as u
     from astropy.coordinates import SkyCoord
     from astroquery.vizier import Vizier
@@ -119,6 +133,7 @@ def fetch_allwise(cluster: ClusterLike, *, tier: str = "auto", force: bool = Fal
     if out.exists() and not force:
         return 0
     Vizier.ROW_LIMIT = -1
+    Vizier.cache = False
     coord = SkyCoord(cluster.ra_deg, cluster.dec_deg, unit="deg")
     result = Vizier.query_region(coord, radius=cluster.radius_deg * u.deg, catalog="II/328/allwise")
     if not result:

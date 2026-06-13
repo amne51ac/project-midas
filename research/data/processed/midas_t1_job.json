@@ -1,0 +1,11 @@
+{
+  "job_id": "midas-t1-1781315767",
+  "n_tasks": 50,
+  "n_submitted": 50,
+  "n_skipped": 0,
+  "n_errors": 0,
+  "registry": "data/registry/t1_pilot.csv",
+  "blob_prefix": "processed/t1/members/midas-t1-1781315767/",
+  "qc_prefix": "processed/t1/qc/midas-t1-1781315767/",
+  "errors": []
+}
