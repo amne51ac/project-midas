@@ -1,0 +1,21 @@
+{
+  "cluster_id": "rsg_8",
+  "cg_name": "RSG_8",
+  "n_rows": 170,
+  "n_cg_member": 170,
+  "n_with_gaia": 170,
+  "n_with_w2": 157,
+  "n_with_ruwe": 169,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9235,
+  "parquet_path": "/app/research/data/processed/t1/members/rsg_8.parquet",
+  "parquet_bytes": 21737,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 172,
+    "gaia": 916879,
+    "wise": 264160
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/rsg_8.parquet"
+}

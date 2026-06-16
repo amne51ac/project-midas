@@ -1,0 +1,21 @@
+{
+  "cluster_id": "negueruela_1",
+  "cg_name": "Negueruela_1",
+  "n_rows": 52,
+  "n_cg_member": 52,
+  "n_with_gaia": 52,
+  "n_with_w2": 26,
+  "n_with_ruwe": 52,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.5,
+  "parquet_path": "/app/research/data/processed/t1/members/negueruela_1.parquet",
+  "parquet_bytes": 11132,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 54,
+    "gaia": 13858,
+    "wise": 4710
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/negueruela_1.parquet"
+}

@@ -1,0 +1,21 @@
+{
+  "cluster_id": "ubc_199",
+  "cg_name": "UBC_199",
+  "n_rows": 55,
+  "n_cg_member": 55,
+  "n_with_gaia": 55,
+  "n_with_w2": 45,
+  "n_with_ruwe": 46,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8182,
+  "parquet_path": "/app/research/data/processed/t1/members/ubc_199.parquet",
+  "parquet_bytes": 11523,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 57,
+    "gaia": 5374,
+    "wise": 6010
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ubc_199.parquet"
+}

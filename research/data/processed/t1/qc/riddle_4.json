@@ -1,0 +1,21 @@
+{
+  "cluster_id": "riddle_4",
+  "cg_name": "Riddle_4",
+  "n_rows": 41,
+  "n_cg_member": 41,
+  "n_with_gaia": 41,
+  "n_with_w2": 27,
+  "n_with_ruwe": 41,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6585,
+  "parquet_path": "/app/research/data/processed/t1/members/riddle_4.parquet",
+  "parquet_bytes": 10469,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 43,
+    "gaia": 10046,
+    "wise": 4102
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/riddle_4.parquet"
+}

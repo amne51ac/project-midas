@@ -1,0 +1,21 @@
+{
+  "cluster_id": "dbsb_100",
+  "cg_name": "DBSB_100",
+  "n_rows": 42,
+  "n_cg_member": 42,
+  "n_with_gaia": 42,
+  "n_with_w2": 8,
+  "n_with_ruwe": 42,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.1905,
+  "parquet_path": "/app/research/data/processed/t1/members/dbsb_100.parquet",
+  "parquet_bytes": 10059,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 44,
+    "gaia": 55328,
+    "wise": 3738
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/dbsb_100.parquet"
+}

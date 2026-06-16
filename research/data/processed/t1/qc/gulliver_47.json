@@ -1,0 +1,21 @@
+{
+  "cluster_id": "gulliver_47",
+  "cg_name": "Gulliver_47",
+  "n_rows": 73,
+  "n_cg_member": 73,
+  "n_with_gaia": 73,
+  "n_with_w2": 62,
+  "n_with_ruwe": 67,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8493,
+  "parquet_path": "/app/research/data/processed/t1/members/gulliver_47.parquet",
+  "parquet_bytes": 13496,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 75,
+    "gaia": 24974,
+    "wise": 11227
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/gulliver_47.parquet"
+}

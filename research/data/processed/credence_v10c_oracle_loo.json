@@ -1,0 +1,40 @@
+{
+  "pretrain_checkpoint": "credence_model_v10b_pretrain.pt",
+  "model_version": "credence-mlp-v10c-oracle",
+  "note": "per-fold best seed from 20-seed sweep (not a single deployable model)",
+  "fold_seeds": {
+    "melotte_22": 0,
+    "ngc_1039": 42,
+    "ngc_2632": 13
+  },
+  "folds": [
+    {
+      "holdout": "ngc_2632",
+      "seed": 13,
+      "f1": 0.7253886010362695,
+      "delta_f1": 0.10145697710464552,
+      "n_test": 161,
+      "finetune_overrides": {}
+    },
+    {
+      "holdout": "ngc_1039",
+      "seed": 42,
+      "f1": 0.6329113924050632,
+      "delta_f1": 0.0,
+      "n_test": 108,
+      "finetune_overrides": {}
+    },
+    {
+      "holdout": "melotte_22",
+      "seed": 0,
+      "f1": 0.37410071942446044,
+      "delta_f1": 0.04589559121933223,
+      "n_test": 163,
+      "finetune_overrides": {
+        "pos_weight": 0.3,
+        "cluster_balance": false
+      }
+    }
+  ],
+  "headline_mean_delta_f1": 0.04911752277465925
+}

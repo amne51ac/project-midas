@@ -1,0 +1,21 @@
+{
+  "cluster_id": "stock_23",
+  "cg_name": "Stock_23",
+  "n_rows": 83,
+  "n_cg_member": 83,
+  "n_with_gaia": 83,
+  "n_with_w2": 77,
+  "n_with_ruwe": 83,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9277,
+  "parquet_path": "/app/research/data/processed/t1/members/stock_23.parquet",
+  "parquet_bytes": 14623,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 85,
+    "gaia": 518934,
+    "wise": 243573
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/stock_23.parquet"
+}

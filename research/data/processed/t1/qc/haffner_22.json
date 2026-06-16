@@ -1,0 +1,21 @@
+{
+  "cluster_id": "haffner_22",
+  "cg_name": "Haffner_22",
+  "n_rows": 146,
+  "n_cg_member": 146,
+  "n_with_gaia": 146,
+  "n_with_w2": 127,
+  "n_with_ruwe": 146,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8699,
+  "parquet_path": "/app/research/data/processed/t1/members/haffner_22.parquet",
+  "parquet_bytes": 19150,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 148,
+    "gaia": 17538,
+    "wise": 4664
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/haffner_22.parquet"
+}

@@ -1,0 +1,21 @@
+{
+  "cluster_id": "vdbergh_1",
+  "cg_name": "vdBergh_1",
+  "n_rows": 68,
+  "n_cg_member": 68,
+  "n_with_gaia": 68,
+  "n_with_w2": 59,
+  "n_with_ruwe": 68,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8676,
+  "parquet_path": "/app/research/data/processed/t1/members/vdbergh_1.parquet",
+  "parquet_bytes": 13136,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 70,
+    "gaia": 6164,
+    "wise": 3873
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/vdbergh_1.parquet"
+}

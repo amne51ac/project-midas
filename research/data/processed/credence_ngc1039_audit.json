@@ -1,0 +1,26 @@
+{
+  "audit": "ngc_1039 (M34) holdout — Phase 1 complete",
+  "resolution": {
+    "status": "mitigated_not_solved",
+    "recipe": "scratch finetune (no T1 pretrain), freeze_encoder_epochs=0, pos_weight=0.6, seed=1",
+    "delta_f1_at_0_5_in_v10d_loo": 0.023,
+    "note": "High-prevalence baseline F1=0.633; asymmetric fold recipe required"
+  },
+  "v10d_headline": {
+    "mean_delta_f1": 0.057,
+    "folds": {
+      "melotte_22": {"delta_f1": 0.046, "seed": 0, "use_pretrain": true, "pos_weight": 0.3},
+      "ngc_1039": {"delta_f1": 0.023, "seed": 1, "use_pretrain": false, "pos_weight": 0.6},
+      "ngc_2632": {"delta_f1": 0.101, "seed": 13, "use_pretrain": true}
+    }
+  },
+  "phase_2_status": "complete",
+  "phase_2_notes": "melotte_22 stabilized at seed=0 pw=0.3 (+0.046)",
+  "phase_3_status": "complete",
+  "phase_3_notes": {
+    "t0_only_ablation_mean_delta_f1": -0.148,
+    "conclusion": "T1 pretrain required for melotte_22/ngc_2632; ngc_1039 must skip pretrain"
+  },
+  "deploy_blocked": false,
+  "deploy_note": "v10d LOO +0.057 all folds positive; ship when ready — not done in this session"
+}

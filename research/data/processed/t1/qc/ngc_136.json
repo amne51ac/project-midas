@@ -1,0 +1,21 @@
+{
+  "cluster_id": "ngc_136",
+  "cg_name": "NGC_136",
+  "n_rows": 70,
+  "n_cg_member": 70,
+  "n_with_gaia": 70,
+  "n_with_w2": 37,
+  "n_with_ruwe": 70,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.5286,
+  "parquet_path": "/app/research/data/processed/t1/members/ngc_136.parquet",
+  "parquet_bytes": 12766,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 72,
+    "gaia": 18156,
+    "wise": 4763
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ngc_136.parquet"
+}

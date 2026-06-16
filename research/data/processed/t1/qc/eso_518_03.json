@@ -1,0 +1,21 @@
+{
+  "cluster_id": "eso_518_03",
+  "cg_name": "ESO_518_03",
+  "n_rows": 91,
+  "n_cg_member": 91,
+  "n_with_gaia": 91,
+  "n_with_w2": 77,
+  "n_with_ruwe": 86,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8462,
+  "parquet_path": "/app/research/data/processed/t1/members/eso_518_03.parquet",
+  "parquet_bytes": 14710,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 93,
+    "gaia": 34738,
+    "wise": 4713
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/eso_518_03.parquet"
+}

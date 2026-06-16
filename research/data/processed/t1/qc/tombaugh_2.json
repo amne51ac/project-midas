@@ -1,0 +1,21 @@
+{
+  "cluster_id": "tombaugh_2",
+  "cg_name": "Tombaugh_2",
+  "n_rows": 224,
+  "n_cg_member": 224,
+  "n_with_gaia": 224,
+  "n_with_w2": 98,
+  "n_with_ruwe": 223,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.4375,
+  "parquet_path": "/app/research/data/processed/t1/members/tombaugh_2.parquet",
+  "parquet_bytes": 23243,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 226,
+    "gaia": 15868,
+    "wise": 4747
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/tombaugh_2.parquet"
+}

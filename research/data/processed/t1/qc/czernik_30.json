@@ -1,0 +1,21 @@
+{
+  "cluster_id": "czernik_30",
+  "cg_name": "Czernik_30",
+  "n_rows": 85,
+  "n_cg_member": 85,
+  "n_with_gaia": 85,
+  "n_with_w2": 52,
+  "n_with_ruwe": 85,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6118,
+  "parquet_path": "/app/research/data/processed/t1/members/czernik_30.parquet",
+  "parquet_bytes": 13904,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 87,
+    "gaia": 11865,
+    "wise": 4364
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/czernik_30.parquet"
+}

@@ -1,0 +1,21 @@
+{
+  "cluster_id": "dc_5",
+  "cg_name": "DC_5",
+  "n_rows": 125,
+  "n_cg_member": 125,
+  "n_with_gaia": 125,
+  "n_with_w2": 34,
+  "n_with_ruwe": 125,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.272,
+  "parquet_path": "/app/research/data/processed/t1/members/dc_5.parquet",
+  "parquet_bytes": 15930,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 127,
+    "gaia": 31941,
+    "wise": 3085
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/dc_5.parquet"
+}

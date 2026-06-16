@@ -1,0 +1,21 @@
+{
+  "cluster_id": "pismis_moreno_1",
+  "cg_name": "Pismis_Moreno_1",
+  "n_rows": 62,
+  "n_cg_member": 62,
+  "n_with_gaia": 62,
+  "n_with_w2": 49,
+  "n_with_ruwe": 62,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.7903,
+  "parquet_path": "/app/research/data/processed/t1/members/pismis_moreno_1.parquet",
+  "parquet_bytes": 12497,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 64,
+    "gaia": 8090,
+    "wise": 2631
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/pismis_moreno_1.parquet"
+}

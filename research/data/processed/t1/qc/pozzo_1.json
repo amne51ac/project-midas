@@ -1,0 +1,21 @@
+{
+  "cluster_id": "pozzo_1",
+  "cg_name": "Pozzo_1",
+  "n_rows": 341,
+  "n_cg_member": 341,
+  "n_with_gaia": 341,
+  "n_with_w2": 324,
+  "n_with_ruwe": 341,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9501,
+  "parquet_path": "/app/research/data/processed/t1/members/pozzo_1.parquet",
+  "parquet_bytes": 36023,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 343,
+    "gaia": 632208,
+    "wise": 173595
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/pozzo_1.parquet"
+}

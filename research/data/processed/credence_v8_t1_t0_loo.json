@@ -1,0 +1,25 @@
+{
+  "checkpoint": "credence_model_v8_t1.pt",
+  "model_version": "credence-mlp-v8-t1",
+  "folds": [
+    {
+      "holdout": "ngc_2632",
+      "f1": 0.6239316239316239,
+      "delta_f1": 0.0,
+      "n_test": 161
+    },
+    {
+      "holdout": "melotte_22",
+      "f1": 0.3282051282051282,
+      "delta_f1": 0.0,
+      "n_test": 163
+    },
+    {
+      "holdout": "ngc_1039",
+      "f1": 0.6329113924050632,
+      "delta_f1": 0.0,
+      "n_test": 108
+    }
+  ],
+  "headline_mean_delta_f1": 0.0
+}

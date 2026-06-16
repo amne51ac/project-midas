@@ -1,0 +1,21 @@
+{
+  "cluster_id": "king_7",
+  "cg_name": "King_7",
+  "n_rows": 354,
+  "n_cg_member": 354,
+  "n_with_gaia": 354,
+  "n_with_w2": 275,
+  "n_with_ruwe": 354,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.7768,
+  "parquet_path": "/app/research/data/processed/t1/members/king_7.parquet",
+  "parquet_bytes": 35208,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 356,
+    "gaia": 9004,
+    "wise": 4617
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/king_7.parquet"
+}

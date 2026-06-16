@@ -1,0 +1,21 @@
+{
+  "cluster_id": "ferrero_1",
+  "cg_name": "Ferrero_1",
+  "n_rows": 98,
+  "n_cg_member": 98,
+  "n_with_gaia": 98,
+  "n_with_w2": 57,
+  "n_with_ruwe": 82,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.5816,
+  "parquet_path": "/app/research/data/processed/t1/members/ferrero_1.parquet",
+  "parquet_bytes": 14588,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 100,
+    "gaia": 570094,
+    "wise": 17051
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ferrero_1.parquet"
+}

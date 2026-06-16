@@ -1,0 +1,21 @@
+{
+  "cluster_id": "biurakan_2",
+  "cg_name": "Biurakan_2",
+  "n_rows": 47,
+  "n_cg_member": 47,
+  "n_with_gaia": 47,
+  "n_with_w2": 41,
+  "n_with_ruwe": 47,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8723,
+  "parquet_path": "/app/research/data/processed/t1/members/biurakan_2.parquet",
+  "parquet_bytes": 11237,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 49,
+    "gaia": 77153,
+    "wise": 9134
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/biurakan_2.parquet"
+}

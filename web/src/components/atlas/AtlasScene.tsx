@@ -49,6 +49,8 @@ function SkySphere() {
   const texture = useTexture('/images/all-sky-milkyway.jpg');
   useEffect(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
+    // NASA plate carrée: north at image top. Default flipY inverts Dec vs RA/Dec overlays.
+    texture.flipY = false;
     texture.anisotropy = 16;
     texture.minFilter = THREE.LinearFilter;
     texture.magFilter = THREE.LinearFilter;

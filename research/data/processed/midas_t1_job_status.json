@@ -1,0 +1,9 @@
+{
+  "job_id": "midas-t1-1781364581",
+  "state": "active",
+  "n_tasks_total": 1611,
+  "n_tasks_succeeded": 1423,
+  "n_tasks_failed": 188,
+  "n_parquet_synced_local": 1423,
+  "note": "188 failed tasks block full ingest; resubmit via azure/midas_submit_t1_ingest.py --retry-failed"
+}

@@ -1,0 +1,21 @@
+{
+  "cluster_id": "juchert_saloran_1",
+  "cg_name": "Juchert_Saloran_1",
+  "n_rows": 65,
+  "n_cg_member": 65,
+  "n_with_gaia": 65,
+  "n_with_w2": 41,
+  "n_with_ruwe": 65,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6308,
+  "parquet_path": "/app/research/data/processed/t1/members/juchert_saloran_1.parquet",
+  "parquet_bytes": 12672,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 67,
+    "gaia": 12751,
+    "wise": 4215
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/juchert_saloran_1.parquet"
+}

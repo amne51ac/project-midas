@@ -1,0 +1,21 @@
+{
+  "cluster_id": "lp_1624",
+  "cg_name": "LP_1624",
+  "n_rows": 198,
+  "n_cg_member": 198,
+  "n_with_gaia": 198,
+  "n_with_w2": 9,
+  "n_with_ruwe": 183,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.0455,
+  "parquet_path": "/app/research/data/processed/t1/members/lp_1624.parquet",
+  "parquet_bytes": 19910,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 200,
+    "gaia": 41161,
+    "wise": 7737
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/lp_1624.parquet"
+}

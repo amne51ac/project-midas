@@ -1,6 +1,5 @@
 import { useMemo, type MutableRefObject } from 'react';
-import { Html, Line } from '@react-three/drei';
-import * as THREE from 'three';
+import { Line } from '@react-three/drei';
 import type { AtlasConstellation } from '../../data/atlasConstellationData';
 import type { AtlasReferenceObject } from '../../data/atlasReferenceObjects';
 import {
@@ -10,10 +9,8 @@ import {
   raDecToVector3,
   shortStarName,
 } from '../../utils/atlasSphere';
+import { AtlasSkyLabel } from './AtlasSkyLabel';
 import { SizedPoints } from './SizedPoints';
-
-/** Match drei Html scale to inner-sphere radius (see objectScale in @react-three/drei). */
-const LABEL_DISTANCE_FACTOR = STAR_RADIUS * 1.85;
 
 /** Obscure / small constellations — drawn and labeled more faintly than primary figures. */
 const SECONDARY_CONSTELLATION_IDS = new Set([
@@ -52,31 +49,6 @@ const LINE_STYLE = {
     minor: { color: '#6a655c', opacity: 0.05, lineWidth: 1 },
   },
 } as const;
-
-function SkyLabel({
-  position,
-  children,
-  variant = 'star',
-  portal,
-}: {
-  position: THREE.Vector3;
-  children: React.ReactNode;
-  variant?: 'star' | 'constellation' | 'constellation-secondary' | 'dso';
-  portal: MutableRefObject<HTMLElement>;
-}) {
-  return (
-    <Html
-      position={position}
-      center
-      portal={portal}
-      distanceFactor={LABEL_DISTANCE_FACTOR}
-      zIndexRange={[1000, 0]}
-      style={{ pointerEvents: 'none', userSelect: 'none' }}
-    >
-      <span className={`atlas-sky-label atlas-sky-label--${variant}`}>{children}</span>
-    </Html>
-  );
-}
 
 function constellationLabelAnchor(c: AtlasConstellation): [number, number] {
   if (c.label) return c.label;
@@ -132,9 +104,9 @@ export function ConstellationLayer({
                 />
               );
             })}
-            <SkyLabel position={labelPos} variant={labelVariant} portal={portal}>
+            <AtlasSkyLabel position={labelPos} variant={labelVariant} portal={portal}>
               {c.name}
-            </SkyLabel>
+            </AtlasSkyLabel>
           </group>
         );
       })}
@@ -185,9 +157,9 @@ export function BrightStarLayer({
           .normalize()
           .multiplyScalar(STAR_RADIUS - 0.5 + apparentMagPointSize(star.mag) * 0.1);
         return (
-          <SkyLabel key={star.id} position={labelOffset} variant={labelVariant(star)} portal={portal}>
+          <AtlasSkyLabel key={star.id} position={labelOffset} variant={labelVariant(star)} portal={portal}>
             {shortStarName(star.name)}
-          </SkyLabel>
+          </AtlasSkyLabel>
         );
       })}
     </group>

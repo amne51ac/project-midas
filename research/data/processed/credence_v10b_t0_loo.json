@@ -1,0 +1,42 @@
+{
+  "pretrain_checkpoint": "credence_model_v10b_pretrain.pt",
+  "model_version": "credence-mlp-v10b-t0",
+  "early_stop": "macro_f1 minus specificity penalty; headline val threshold",
+  "folds": [
+    {
+      "holdout": "ngc_1039",
+      "f1": 0.6329113924050632,
+      "delta_f1": 0.0,
+      "headline_val_tuned_f1": 0.6329113924050632,
+      "headline_val_tuned_delta_f1": 0.0,
+      "headline_val_tuned_threshold": 0.05,
+      "n_test": 108,
+      "best_early_stop_score": -0.07773998488284203,
+      "val_headline_pred_pos_rate": 1.0
+    },
+    {
+      "holdout": "melotte_22",
+      "f1": 0.3282051282051282,
+      "delta_f1": 0.0,
+      "headline_val_tuned_f1": 0.3282051282051282,
+      "headline_val_tuned_delta_f1": 0.0,
+      "headline_val_tuned_threshold": 0.5,
+      "n_test": 163,
+      "best_early_stop_score": 0.5673758865248227,
+      "val_headline_pred_pos_rate": 0.38345864661654133
+    },
+    {
+      "holdout": "ngc_2632",
+      "f1": 0.6697674418604651,
+      "delta_f1": 0.04583581792884117,
+      "headline_val_tuned_f1": 0.6697674418604651,
+      "headline_val_tuned_delta_f1": 0.04583581792884117,
+      "headline_val_tuned_threshold": 0.5,
+      "n_test": 161,
+      "best_early_stop_score": 0.4228571428571429,
+      "val_headline_pred_pos_rate": 0.28888888888888886
+    }
+  ],
+  "headline_mean_delta_f1": 0.01527860597628039,
+  "headline_mean_val_tuned_delta_f1": 0.01527860597628039
+}

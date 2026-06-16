@@ -1,0 +1,21 @@
+{
+  "cluster_id": "coin_gaia_4",
+  "cg_name": "COIN-Gaia_4",
+  "n_rows": 42,
+  "n_cg_member": 42,
+  "n_with_gaia": 42,
+  "n_with_w2": 38,
+  "n_with_ruwe": 40,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9048,
+  "parquet_path": "/app/research/data/processed/t1/members/coin_gaia_4.parquet",
+  "parquet_bytes": 10921,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 44,
+    "gaia": 15321,
+    "wise": 4795
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/coin_gaia_4.parquet"
+}

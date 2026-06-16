@@ -1,0 +1,21 @@
+{
+  "cluster_id": "berkeley_89",
+  "cg_name": "Berkeley_89",
+  "n_rows": 176,
+  "n_cg_member": 176,
+  "n_with_gaia": 176,
+  "n_with_w2": 111,
+  "n_with_ruwe": 176,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6307,
+  "parquet_path": "/app/research/data/processed/t1/members/berkeley_89.parquet",
+  "parquet_bytes": 20500,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 178,
+    "gaia": 23439,
+    "wise": 4648
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/berkeley_89.parquet"
+}

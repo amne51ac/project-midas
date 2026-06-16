@@ -1,0 +1,21 @@
+{
+  "cluster_id": "loden_372",
+  "cg_name": "Loden_372",
+  "n_rows": 64,
+  "n_cg_member": 64,
+  "n_with_gaia": 64,
+  "n_with_w2": 40,
+  "n_with_ruwe": 64,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.625,
+  "parquet_path": "/app/research/data/processed/t1/members/loden_372.parquet",
+  "parquet_bytes": 12404,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 66,
+    "gaia": 61838,
+    "wise": 4710
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/loden_372.parquet"
+}

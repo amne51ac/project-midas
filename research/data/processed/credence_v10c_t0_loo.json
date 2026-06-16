@@ -1,0 +1,51 @@
+{
+  "pretrain_checkpoint": "credence_model_v10b_pretrain.pt",
+  "model_version": "credence-mlp-v10c-t0",
+  "early_stop": "per-fold finetune overrides + v10b guards",
+  "folds": [
+    {
+      "holdout": "ngc_1039",
+      "f1": 0.6329113924050632,
+      "delta_f1": 0.0,
+      "headline_val_tuned_delta_f1": 0.0,
+      "headline_val_tuned_threshold": 0.05,
+      "n_test": 108,
+      "best_early_stop_score": -0.07773998488284203,
+      "val_headline_pred_pos_rate": 1.0,
+      "test_pred_pos_rate": 1.0,
+      "test_score_std": 0.0017604107687310391,
+      "finetune_overrides": {}
+    },
+    {
+      "holdout": "melotte_22",
+      "f1": 0.3548387096774194,
+      "delta_f1": 0.026633581472291168,
+      "headline_val_tuned_delta_f1": 0.0,
+      "headline_val_tuned_threshold": 0.05,
+      "n_test": 163,
+      "best_early_stop_score": 0.5043988269794721,
+      "val_headline_pred_pos_rate": 0.16541353383458646,
+      "test_pred_pos_rate": 0.5644171779141104,
+      "test_score_std": 0.032884047469499966,
+      "finetune_overrides": {
+        "pos_weight": 0.3,
+        "cluster_balance": false
+      }
+    },
+    {
+      "holdout": "ngc_2632",
+      "f1": 0.6697674418604651,
+      "delta_f1": 0.04583581792884117,
+      "headline_val_tuned_delta_f1": 0.01892551892551886,
+      "headline_val_tuned_threshold": 0.4900000000000001,
+      "n_test": 161,
+      "best_early_stop_score": 0.4228571428571429,
+      "val_headline_pred_pos_rate": 0.28888888888888886,
+      "test_pred_pos_rate": 0.8819875776397516,
+      "test_score_std": 0.06666562477626942,
+      "finetune_overrides": {}
+    }
+  ],
+  "headline_mean_delta_f1": 0.024156466467044113,
+  "headline_mean_val_tuned_delta_f1": 0.006308506308506286
+}

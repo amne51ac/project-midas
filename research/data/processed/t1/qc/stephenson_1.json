@@ -1,0 +1,21 @@
+{
+  "cluster_id": "stephenson_1",
+  "cg_name": "Stephenson_1",
+  "n_rows": 83,
+  "n_cg_member": 83,
+  "n_with_gaia": 83,
+  "n_with_w2": 72,
+  "n_with_ruwe": 81,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8675,
+  "parquet_path": "/app/research/data/processed/t1/members/stephenson_1.parquet",
+  "parquet_bytes": 14441,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 85,
+    "gaia": 45322,
+    "wise": 22924
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/stephenson_1.parquet"
+}

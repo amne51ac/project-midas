@@ -1,0 +1,21 @@
+{
+  "cluster_id": "sai_94",
+  "cg_name": "SAI_94",
+  "n_rows": 52,
+  "n_cg_member": 52,
+  "n_with_gaia": 52,
+  "n_with_w2": 37,
+  "n_with_ruwe": 52,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.7115,
+  "parquet_path": "/app/research/data/processed/t1/members/sai_94.parquet",
+  "parquet_bytes": 11420,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 54,
+    "gaia": 27569,
+    "wise": 4546
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/sai_94.parquet"
+}

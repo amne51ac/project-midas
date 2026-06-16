@@ -1,0 +1,21 @@
+{
+  "cluster_id": "ruprecht_68",
+  "cg_name": "Ruprecht_68",
+  "n_rows": 329,
+  "n_cg_member": 329,
+  "n_with_gaia": 329,
+  "n_with_w2": 243,
+  "n_with_ruwe": 316,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.7386,
+  "parquet_path": "/app/research/data/processed/t1/members/ruprecht_68.parquet",
+  "parquet_bytes": 32607,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 331,
+    "gaia": 16342,
+    "wise": 4864
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ruprecht_68.parquet"
+}

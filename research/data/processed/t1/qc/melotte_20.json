@@ -17,5 +17,5 @@
     "wise": 257901
   },
   "task": "ingest_cluster",
-  "blob_parquet": "processed/t1/members/midas-t1-1781315767/melotte_20.parquet"
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/melotte_20.parquet"
 }

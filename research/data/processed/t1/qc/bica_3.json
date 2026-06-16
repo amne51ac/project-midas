@@ -1,0 +1,21 @@
+{
+  "cluster_id": "bica_3",
+  "cg_name": "Bica_3",
+  "n_rows": 70,
+  "n_cg_member": 70,
+  "n_with_gaia": 70,
+  "n_with_w2": 12,
+  "n_with_ruwe": 70,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.1714,
+  "parquet_path": "/app/research/data/processed/t1/members/bica_3.parquet",
+  "parquet_bytes": 12139,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 72,
+    "gaia": 26890,
+    "wise": 4414
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/bica_3.parquet"
+}

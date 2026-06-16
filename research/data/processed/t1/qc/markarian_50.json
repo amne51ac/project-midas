@@ -1,0 +1,21 @@
+{
+  "cluster_id": "markarian_50",
+  "cg_name": "Markarian_50",
+  "n_rows": 38,
+  "n_cg_member": 38,
+  "n_with_gaia": 38,
+  "n_with_w2": 18,
+  "n_with_ruwe": 38,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.4737,
+  "parquet_path": "/app/research/data/processed/t1/members/markarian_50.parquet",
+  "parquet_bytes": 10032,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 40,
+    "gaia": 13315,
+    "wise": 3244
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/markarian_50.parquet"
+}

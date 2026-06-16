@@ -1,0 +1,21 @@
+{
+  "cluster_id": "teutsch_144",
+  "cg_name": "Teutsch_144",
+  "n_rows": 60,
+  "n_cg_member": 60,
+  "n_with_gaia": 60,
+  "n_with_w2": 43,
+  "n_with_ruwe": 60,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.7167,
+  "parquet_path": "/app/research/data/processed/t1/members/teutsch_144.parquet",
+  "parquet_bytes": 12110,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 62,
+    "gaia": 26898,
+    "wise": 5108
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/teutsch_144.parquet"
+}

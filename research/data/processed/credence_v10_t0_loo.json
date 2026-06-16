@@ -1,0 +1,35 @@
+{
+  "pretrain_checkpoint": "credence_model_v9_pretrain.pt",
+  "model_version": "credence-mlp-v10-t0",
+  "early_stop": "val_delta minus specificity penalty (v10)",
+  "folds": [
+    {
+      "holdout": "ngc_1039",
+      "f1": 0.6329113924050632,
+      "delta_f1": 0.0,
+      "n_test": 108,
+      "val_delta_f1_tuned": 0.0,
+      "best_early_stop_score": -0.2,
+      "val_pred_pos_rate": 1.0
+    },
+    {
+      "holdout": "ngc_2632",
+      "f1": 0.6239316239316239,
+      "delta_f1": 0.0,
+      "n_test": 161,
+      "val_delta_f1_tuned": 0.0,
+      "best_early_stop_score": -0.2,
+      "val_pred_pos_rate": 1.0
+    },
+    {
+      "holdout": "melotte_22",
+      "f1": 0.3282051282051282,
+      "delta_f1": 0.0,
+      "n_test": 163,
+      "val_delta_f1_tuned": 0.0,
+      "best_early_stop_score": -0.2,
+      "val_pred_pos_rate": 1.0
+    }
+  ],
+  "headline_mean_delta_f1": 0.0
+}

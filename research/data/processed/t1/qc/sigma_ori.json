@@ -1,0 +1,21 @@
+{
+  "cluster_id": "sigma_ori",
+  "cg_name": "Sigma_Ori",
+  "n_rows": 114,
+  "n_cg_member": 114,
+  "n_with_gaia": 114,
+  "n_with_w2": 109,
+  "n_with_ruwe": 111,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9561,
+  "parquet_path": "/app/research/data/processed/t1/members/sigma_ori.parquet",
+  "parquet_bytes": 16940,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 116,
+    "gaia": 8802,
+    "wise": 9022
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/sigma_ori.parquet"
+}

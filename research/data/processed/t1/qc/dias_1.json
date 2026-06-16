@@ -1,0 +1,21 @@
+{
+  "cluster_id": "dias_1",
+  "cg_name": "Dias_1",
+  "n_rows": 49,
+  "n_cg_member": 49,
+  "n_with_gaia": 49,
+  "n_with_w2": 39,
+  "n_with_ruwe": 49,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.7959,
+  "parquet_path": "/app/research/data/processed/t1/members/dias_1.parquet",
+  "parquet_bytes": 11279,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 51,
+    "gaia": 15634,
+    "wise": 4870
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/dias_1.parquet"
+}

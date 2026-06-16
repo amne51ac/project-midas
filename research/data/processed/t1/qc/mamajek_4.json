@@ -1,0 +1,21 @@
+{
+  "cluster_id": "mamajek_4",
+  "cg_name": "Mamajek_4",
+  "n_rows": 180,
+  "n_cg_member": 180,
+  "n_with_gaia": 180,
+  "n_with_w2": 135,
+  "n_with_ruwe": 138,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.75,
+  "parquet_path": "/app/research/data/processed/t1/members/mamajek_4.parquet",
+  "parquet_bytes": 20820,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 182,
+    "gaia": 981137,
+    "wise": 286654
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/mamajek_4.parquet"
+}

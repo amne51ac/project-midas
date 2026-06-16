@@ -1,0 +1,21 @@
+{
+  "cluster_id": "harvard_16",
+  "cg_name": "Harvard_16",
+  "n_rows": 347,
+  "n_cg_member": 347,
+  "n_with_gaia": 347,
+  "n_with_w2": 53,
+  "n_with_ruwe": 324,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.1527,
+  "parquet_path": "/app/research/data/processed/t1/members/harvard_16.parquet",
+  "parquet_bytes": 30588,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 349,
+    "gaia": 92629,
+    "wise": 8613
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/harvard_16.parquet"
+}

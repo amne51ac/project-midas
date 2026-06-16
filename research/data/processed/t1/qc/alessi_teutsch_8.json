@@ -1,0 +1,21 @@
+{
+  "cluster_id": "alessi_teutsch_8",
+  "cg_name": "Alessi_Teutsch_8",
+  "n_rows": 319,
+  "n_cg_member": 319,
+  "n_with_gaia": 319,
+  "n_with_w2": 175,
+  "n_with_ruwe": 315,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.5486,
+  "parquet_path": "/app/research/data/processed/t1/members/alessi_teutsch_8.parquet",
+  "parquet_bytes": 31587,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 321,
+    "gaia": 545699,
+    "wise": 41233
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/alessi_teutsch_8.parquet"
+}

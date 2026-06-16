@@ -1,6 +1,6 @@
 {
-  "job_id": "midas-t1-1781315767",
-  "n_parquet": 45,
-  "n_qc": 45,
+  "job_id": "midas-t1-1781364581",
+  "n_parquet": 1423,
+  "n_qc": 1423,
   "members_dir": "/Users/markmilhouse/stars research/project-midas/research/data/processed/t1/members"
 }

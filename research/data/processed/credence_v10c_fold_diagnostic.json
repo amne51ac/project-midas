@@ -1,0 +1,22 @@
+{
+  "summary": "Plan A fold diagnostics (v10b checkpoint)",
+  "findings": {
+    "melotte_22": {
+      "issue": "p_binary too high (all test scores > 0.5); val threshold tuning cannot help (val delta negative at all t)",
+      "fix": "pos_weight=0.3 on finetune",
+      "result_delta_f1_at_0_5": 0.027,
+      "result_best_test_delta_at_t_0_56": 0.172
+    },
+    "ngc_1039": {
+      "issue": "collapsed scores (std~0.002); no discrimination at any threshold",
+      "attempted": ["cluster_balance", "pos_weight 1.5", "m34_bvr scratch", "v6 scratch"],
+      "status": "unresolved"
+    },
+    "ngc_2632": {
+      "status": "working with v10b defaults",
+      "delta_f1_at_0_5": 0.046
+    }
+  },
+  "v10c_loo_headline_mean_delta_f1": 0.024,
+  "v10b_loo_headline_mean_delta_f1": 0.015
+}

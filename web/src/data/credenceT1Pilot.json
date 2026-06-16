@@ -1,14 +1,16 @@
 {
   "ingest": {
-    "pilotJobId": "midas-t1-1781315767",
-    "pilotSucceeded": 49,
+    "pilotJobId": "midas-t1-1781364581",
+    "pilotSucceeded": 45,
     "pilotTotal": 50,
     "memberRows": 44545,
     "fullRegistryClusters": 1611,
-    "blobPrefix": "processed/t1/members/midas-t1-1781315767/"
+    "blobPrefix": "processed/t1/members/midas-t1-1781364581/",
+    "fullIngestJobId": "midas-t1-1781364581",
+    "fullIngestTasks": 1611
   },
   "model": {
     "version": "credence-mlp-v8-t1",
-    "headlineMeanDeltaF1": null
+    "headlineMeanDeltaF1": 0.0
   }
 }

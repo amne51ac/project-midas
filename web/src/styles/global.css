@@ -4423,6 +4423,56 @@ body.atlas-route {
   padding: 0 0.25rem;
 }
 
+.atlas-panel__details {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: var(--bg-panel);
+  min-width: 0;
+}
+
+.atlas-panel__details-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.atlas-panel__details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.atlas-panel__details-summary::after {
+  content: '▸';
+  color: var(--accent);
+  font-size: 0.75rem;
+}
+
+.atlas-panel__details[open] .atlas-panel__details-summary::after {
+  content: '▾';
+}
+
+.atlas-panel__details-summary:hover {
+  color: var(--ink-muted);
+}
+
+.atlas-panel__details-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.4rem;
+  padding: 0 0.5rem 0.4rem;
+  border-top: 1px solid var(--rule);
+}
+
 .atlas-panel__check {
   font-family: var(--sans);
   font-size: 0.76rem;

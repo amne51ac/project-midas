@@ -34,6 +34,13 @@ class FeatureMode(str, Enum):
     M34_BVR = "m34_bvr"  # BINARY_NO_W2BP + legacy bv0/mv0 (active on ngc_1039 only)
 
 
+class LabelMode(str, Enum):
+    """Supervision target for multi-head training."""
+
+    LITERATURE = "literature"  # Malofeeva/Hyades on T0 literature clusters; RUWE elsewhere
+    RUWE_PRETRAIN = "ruwe_pretrain"  # T1 scale pretrain — all heads target RUWE
+
+
 def uses_legacy_cmd(feature_mode: FeatureMode) -> bool:
     return feature_mode == FeatureMode.M34_BVR
 
@@ -549,7 +556,24 @@ def _binary_train_target(row: CredenceRow) -> float:
     return float(row.ruwe_high)
 
 
-def label_vectors(rows: list[CredenceRow]) -> dict[str, np.ndarray]:
+def label_vectors(
+    rows: list[CredenceRow],
+    *,
+    mode: LabelMode | str = LabelMode.LITERATURE,
+) -> dict[str, np.ndarray]:
+    if isinstance(mode, str):
+        mode = LabelMode(mode)
+    if mode == LabelMode.RUWE_PRETRAIN:
+        return {
+            "y_binary": np.array([float(r.ruwe_high) for r in rows], dtype=np.float32),
+            "y_cmd": np.zeros(len(rows), dtype=np.float32),
+            "y_ir": np.array([float(r.ruwe_high) for r in rows], dtype=np.float32),
+            "y_ruwe": np.array([float(r.ruwe_high) for r in rows], dtype=np.float32),
+            "weight": np.array(
+                [r.cg_proba if r.cg_proba is not None else 0.0 for r in rows],
+                dtype=np.float32,
+            ),
+        }
     return {
         "y_binary": np.array([_binary_train_target(r) for r in rows], dtype=np.float32),
         "y_cmd": np.array([float(r.excel_binary) for r in rows], dtype=np.float32),

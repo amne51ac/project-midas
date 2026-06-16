@@ -1,0 +1,21 @@
+{
+  "cluster_id": "juchert_13",
+  "cg_name": "Juchert_13",
+  "n_rows": 177,
+  "n_cg_member": 177,
+  "n_with_gaia": 177,
+  "n_with_w2": 60,
+  "n_with_ruwe": 177,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.339,
+  "parquet_path": "/app/research/data/processed/t1/members/juchert_13.parquet",
+  "parquet_bytes": 19932,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 179,
+    "gaia": 77874,
+    "wise": 4750
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/juchert_13.parquet"
+}

@@ -169,21 +169,26 @@ export function clusterRingPoints(
   radiusDeg: number,
   segments = 64,
 ): THREE.Vector3[] {
-  const center = raDecToVector3(ra, dec, STAR_RADIUS);
+  const center = raDecToVector3(ra, dec, 1).normalize();
   const north = new THREE.Vector3(0, 1, 0);
-  let axis = new THREE.Vector3().crossVectors(center, north);
-  if (axis.lengthSq() < 1e-6) axis.set(1, 0, 0);
-  axis.normalize();
-  const tangent = new THREE.Vector3().crossVectors(axis, center).normalize();
-  const bitangent = new THREE.Vector3().crossVectors(center, tangent).normalize();
-  const angular = (radiusDeg * Math.PI) / 180;
+  let ref = new THREE.Vector3().crossVectors(north, center);
+  if (ref.lengthSq() < 1e-6) ref.set(1, 0, 0);
+  else ref.normalize();
+  const bitangent = new THREE.Vector3().crossVectors(center, ref).normalize();
+  const angle = (radiusDeg * Math.PI) / 180;
 
   return Array.from({ length: segments + 1 }, (_, i) => {
     const theta = (i / segments) * Math.PI * 2;
-    const offset = new THREE.Vector3()
-      .addScaledVector(tangent, Math.cos(theta) * angular)
-      .addScaledVector(bitangent, Math.sin(theta) * angular);
-    return center.clone().add(offset).normalize().multiplyScalar(STAR_RADIUS);
+    const ringDir = ref
+      .clone()
+      .multiplyScalar(Math.cos(theta))
+      .addScaledVector(bitangent, Math.sin(theta));
+    return center
+      .clone()
+      .multiplyScalar(Math.cos(angle))
+      .addScaledVector(ringDir, Math.sin(angle))
+      .normalize()
+      .multiplyScalar(STAR_RADIUS);
   });
 }
 

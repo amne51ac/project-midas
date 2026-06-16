@@ -1,0 +1,21 @@
+{
+  "cluster_id": "bh_78",
+  "cg_name": "BH_78",
+  "n_rows": 46,
+  "n_cg_member": 46,
+  "n_with_gaia": 46,
+  "n_with_w2": 12,
+  "n_with_ruwe": 46,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.2609,
+  "parquet_path": "/app/research/data/processed/t1/members/bh_78.parquet",
+  "parquet_bytes": 10356,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 48,
+    "gaia": 36409,
+    "wise": 4771
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/bh_78.parquet"
+}

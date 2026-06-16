@@ -1,0 +1,21 @@
+{
+  "cluster_id": "westerlund_1",
+  "cg_name": "Westerlund_1",
+  "n_rows": 308,
+  "n_cg_member": 308,
+  "n_with_gaia": 308,
+  "n_with_w2": 37,
+  "n_with_ruwe": 305,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.1201,
+  "parquet_path": "/app/research/data/processed/t1/members/westerlund_1.parquet",
+  "parquet_bytes": 27897,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 310,
+    "gaia": 35950,
+    "wise": 4424
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/westerlund_1.parquet"
+}

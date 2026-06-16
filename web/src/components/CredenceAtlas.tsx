@@ -38,22 +38,21 @@ export function CredenceAtlas({ bundle }: Props) {
 
   const detailPick = selected ?? hover;
 
-  const toggleCluster = (id: string) => {
-    setActiveClusters((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  const showClusters = activeClusters.size > 0;
+
+  const toggleAllClusters = () => {
+    setActiveClusters((prev) =>
+      prev.size > 0 ? new Set() : new Set(bundle.clusters.map((c) => c.id)),
+    );
   };
 
   const flyToCluster = useCallback(
     (clusterId: string) => {
       const cluster = bundle.clusters.find((c) => c.id === clusterId);
-      if (!cluster || !activeClusters.has(clusterId)) return;
+      if (!cluster) return;
       setFlyTarget({ ra: cluster.ra, dec: cluster.dec });
     },
-    [bundle.clusters, activeClusters],
+    [bundle.clusters],
   );
 
   const resetView = useCallback(() => {
@@ -147,34 +146,26 @@ export function CredenceAtlas({ bundle }: Props) {
               />
               Named stars
             </label>
+            <label className="atlas-panel__check">
+              <input type="checkbox" checked={showClusters} onChange={toggleAllClusters} />
+              Clusters
+            </label>
           </fieldset>
-          <fieldset className="atlas-panel__fieldset">
-            <legend>Clusters</legend>
-            {bundle.clusters.map((c) => (
-              <label key={c.id} className="atlas-panel__check">
-                <input
-                  type="checkbox"
-                  checked={activeClusters.has(c.id)}
-                  onChange={() => toggleCluster(c.id)}
-                />
-                {c.name}
-              </label>
-            ))}
-          </fieldset>
-          <fieldset className="atlas-panel__fieldset">
-            <legend>Fly to</legend>
-            {bundle.clusters.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                className="atlas-panel__fly"
-                disabled={!activeClusters.has(c.id)}
-                onClick={() => flyToCluster(c.id)}
-              >
-                {c.name}
-              </button>
-            ))}
-          </fieldset>
+          <details className="atlas-panel__details">
+            <summary className="atlas-panel__details-summary">Fly to</summary>
+            <div className="atlas-panel__details-body">
+              {bundle.clusters.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  className="atlas-panel__fly"
+                  onClick={() => flyToCluster(c.id)}
+                >
+                  {c.name}
+                </button>
+              ))}
+            </div>
+          </details>
           <label className="atlas-panel__field">
             Color
             <select value={colorMode} onChange={(e) => setColorMode(e.target.value as ColorMode)}>

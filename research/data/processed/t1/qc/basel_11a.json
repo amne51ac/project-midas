@@ -1,0 +1,21 @@
+{
+  "cluster_id": "basel_11a",
+  "cg_name": "Basel_11a",
+  "n_rows": 92,
+  "n_cg_member": 92,
+  "n_with_gaia": 92,
+  "n_with_w2": 75,
+  "n_with_ruwe": 91,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8152,
+  "parquet_path": "/app/research/data/processed/t1/members/basel_11a.parquet",
+  "parquet_bytes": 15011,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 94,
+    "gaia": 14641,
+    "wise": 4539
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/basel_11a.parquet"
+}

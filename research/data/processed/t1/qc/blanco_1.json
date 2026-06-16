@@ -1,0 +1,21 @@
+{
+  "cluster_id": "blanco_1",
+  "cg_name": "Blanco_1",
+  "n_rows": 380,
+  "n_cg_member": 380,
+  "n_with_gaia": 380,
+  "n_with_w2": 345,
+  "n_with_ruwe": 349,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9079,
+  "parquet_path": "/app/research/data/processed/t1/members/blanco_1.parquet",
+  "parquet_bytes": 38331,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 382,
+    "gaia": 30430,
+    "wise": 136576
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/blanco_1.parquet"
+}

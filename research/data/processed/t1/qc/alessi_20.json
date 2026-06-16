@@ -1,0 +1,21 @@
+{
+  "cluster_id": "alessi_20",
+  "cg_name": "Alessi_20",
+  "n_rows": 119,
+  "n_cg_member": 119,
+  "n_with_gaia": 119,
+  "n_with_w2": 102,
+  "n_with_ruwe": 114,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8571,
+  "parquet_path": "/app/research/data/processed/t1/members/alessi_20.parquet",
+  "parquet_bytes": 17048,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 121,
+    "gaia": 60698,
+    "wise": 22657
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/alessi_20.parquet"
+}

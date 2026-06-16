@@ -1,0 +1,21 @@
+{
+  "cluster_id": "kronberger_80",
+  "cg_name": "Kronberger_80",
+  "n_rows": 41,
+  "n_cg_member": 41,
+  "n_with_gaia": 41,
+  "n_with_w2": 23,
+  "n_with_ruwe": 41,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.561,
+  "parquet_path": "/app/research/data/processed/t1/members/kronberger_80.parquet",
+  "parquet_bytes": 10340,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 43,
+    "gaia": 7303,
+    "wise": 3849
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/kronberger_80.parquet"
+}

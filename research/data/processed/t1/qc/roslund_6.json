@@ -1,0 +1,21 @@
+{
+  "cluster_id": "roslund_6",
+  "cg_name": "Roslund_6",
+  "n_rows": 247,
+  "n_cg_member": 247,
+  "n_with_gaia": 247,
+  "n_with_w2": 172,
+  "n_with_ruwe": 225,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6964,
+  "parquet_path": "/app/research/data/processed/t1/members/roslund_6.parquet",
+  "parquet_bytes": 26501,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 249,
+    "gaia": 494402,
+    "wise": 239836
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/roslund_6.parquet"
+}

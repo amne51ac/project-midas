@@ -1,0 +1,21 @@
+{
+  "cluster_id": "mayer_1",
+  "cg_name": "Mayer_1",
+  "n_rows": 33,
+  "n_cg_member": 33,
+  "n_with_gaia": 33,
+  "n_with_w2": 29,
+  "n_with_ruwe": 33,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8788,
+  "parquet_path": "/app/research/data/processed/t1/members/mayer_1.parquet",
+  "parquet_bytes": 10009,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 35,
+    "gaia": 14539,
+    "wise": 3752
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/mayer_1.parquet"
+}

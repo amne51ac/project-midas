@@ -1,0 +1,21 @@
+{
+  "cluster_id": "turner_9",
+  "cg_name": "Turner_9",
+  "n_rows": 34,
+  "n_cg_member": 34,
+  "n_with_gaia": 34,
+  "n_with_w2": 19,
+  "n_with_ruwe": 26,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.5588,
+  "parquet_path": "/app/research/data/processed/t1/members/turner_9.parquet",
+  "parquet_bytes": 9628,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 36,
+    "gaia": 236380,
+    "wise": 11048
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/turner_9.parquet"
+}

@@ -1,0 +1,21 @@
+{
+  "cluster_id": "danks_2",
+  "cg_name": "Danks_2",
+  "n_rows": 56,
+  "n_cg_member": 56,
+  "n_with_gaia": 56,
+  "n_with_w2": 19,
+  "n_with_ruwe": 56,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.3393,
+  "parquet_path": "/app/research/data/processed/t1/members/danks_2.parquet",
+  "parquet_bytes": 11159,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 58,
+    "gaia": 40571,
+    "wise": 3548
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/danks_2.parquet"
+}

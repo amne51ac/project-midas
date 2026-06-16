@@ -1,0 +1,21 @@
+{
+  "cluster_id": "aveni_hunter_1",
+  "cg_name": "Aveni_Hunter_1",
+  "n_rows": 82,
+  "n_cg_member": 82,
+  "n_with_gaia": 82,
+  "n_with_w2": 76,
+  "n_with_ruwe": 78,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9268,
+  "parquet_path": "/app/research/data/processed/t1/members/aveni_hunter_1.parquet",
+  "parquet_bytes": 14559,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 84,
+    "gaia": 141922,
+    "wise": 91914
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/aveni_hunter_1.parquet"
+}

@@ -1,0 +1,105 @@
+{
+  "phase": "finetune",
+  "meta": {
+    "version": "credence-mlp-v10b-t0",
+    "train_tier": "T0",
+    "holdout_cluster_ids": [],
+    "init_checkpoint": "credence_model_v10b_pretrain.pt",
+    "checkpoint": "credence_model_v10b_t0.pt"
+  },
+  "model": {
+    "model_version": "credence-mlp-v10b-t0",
+    "hidden_dim": 128,
+    "dropout": 0.15,
+    "epochs": 60,
+    "lr": 0.0002,
+    "weight_decay": 0.0001,
+    "loss_weights": {
+      "binary": 1.0,
+      "cmd": 0.15,
+      "ir": 0.05,
+      "ruwe": 0.1
+    },
+    "pos_weight": 0.5,
+    "raw_pos_weight": 17.662983425414364,
+    "cluster_balance": false,
+    "best_val_f1": 0.36595744680851067,
+    "val_metric": "macro_f1",
+    "feature_mode": "binary_no_w2bp",
+    "label_mode": "literature",
+    "val_truth_mode": "auto",
+    "val_use_benchmark_universe": true,
+    "freeze_encoder_epochs": 12,
+    "min_val_specificity": 0.2,
+    "val_headline_clusters_only": true,
+    "init_checkpoint": "/Users/markmilhouse/stars research/project-midas/research/data/processed/credence_model_v10b_pretrain.pt",
+    "legacy_cmd": false,
+    "n_train": 3378,
+    "n_val": 595,
+    "feature_stats": {
+      "g_mean": 14.329097844153063,
+      "g_std": 2.744242272089313,
+      "bp_rp_mean": 1.522323089295106,
+      "bp_rp_std": 0.9137316256141769,
+      "w2_bp_mean": -3.1397768498262875,
+      "w2_bp_std": 1.8117652644431599,
+      "ruwe_mean": 1.134483471873099,
+      "ruwe_std": 0.5478193035999694,
+      "parallax_mean": 3.6800760382687963,
+      "parallax_std": 3.533142573699754,
+      "pmra_mean": 1.4444530170852252,
+      "pmra_std": 21.61226923212367,
+      "pmdec_mean": -12.999641066594485,
+      "pmdec_std": 17.25329385982935,
+      "h_mag_mean": 12.05267634739135,
+      "h_mag_std": 1.8956766209868814,
+      "h_w2_mean": 0.2603194001289344,
+      "h_w2_std": 0.23359685465671726,
+      "bv0_mean": 0.8735665399239544,
+      "bv0_std": 0.4501904480203776,
+      "mv0_mean": 6.149408745247148,
+      "mv0_std": 2.499311661747509
+    },
+    "history": [
+      {
+        "epoch": 0,
+        "loss": 1.4516276121139526,
+        "val_f1": 0.13114754098360656,
+        "val_f1_macro": 0.1609184165836357,
+        "val_delta_f1_macro": 0.0,
+        "val_specificity_macro": 0.0,
+        "early_stop_score": -0.03908158341636431
+      },
+      {
+        "epoch": 20,
+        "loss": 1.4040687084197998,
+        "val_f1": 0.1532258064516129,
+        "val_f1_macro": 0.23195072900955258,
+        "val_delta_f1_macro": 0.00952380952380949,
+        "val_specificity_macro": 0.29857384265986414,
+        "early_stop_score": 0.23195072900955258
+      },
+      {
+        "epoch": 40,
+        "loss": 1.2662795782089233,
+        "val_f1": 0.26865671641791045,
+        "val_f1_macro": 0.3138583638583639,
+        "val_delta_f1_macro": 0.0056022408963585235,
+        "val_specificity_macro": 0.663960734928477,
+        "early_stop_score": 0.3138583638583639
+      },
+      {
+        "epoch": 59,
+        "loss": 0.9936338067054749,
+        "val_f1": 0.3364485981308411,
+        "val_f1_macro": 0.36595744680851067,
+        "val_delta_f1_macro": 0.017857142857142832,
+        "val_specificity_macro": 0.7460880235073782,
+        "early_stop_score": 0.36595744680851067
+      }
+    ],
+    "split": "random_member",
+    "holdout_cluster_ids": []
+  },
+  "holdout_validation": null
+}

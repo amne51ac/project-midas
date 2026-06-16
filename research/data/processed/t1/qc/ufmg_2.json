@@ -1,0 +1,21 @@
+{
+  "cluster_id": "ufmg_2",
+  "cg_name": "UFMG_2",
+  "n_rows": 462,
+  "n_cg_member": 462,
+  "n_with_gaia": 462,
+  "n_with_w2": 93,
+  "n_with_ruwe": 462,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.2013,
+  "parquet_path": "/app/research/data/processed/t1/members/ufmg_2.parquet",
+  "parquet_bytes": 42186,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 464,
+    "gaia": 86080,
+    "wise": 4709
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ufmg_2.parquet"
+}

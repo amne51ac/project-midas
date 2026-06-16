@@ -1,0 +1,21 @@
+{
+  "cluster_id": "ascc_6",
+  "cg_name": "ASCC_6",
+  "n_rows": 111,
+  "n_cg_member": 111,
+  "n_with_gaia": 111,
+  "n_with_w2": 90,
+  "n_with_ruwe": 101,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8108,
+  "parquet_path": "/app/research/data/processed/t1/members/ascc_6.parquet",
+  "parquet_bytes": 15992,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 113,
+    "gaia": 43683,
+    "wise": 15765
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ascc_6.parquet"
+}

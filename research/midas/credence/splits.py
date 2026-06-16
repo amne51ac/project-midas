@@ -74,6 +74,29 @@ def leave_one_cluster_out_folds(
     return folds
 
 
+def holdout_inner_split(
+    holdout_rows: list[CredenceRow],
+    *,
+    val_fraction: float = 0.30,
+    min_val: int = 20,
+    seed: int = 42,
+) -> tuple[list[CredenceRow], list[CredenceRow]]:
+    """Split holdout-cluster eval stars into inner val (selection) and inner test (reporting)."""
+    import numpy as np
+
+    pool = list(holdout_rows)
+    if len(pool) < min_val + 10:
+        raise ValueError(f"Need ≥{min_val + 10} holdout eval stars; got {len(pool)}")
+
+    rng = np.random.default_rng(seed)
+    perm = rng.permutation(len(pool))
+    n_val = max(min_val, int(len(pool) * val_fraction))
+    val_idx = {int(i) for i in perm[:n_val]}
+    val_rows = [pool[i] for i in range(len(pool)) if i in val_idx]
+    test_rows = [pool[i] for i in range(len(pool)) if i not in val_idx]
+    return val_rows, test_rows
+
+
 def nested_loo_headline_folds(
     rows: list[CredenceRow],
     *,

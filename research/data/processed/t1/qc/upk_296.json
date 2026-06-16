@@ -1,0 +1,21 @@
+{
+  "cluster_id": "upk_296",
+  "cg_name": "UPK_296",
+  "n_rows": 71,
+  "n_cg_member": 71,
+  "n_with_gaia": 71,
+  "n_with_w2": 67,
+  "n_with_ruwe": 68,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.9437,
+  "parquet_path": "/app/research/data/processed/t1/members/upk_296.parquet",
+  "parquet_bytes": 13644,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 73,
+    "gaia": 381275,
+    "wise": 233131
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/upk_296.parquet"
+}

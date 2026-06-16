@@ -1,0 +1,21 @@
+{
+  "cluster_id": "koposov_10",
+  "cg_name": "Koposov_10",
+  "n_rows": 59,
+  "n_cg_member": 59,
+  "n_with_gaia": 59,
+  "n_with_w2": 53,
+  "n_with_ruwe": 59,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.8983,
+  "parquet_path": "/app/research/data/processed/t1/members/koposov_10.parquet",
+  "parquet_bytes": 12242,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 61,
+    "gaia": 6932,
+    "wise": 4539
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/koposov_10.parquet"
+}

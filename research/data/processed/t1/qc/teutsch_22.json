@@ -1,0 +1,21 @@
+{
+  "cluster_id": "teutsch_22",
+  "cg_name": "Teutsch_22",
+  "n_rows": 84,
+  "n_cg_member": 84,
+  "n_with_gaia": 84,
+  "n_with_w2": 46,
+  "n_with_ruwe": 84,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.5476,
+  "parquet_path": "/app/research/data/processed/t1/members/teutsch_22.parquet",
+  "parquet_bytes": 13648,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 86,
+    "gaia": 30108,
+    "wise": 4580
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/teutsch_22.parquet"
+}

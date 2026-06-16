@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "version": "credence-mlp-v8-t1",
+    "detector": "Credence",
+    "engine": "model",
+    "train_tier": "T1",
+    "n_rows": 47540,
+    "n_cg_members": 47540,
+    "n_clusters": 48,
+    "checkpoint": "credence_model_v8_t1.pt"
+  },
+  "model": {
+    "model_version": "credence-mlp-v8-t1",
+    "hidden_dim": 128,
+    "dropout": 0.1,
+    "epochs": 60,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "loss_weights": {
+      "binary": 1.0,
+      "cmd": 0.15,
+      "ir": 0.05,
+      "ruwe": 0.15
+    },
+    "pos_weight": 1.0,
+    "raw_pos_weight": 39.899797570850204,
+    "cluster_balance": false,
+    "best_val_f1": 0.05856076495718584,
+    "val_metric": "macro_f1",
+    "feature_mode": "binary_no_w2bp",
+    "legacy_cmd": false,
+    "n_train": 40409,
+    "n_val": 7131,
+    "feature_stats": {
+      "g_mean": 15.442560964653898,
+      "g_std": 1.9743650247743014,
+      "bp_rp_mean": 1.265474893939943,
+      "bp_rp_std": 0.5523808957285489,
+      "w2_bp_mean": -2.7618653485916296,
+      "w2_bp_std": 1.3859449098079055,
+      "ruwe_mean": 1.0456591736291474,
+      "ruwe_std": 0.32280484664914494,
+      "parallax_mean": 1.0172414383019868,
+      "parallax_std": 1.2773064800593374,
+      "pmra_mean": -1.830458428260579,
+      "pmra_std": 7.00981248162063,
+      "pmdec_mean": -1.9153935934247754,
+      "pmdec_std": 7.5160184035995155,
+      "h_mag_mean": 12.945618431659012,
+      "h_mag_std": 1.753719182463706,
+      "h_w2_mean": 0.15422625441655996,
+      "h_w2_std": 0.3294876721520566,
+      "bv0_mean": 0.5,
+      "bv0_std": 1.0,
+      "mv0_mean": 5.0,
+      "mv0_std": 1.0
+    },
+    "history": [
+      {
+        "epoch": 0,
+        "loss": 1.6016043424606323,
+        "val_f1": 0.05617049396993226,
+        "val_f1_macro": 0.04731411352322954,
+        "val_delta_f1_macro": -0.004622024880195971,
+        "val_specificity_macro": 0.1422523546112258
+      },
+      {
+        "epoch": 20,
+        "loss": 1.0521438121795654,
+        "val_f1": 0.0,
+        "val_f1_macro": 0.0,
+        "val_delta_f1_macro": -0.053993273774000705,
+        "val_specificity_macro": 0.9903948801742919
+      },
+      {
+        "epoch": 23,
+        "loss": 0.8241344690322876,
+        "val_f1": 0.0,
+        "val_specificity": 0.9929261982570806,
+        "early_stop": true
+      }
+    ],
+    "split": "random_member",
+    "holdout_cluster_ids": []
+  }
+}

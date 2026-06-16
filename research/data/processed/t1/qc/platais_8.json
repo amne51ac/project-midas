@@ -1,0 +1,21 @@
+{
+  "cluster_id": "platais_8",
+  "cg_name": "Platais_8",
+  "n_rows": 211,
+  "n_cg_member": 211,
+  "n_with_gaia": 211,
+  "n_with_w2": 83,
+  "n_with_ruwe": 87,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.3934,
+  "parquet_path": "/app/research/data/processed/t1/members/platais_8.parquet",
+  "parquet_bytes": 19290,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 213,
+    "gaia": 1489687,
+    "wise": 295743
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/platais_8.parquet"
+}

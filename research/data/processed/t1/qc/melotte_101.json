@@ -1,0 +1,21 @@
+{
+  "cluster_id": "melotte_101",
+  "cg_name": "Melotte_101",
+  "n_rows": 472,
+  "n_cg_member": 472,
+  "n_with_gaia": 472,
+  "n_with_w2": 301,
+  "n_with_ruwe": 439,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.6377,
+  "parquet_path": "/app/research/data/processed/t1/members/melotte_101.parquet",
+  "parquet_bytes": 42344,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 474,
+    "gaia": 81380,
+    "wise": 8529
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/melotte_101.parquet"
+}

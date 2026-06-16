@@ -1,0 +1,21 @@
+{
+  "cluster_id": "lp_2068",
+  "cg_name": "LP_2068",
+  "n_rows": 110,
+  "n_cg_member": 110,
+  "n_with_gaia": 110,
+  "n_with_w2": 51,
+  "n_with_ruwe": 108,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.4636,
+  "parquet_path": "/app/research/data/processed/t1/members/lp_2068.parquet",
+  "parquet_bytes": 15437,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 112,
+    "gaia": 103955,
+    "wise": 4986
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/lp_2068.parquet"
+}

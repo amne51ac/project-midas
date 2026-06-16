@@ -1,0 +1,21 @@
+{
+  "cluster_id": "lynga_5",
+  "cg_name": "Lynga_5",
+  "n_rows": 131,
+  "n_cg_member": 131,
+  "n_with_gaia": 131,
+  "n_with_w2": 35,
+  "n_with_ruwe": 126,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.2672,
+  "parquet_path": "/app/research/data/processed/t1/members/lynga_5.parquet",
+  "parquet_bytes": 16419,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 133,
+    "gaia": 59849,
+    "wise": 4992
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/lynga_5.parquet"
+}

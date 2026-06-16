@@ -1,0 +1,21 @@
+{
+  "cluster_id": "skiff_j0507+30.8",
+  "cg_name": "Skiff_J0507+30.8",
+  "n_rows": 75,
+  "n_cg_member": 75,
+  "n_with_gaia": 75,
+  "n_with_w2": 66,
+  "n_with_ruwe": 75,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.88,
+  "parquet_path": "/app/research/data/processed/t1/members/skiff_j0507+30.8.parquet",
+  "parquet_bytes": 13920,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 77,
+    "gaia": 7061,
+    "wise": 3570
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/skiff_j0507+30.8.parquet"
+}

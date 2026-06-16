@@ -17,5 +17,5 @@
     "wise": 6096
   },
   "task": "ingest_cluster",
-  "blob_parquet": "processed/t1/members/midas-t1-1781315767/ruprecht_171.parquet"
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/ruprecht_171.parquet"
 }

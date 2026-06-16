@@ -1,0 +1,21 @@
+{
+  "cluster_id": "fsr_1530",
+  "cg_name": "FSR_1530",
+  "n_rows": 46,
+  "n_cg_member": 46,
+  "n_with_gaia": 46,
+  "n_with_w2": 27,
+  "n_with_ruwe": 46,
+  "gaia_frac": 1.0,
+  "w2_frac": 0.587,
+  "parquet_path": "/app/research/data/processed/t1/members/fsr_1530.parquet",
+  "parquet_bytes": 10822,
+  "fetched": true,
+  "fetch_counts": {
+    "cg": 48,
+    "gaia": 15484,
+    "wise": 3569
+  },
+  "task": "ingest_cluster",
+  "blob_parquet": "processed/t1/members/midas-t1-1781364581/fsr_1530.parquet"
+}
