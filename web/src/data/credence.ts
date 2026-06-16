@@ -1,5 +1,6 @@
 import credenceSummary from './credenceSummary.json';
 import credenceT0Summary from './credenceT0Summary.json';
+import credenceTrust from './credenceTrust.json';
 import { homeSectionHref } from '../routing/appRoute';
 import { T0, T1, T2, T3 } from '../utils/tierLabel';
 
@@ -16,6 +17,7 @@ export const CREDENCE_SECTIONS = [
   { id: 'data', label: 'Data scope' },
   { id: 'membership', label: 'Membership' },
   { id: 'infer', label: 'Infer' },
+  { id: 'trust', label: 'Trust & uncertainty' },
   { id: 'display', label: 'Display' },
   { id: 'software', label: 'Software' },
   { id: 'roadmap', label: 'Roadmap' },
@@ -179,6 +181,9 @@ export const CREDENCE = {
     credenceVector: [
       'p_member — ingested (credence dimension 0)',
       'p_binary — fused binary posterior (primary infer head)',
+      'sigma_epistemic — optional ensemble spread on p_binary (0 with single checkpoint)',
+      'p_interval_90 — p_binary ± 1.645σ, clipped to [0,1]',
+      'trust_score · trust_tier · recommended_use — cluster validation + separability (not the same as p_binary)',
       'p_cmd, p_ir, p_ruwe — channel heads (CMD, IR pseudocolor, astrometric)',
       'score_infer — legacy fused residual (optional export)',
       'planes — "dual" | "optical_only"',
@@ -333,6 +338,37 @@ export const CREDENCE = {
     t0,
   },
 
+  trust: {
+    title: 'Trust & uncertainty',
+    lede:
+      'Every star gets p_binary (infer score). Trust is separate: whether fixed-threshold classification is validated ' +
+      'for this cluster. M34 (ngc_1039) is exploratory — flat scores, ranking only — while Pleiades and Praesepe are validated.',
+    schema: credenceTrust.meta.schema,
+    formula: credenceTrust.formula,
+    tierDefinitions: credenceTrust.tierDefinitions,
+    thresholds: credenceTrust.thresholds,
+    clusters: Object.entries(credenceTrust.clusters).map(([id, c]) => ({
+      clusterId: id,
+      registryTier: c.registry_tier as string,
+      looDeltaF1: c.loo_delta_f1_at_0_5 as number | null,
+      scoreStd: c.test_score_std as number | null,
+      separation: (c.liveDiagnostics as { separation?: number } | undefined)?.separation ?? null,
+      recommendedUse:
+        c.registry_tier === 'validated'
+          ? 'classify'
+          : c.registry_tier === 'provisional'
+            ? 'rank_and_review'
+            : 'ranking_only',
+      notes: (c.notes as string[] | undefined) ?? [],
+    })),
+    bullets: [
+      'p_binary answers “how binary-like?” — trust answers “should we threshold here?”',
+      'Registry tier reflects per-fold LOO benchmarks; live trust_score uses the deployed checkpoint and batch diagnostics.',
+      'Cluster score std (separation) detects collapsed models (all-positive or all-negative @ t=0.5).',
+      'Exploratory tiers: show rank percentile within cluster, not “likely binary” at t=0.5.',
+    ],
+  },
+
   display: {
     title: 'Display — Credence Atlas',
     paragraphs: [
@@ -414,6 +450,8 @@ export const CREDENCE = {
     'Per-fold nested oracle ceiling ≈ −0.04 ΔF1 (not deployable as one global config); val threshold tuning does not beat t=0.5.',
     'Hyades eval is provisional (Brandner); RUWE tiers on M35/IC2602 are weak sanity checks only.',
     'Membership catalogs disagree at faint limits; credences must show uncertainty.',
+    'Trust tiers (validated / provisional / exploratory) separate p_binary from classification guarantees — see Trust section.',
+    'M34 (ngc_1039) is exploratory: use ranking, not fixed-threshold binary labels.',
     'Legacy Midas-depth BVR exists for ~10¹ clusters, not galaxy scale.',
   ],
 

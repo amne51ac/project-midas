@@ -28,7 +28,39 @@ Checkpoint: `data/processed/credence_model.pt`
 
 **Science-valid evaluation** uses T0 multi-cluster training with **cluster-held-out** test. See [`CREDENCE_ML_DATA_STRATEGY.md`](CREDENCE_ML_DATA_STRATEGY.md).
 
-### T0 cluster-held-out (credence-mlp-v2-t0)
+## Trust and uncertainty
+
+Every star receives **`p_binary`** (infer score). **Trust is separate** — it states whether fixed-threshold classification is validated for that cluster, not how binary-like a single star looks.
+
+| Field | Meaning |
+|-------|---------|
+| `p_binary` | MLP sigmoid — primary infer score |
+| `sigma_epistemic` | Spread across seed ensemble (0 with single checkpoint) |
+| `p_interval_90` | `p_binary ± 1.645σ`, clipped to [0,1] |
+| `trust_score` | 0–1 meta-confidence from registry + batch diagnostics |
+| `trust_tier` | `validated` · `provisional` · `exploratory` |
+| `recommended_use` | `classify` · `rank_and_review` · `ranking_only` |
+| `rank_pct` | Percentile within cluster (for exploratory tiers) |
+
+**Registry tiers** (offline, from LOO + stability benchmarks) live in `data/processed/credence_validation_registry.json`. **Runtime diagnostics** (`cluster_diagnostics`) detect collapsed score distributions (e.g. ≥98% predicted positive @ t=0.5) and can downgrade trust below the registry tier when the **deployed** checkpoint collapses.
+
+Implementation: `midas/credence/trust.py`
+
+```bash
+python scripts/build_credence_validation_registry.py
+python scripts/build_web_credence_trust.py   # → web/src/data/credenceTrust.json
+```
+
+**M34 (ngc_1039)** is **exploratory**: high-prevalence Malofeeva baseline (F1≈0.63), flat logits (score std≈0.002). Show scores for ranking; do not guarantee ΔF1 @ t=0.5. **Pleiades** and **Praesepe** are **validated** under v10d benchmarks.
+
+Site docs: `/credence#trust` · Atlas star panel shows tier badge and recommended use.
+
+**Deploy (v10d routed):** per-cluster LOO checkpoints + `credence_v10d_routed_manifest.json` — inference routes by `cluster_id`.
+
+```bash
+python scripts/train_credence_v10d.py --phase ship
+python scripts/build_web_atlas.py
+```
 
 ```bash
 python scripts/fetch_t0_cg.py

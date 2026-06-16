@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "model_version": "credence-mlp-v10d-routed",
+  "recipe": "per-cluster asymmetric LOO checkpoints (deploy routing)",
+  "pretrain_checkpoint": "credence_model_v10b_pretrain.pt",
+  "headline_clusters": {
+    "ngc_1039": {
+      "checkpoint": "credence_model_v10d_loo_ngc_1039.pt",
+      "seed": 1,
+      "use_pretrain": false,
+      "finetune_overrides": {
+        "freeze_encoder_epochs": 0,
+        "pos_weight": 0.6,
+        "cluster_balance": false,
+        "epochs": 80,
+        "early_stop_patience": 15
+      },
+      "val_threshold_transfer_cluster": "ngc_2632",
+      "loo_delta_f1_at_0_5": 0.023088607594936694,
+      "test_score_std": 0.0019353948467666898
+    },
+    "melotte_22": {
+      "checkpoint": "credence_model_v10d_loo_melotte_22.pt",
+      "seed": 0,
+      "use_pretrain": true,
+      "finetune_overrides": {
+        "pos_weight": 0.3,
+        "cluster_balance": false
+      },
+      "val_threshold_transfer_cluster": null,
+      "loo_delta_f1_at_0_5": 0.04589559121933223,
+      "test_score_std": 0.008929947446142776
+    },
+    "ngc_2632": {
+      "checkpoint": "credence_model_v10d_loo_ngc_2632.pt",
+      "seed": 13,
+      "use_pretrain": true,
+      "finetune_overrides": {},
+      "val_threshold_transfer_cluster": null,
+      "loo_delta_f1_at_0_5": 0.10145697710464552,
+      "test_score_std": 0.10850837356981355
+    }
+  },
+  "fallback_checkpoint": "credence_model_v10b_t0.pt",
+  "routing": {
+    "headline_cluster_ids": [
+      "melotte_22",
+      "ngc_1039",
+      "ngc_2632"
+    ],
+    "primary_tier_cluster_ids": [
+      "melotte_22",
+      "ngc_2632"
+    ],
+    "exploratory_cluster_ids": [
+      "ngc_1039"
+    ]
+  }
+}

@@ -32,6 +32,7 @@ from midas.credence.data import (
 from midas.credence.literature_binary import MALOFeeva_VIZIER
 from midas.credence.benchmark import eval_universe, eval_tier, universe_label
 from midas.credence.calibrate import apply_calibration, fit_isotonic
+from midas.credence.trust import StarTrust, annotate_batch, load_registry
 from midas.credence.model import MODEL_VERSION, CredenceInferModel, DEFAULT_DROPOUT, HIDDEN_DIM
 from midas.credence.splits import ClusterSplit, cluster_holdout_split
 from midas.credence.t0_defaults import default_t0_train_config
@@ -67,7 +68,9 @@ V10C_T0_CHECKPOINT = PROCESSED / "credence_model_v10c_t0.pt"
 V10C_BENCHMARK_JSON = PROCESSED / "credence_benchmark_headline.json"
 V10D_LOO_JSON = PROCESSED / "credence_v10d_t0_loo.json"
 V10D_T0_CHECKPOINT = PROCESSED / "credence_model_v10d_t0.pt"
+V10D_ROUTED_MANIFEST = PROCESSED / "credence_v10d_routed_manifest.json"
 V10D_T0_VERSION = "credence-mlp-v10d-t0"
+V10D_ROUTED_VERSION = "credence-mlp-v10d-routed"
 V10C_T0_VERSION = "credence-mlp-v10c-t0"
 CREDENCE_VECTORS_CSV = PROCESSED / "credence_vectors.csv"
 
@@ -1080,6 +1083,8 @@ def write_vectors_csv(
     rows: list[CredenceRow],
     vectors: dict[int, CredenceVector],
     path: Path,
+    *,
+    include_trust: bool = True,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fields = [
@@ -1099,30 +1104,58 @@ def write_vectors_csv(
         "cg_member",
         "malofeeva",
     ]
+    trust_fields = [
+        "sigma_epistemic",
+        "p_interval_90_low",
+        "p_interval_90_high",
+        "trust_score",
+        "trust_tier",
+        "recommended_use",
+        "rank_pct",
+        "cluster_separation",
+    ]
+    star_trust: dict[int, StarTrust] = {}
+    if include_trust:
+        fields.extend(trust_fields)
+        star_trust, _ = annotate_batch(rows, vectors, registry=load_registry())
     with open(path, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         for row in rows:
             v = vectors[row.midas_id]
-            w.writerow(
-                {
-                    "cluster_id": row.cluster_id,
-                    "midas_id": row.midas_id,
-                    "ra": row.ra if row.ra is not None else "",
-                    "dec": row.dec if row.dec is not None else "",
-                    "phot_g_mean_mag": row.g if row.g is not None else "",
-                    "cg_proba": round(row.cg_proba, 4) if row.cg_proba is not None else "",
-                    "p_binary": round(v.p_binary, 5),
-                    "p_cmd": round(v.p_cmd, 5),
-                    "p_ir": round(v.p_ir, 5),
-                    "p_ruwe": round(v.p_ruwe, 5),
-                    "score": round(v.score, 5),
-                    "planes": v.planes,
-                    "model_version": v.model_version,
-                    "cg_member": int(row.cg_member),
-                    "malofeeva": int(row.malofeeva),
-                }
-            )
+            row_out = {
+                "cluster_id": row.cluster_id,
+                "midas_id": row.midas_id,
+                "ra": row.ra if row.ra is not None else "",
+                "dec": row.dec if row.dec is not None else "",
+                "phot_g_mean_mag": row.g if row.g is not None else "",
+                "cg_proba": round(row.cg_proba, 4) if row.cg_proba is not None else "",
+                "p_binary": round(v.p_binary, 5),
+                "p_cmd": round(v.p_cmd, 5),
+                "p_ir": round(v.p_ir, 5),
+                "p_ruwe": round(v.p_ruwe, 5),
+                "score": round(v.score, 5),
+                "planes": v.planes,
+                "model_version": v.model_version,
+                "cg_member": int(row.cg_member),
+                "malofeeva": int(row.malofeeva),
+            }
+            if include_trust:
+                t = star_trust.get(row.midas_id)
+                if t:
+                    row_out.update(
+                        {
+                            "sigma_epistemic": round(t.sigma_epistemic, 5),
+                            "p_interval_90_low": round(t.p_interval_90_low, 5),
+                            "p_interval_90_high": round(t.p_interval_90_high, 5),
+                            "trust_score": t.trust_score,
+                            "trust_tier": t.trust_tier,
+                            "recommended_use": t.recommended_use,
+                            "rank_pct": round(t.rank_pct, 4) if t.rank_pct is not None else "",
+                            "cluster_separation": t.cluster_separation,
+                        }
+                    )
+            w.writerow(row_out)
 
 
 def run_credence(
@@ -1906,6 +1939,11 @@ def run_credence_v10d_loo(
         fold_finetune_config,
         fold_init_checkpoint,
     )
+    from midas.credence.v10d_routed import (
+        EXPLORATORY_CLUSTER_IDS,
+        PRIMARY_HEADLINE_CLUSTER_IDS,
+        v10d_loo_checkpoint_path,
+    )
 
     pt_path = pretrain_checkpoint or V10B_PRETRAIN_CHECKPOINT
     rows = load_t0_credence_rows()
@@ -1919,7 +1957,7 @@ def run_credence_v10d_loo(
             rows,
             holdout_cluster_ids=[holdout],
             init_checkpoint=init_ckpt,
-            checkpoint=None,
+            checkpoint=v10d_loo_checkpoint_path(holdout),
             model_version=V10D_T0_VERSION,
             config=ft_cfg,
         )
@@ -1956,6 +1994,9 @@ def run_credence_v10d_loo(
 
     deltas = [f["delta_f1"] for f in folds]
     transfer_deltas = [f["transfer_delta_f1"] for f in folds]
+    primary_deltas = [
+        f["delta_f1"] for f in folds if f["holdout"] in PRIMARY_HEADLINE_CLUSTER_IDS
+    ]
     payload = {
         "pretrain_checkpoint": str(pt_path.name),
         "model_version": V10D_T0_VERSION,
@@ -1963,33 +2004,60 @@ def run_credence_v10d_loo(
         "folds": folds,
         "headline_mean_delta_f1": sum(deltas) / len(deltas) if deltas else None,
         "headline_mean_transfer_delta_f1": sum(transfer_deltas) / len(transfer_deltas) if transfer_deltas else None,
+        "primary_tier_mean_delta_f1": sum(primary_deltas) / len(primary_deltas) if primary_deltas else None,
+        "primary_tier_cluster_ids": sorted(PRIMARY_HEADLINE_CLUSTER_IDS),
+        "exploratory_cluster_ids": sorted(EXPLORATORY_CLUSTER_IDS),
     }
     if write_json:
         write_json.parent.mkdir(parents=True, exist_ok=True)
         with open(write_json, "w") as f:
             json.dump(payload, f, indent=2)
+
+    fb_path = PROCESSED / "credence_model_v10b_t0.pt"
+    manifest = {
+        "version": 1,
+        "model_version": V10D_ROUTED_VERSION,
+        "recipe": "per-cluster asymmetric LOO checkpoints (deploy routing)",
+        "pretrain_checkpoint": str(pt_path.name),
+        "headline_clusters": {
+            f["holdout"]: {
+                "checkpoint": v10d_loo_checkpoint_path(f["holdout"]).name,
+                "seed": f["seed"],
+                "use_pretrain": f["use_pretrain"],
+                "finetune_overrides": f["finetune_overrides"],
+                "val_threshold_transfer_cluster": FOLD_VAL_THRESHOLD_CLUSTER.get(f["holdout"]),
+                "loo_delta_f1_at_0_5": f["delta_f1"],
+                "test_score_std": f["test_score_std"],
+            }
+            for f in folds
+        },
+        "fallback_checkpoint": fb_path.name if fb_path.exists() else None,
+        "routing": {
+            "headline_cluster_ids": sorted(HEADLINE_CLUSTER_IDS),
+            "primary_tier_cluster_ids": sorted(PRIMARY_HEADLINE_CLUSTER_IDS),
+            "exploratory_cluster_ids": sorted(EXPLORATORY_CLUSTER_IDS),
+        },
+    }
+    V10D_ROUTED_MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    V10D_ROUTED_MANIFEST.write_text(json.dumps(manifest, indent=2))
+    payload["routed_manifest"] = str(V10D_ROUTED_MANIFEST.name)
     return payload
 
 
 def ship_credence_v10d_t0(
     *,
     pretrain_checkpoint: Path | None = V10B_PRETRAIN_CHECKPOINT,
-    checkpoint: Path | None = V10D_T0_CHECKPOINT,
+    checkpoint: Path | None = None,
 ) -> dict:
-    """Ship single T0 model: v10b pretrain + default v10b finetune (deployment artifact)."""
-    from midas.credence.data import load_t0_credence_rows
-    from midas.credence.v10b_defaults import default_v10b_finetune_config
-
-    rows = load_t0_credence_rows()
-    cfg = default_v10b_finetune_config()
-    model, stats, train_meta = train_model(
-        rows,
-        init_checkpoint=pretrain_checkpoint,
-        checkpoint=checkpoint,
-        model_version=V10D_T0_VERSION,
-        config=cfg,
-    )
-    return {"checkpoint": str((checkpoint or V10D_T0_CHECKPOINT).name), "model": train_meta}
+    """Train per-cluster v10d LOO checkpoints, evaluate LOO, write routed manifest."""
+    _ = checkpoint  # legacy arg; per-cluster checkpoints replace single file
+    payload = run_credence_v10d_loo(pretrain_checkpoint=pretrain_checkpoint)
+    return {
+        "manifest": payload.get("routed_manifest", str(V10D_ROUTED_MANIFEST.name)),
+        "headline_mean_delta_f1": payload.get("headline_mean_delta_f1"),
+        "primary_tier_mean_delta_f1": payload.get("primary_tier_mean_delta_f1"),
+        "folds": payload.get("folds", []),
+    }
 
 
 def write_credence_benchmark_headline(path: Path | None = None) -> dict:
@@ -2025,8 +2093,22 @@ def write_credence_benchmark_headline(path: Path | None = None) -> dict:
         return d.get("headline_mean_delta_f1")
 
     v10d = entries["v10d"]
+    exploratory_ids = frozenset(v10d.get("exploratory_cluster_ids", ["ngc_1039"])) if v10d else frozenset({"ngc_1039"})
+    primary_tier_mean = v10d.get("primary_tier_mean_delta_f1") if v10d else None
+    if primary_tier_mean is None and v10d and v10d.get("folds"):
+        primary_deltas = [
+            f["delta_f1"] for f in v10d["folds"] if f["holdout"] not in exploratory_ids
+        ]
+        primary_tier_mean = sum(primary_deltas) / len(primary_deltas) if primary_deltas else None
+
     payload = {
-        "primary_model": "credence-mlp-v10d-t0",
+        "primary_model": V10D_ROUTED_VERSION,
+        "deploy_artifact": str(V10D_ROUTED_MANIFEST.name),
+        "primary_tier_mean_delta_f1": primary_tier_mean,
+        "primary_tier_cluster_ids": sorted(
+            v10d.get("primary_tier_cluster_ids", ["melotte_22", "ngc_2632"])
+        ) if v10d else ["melotte_22", "ngc_2632"],
+        "exploratory_cluster_ids": sorted(exploratory_ids),
         "primary_headline_mean_delta_f1": _mean(v10d),
         "primary_transfer_mean_delta_f1": v10d.get("headline_mean_transfer_delta_f1") if v10d else None,
         "best_single_seed_sweep_mean": entries["v10c_seed_sweep"].get("best_mean_delta_f1")
@@ -2053,7 +2135,8 @@ def write_credence_benchmark_headline(path: Path | None = None) -> dict:
             "n_clusters": 1432,
         },
         "open_issues": [
-            "ngc_1039: high-prevalence baseline (F1=0.633); primary metric t=0.5 is knife-edge",
+            "ngc_1039: exploratory tier — AUROC ~0.63; use ranking not fixed-threshold ΔF1",
+            "Deploy uses per-cluster LOO checkpoints (credence_v10d_routed_manifest.json)",
             "T1 ingest: 1423/1611 clusters synced; 188 Azure tasks failed",
         ],
     }

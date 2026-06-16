@@ -3820,6 +3820,53 @@ code {
   color: var(--ink-muted);
 }
 
+.credence-trust {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.credence-trust--validated {
+  background: color-mix(in srgb, #55a868 22%, transparent);
+  color: #2d7a46;
+}
+
+.credence-trust--provisional {
+  background: color-mix(in srgb, #c9a227 22%, transparent);
+  color: #8a6d12;
+}
+
+.credence-trust--exploratory {
+  background: color-mix(in srgb, #c45c4a 18%, transparent);
+  color: #a33d2e;
+}
+
+.credence-trust--unknown {
+  background: color-mix(in srgb, #888 15%, transparent);
+  color: var(--ink-muted);
+}
+
+.atlas-detail__trust {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.35rem 0 0.75rem;
+}
+
+.atlas-detail__trust-score {
+  font-size: 0.78rem;
+  color: var(--ink-muted);
+}
+
+.atlas-detail__interval {
+  font-size: 0.85em;
+  color: var(--ink-muted);
+}
+
 .credence-code {
   margin: 1rem 0;
   padding: 1rem 1.15rem;

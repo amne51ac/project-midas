@@ -4,18 +4,24 @@
   "recipe": "asymmetric per-fold pretrain/freeze/hyperparams",
   "folds": [
     {
-      "holdout": "ngc_2632",
-      "seed": 13,
-      "use_pretrain": true,
-      "f1": 0.7253886010362695,
-      "delta_f1": 0.10145697710464552,
-      "transfer_delta_f1": 0.10145697710464552,
-      "transfer_threshold": 0.5,
-      "n_test": 161,
-      "best_early_stop_score": 0.3801169590643275,
-      "test_pred_pos_rate": 0.7453416149068323,
-      "test_score_std": 0.10850837356981355,
-      "finetune_overrides": {}
+      "holdout": "ngc_1039",
+      "seed": 1,
+      "use_pretrain": false,
+      "f1": 0.6559999999999999,
+      "delta_f1": 0.023088607594936694,
+      "transfer_delta_f1": 0.0,
+      "transfer_threshold": 0.05,
+      "n_test": 108,
+      "best_early_stop_score": 0.3126747437092265,
+      "test_pred_pos_rate": 0.6944444444444444,
+      "test_score_std": 0.0019353948467666898,
+      "finetune_overrides": {
+        "freeze_encoder_epochs": 0,
+        "pos_weight": 0.6,
+        "cluster_balance": false,
+        "epochs": 80,
+        "early_stop_patience": 15
+      }
     },
     {
       "holdout": "melotte_22",
@@ -35,26 +41,28 @@
       }
     },
     {
-      "holdout": "ngc_1039",
-      "seed": 1,
-      "use_pretrain": false,
-      "f1": 0.6559999999999999,
-      "delta_f1": 0.023088607594936694,
-      "transfer_delta_f1": 0.0,
-      "transfer_threshold": 0.05,
-      "n_test": 108,
-      "best_early_stop_score": 0.3126747437092265,
-      "test_pred_pos_rate": 0.6944444444444444,
-      "test_score_std": 0.0019353948467666898,
-      "finetune_overrides": {
-        "freeze_encoder_epochs": 0,
-        "pos_weight": 0.6,
-        "cluster_balance": false,
-        "epochs": 80,
-        "early_stop_patience": 15
-      }
+      "holdout": "ngc_2632",
+      "seed": 13,
+      "use_pretrain": true,
+      "f1": 0.7253886010362695,
+      "delta_f1": 0.10145697710464552,
+      "transfer_delta_f1": 0.10145697710464552,
+      "transfer_threshold": 0.5,
+      "n_test": 161,
+      "best_early_stop_score": 0.3801169590643275,
+      "test_pred_pos_rate": 0.7453416149068323,
+      "test_score_std": 0.10850837356981355,
+      "finetune_overrides": {}
     }
   ],
   "headline_mean_delta_f1": 0.05681372530630482,
-  "headline_mean_transfer_delta_f1": 0.04911752277465925
+  "headline_mean_transfer_delta_f1": 0.04911752277465925,
+  "primary_tier_mean_delta_f1": 0.07367628416198888,
+  "primary_tier_cluster_ids": [
+    "melotte_22",
+    "ngc_2632"
+  ],
+  "exploratory_cluster_ids": [
+    "ngc_1039"
+  ]
 }

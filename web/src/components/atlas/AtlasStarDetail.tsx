@@ -1,6 +1,7 @@
 import type { AtlasReferenceObject } from '../../data/atlasReferenceObjects';
 import type { AtlasCluster, AtlasStar } from '../../data/atlasTypes';
 import { T0 } from '../../utils/tierLabel';
+import { recommendedUseLabel, trustTierClass, trustTierLabel } from '../../utils/credenceTrust';
 import type { AtlasPick } from './atlasPickTypes';
 
 const KIND_LABEL: Record<AtlasReferenceObject['kind'], string> = {
@@ -22,7 +23,16 @@ function clusterName(clusters: AtlasCluster[], id: string): string {
 }
 
 function MemberDetail({ star, clusters }: { star: AtlasStar; clusters: AtlasCluster[] }) {
-  const binaryFlag = star.pBinary >= 0.5 ? 'Likely binary (infer)' : 'Unlikely binary (infer)';
+  const tier = star.trustTier ?? 'unknown';
+  const use = star.recommendedUse ?? 'ranking_only';
+  const canClassify = use === 'classify';
+  const binaryFlag = canClassify
+    ? star.pBinary >= 0.5
+      ? 'Likely binary (infer, validated tier)'
+      : 'Unlikely binary (infer, validated tier)'
+    : star.rankPct != null
+      ? `Exploratory score — top ${(star.rankPct * 100).toFixed(0)}% of cluster by p_binary (ranking only)`
+      : 'Exploratory tier — use p_binary for ranking, not fixed threshold';
   const memberFlag =
     star.pMember != null
       ? star.pMember >= 0.5
@@ -34,6 +44,14 @@ function MemberDetail({ star, clusters }: { star: AtlasStar; clusters: AtlasClus
     <>
       <p className="atlas-detail__kind">Cluster member · Credence {T0}</p>
       <h3 className="atlas-detail__title">{clusterName(clusters, star.clusterId)}</h3>
+      {star.trustTier && (
+        <p className="atlas-detail__trust">
+          <span className={trustTierClass(tier)}>{trustTierLabel(tier)}</span>
+          {star.trustScore != null && (
+            <span className="atlas-detail__trust-score">trust {star.trustScore.toFixed(2)}</span>
+          )}
+        </p>
+      )}
       <dl className="atlas-detail__grid">
         <div>
           <dt>Gaia source id</dt>
@@ -53,8 +71,22 @@ function MemberDetail({ star, clusters }: { star: AtlasStar; clusters: AtlasClus
         )}
         <div>
           <dt>p_binary (infer)</dt>
-          <dd>{star.pBinary.toFixed(4)}</dd>
+          <dd>
+            {star.pBinary.toFixed(4)}
+            {star.pInterval90Low != null && star.pInterval90High != null && (
+              <span className="atlas-detail__interval">
+                {' '}
+                [{star.pInterval90Low.toFixed(2)}, {star.pInterval90High.toFixed(2)}]
+              </span>
+            )}
+          </dd>
         </div>
+        {star.trustTier && (
+          <div>
+            <dt>Recommended use</dt>
+            <dd>{recommendedUseLabel(use)}</dd>
+          </div>
+        )}
         {star.pMember != null && (
           <div>
             <dt>P(member) ingest</dt>

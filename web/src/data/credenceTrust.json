@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "modelVersion": "credence-mlp-v10d-routed",
+    "schema": "credence-trust-v1",
+    "doc": "p_binary is the infer score; trust_tier is whether fixed-threshold classification is validated for this cluster."
+  },
+  "tierDefinitions": {
+    "validated": "LOO \u0394F1>0; \u226590% shared-seed stability; score std \u22650.008",
+    "provisional": "Positive tuned LOO but stability or separation marginal",
+    "exploratory": "Collapsed scores or failed stability \u2014 ranking only",
+    "unknown": "No benchmark run"
+  },
+  "thresholds": {
+    "kappa_ref": 0.01,
+    "kappa_low": 0.005,
+    "kappa_collapse": 0.003,
+    "trust_tier_validated": 0.7,
+    "trust_tier_provisional": 0.4
+  },
+  "trustReasons": {
+    "registry_tier_a": "Cluster passed LOO + shared-seed stability (offline).",
+    "registry_tier_b": "Positive LOO at tuned recipe; stability marginal.",
+    "registry_tier_c": "Exploratory \u2014 collapsed scores or failed stability.",
+    "registry_unknown": "No cluster-held-out benchmark yet.",
+    "cluster_separation_low": "Score std across cluster below 0.005.",
+    "cluster_separation_collapsed": "Score std below 0.003 \u2014 flat logits.",
+    "cluster_collapse_positive": "\u226598% of stars predicted binary @ t=0.5.",
+    "cluster_collapse_negative": "\u22642% predicted binary @ t=0.5.",
+    "stability_fail": "20-seed shared-seed LOO stability gate failed.",
+    "wise_missing": "WISE/IR pseudocolor missing for this star.",
+    "g_outside_tid_window": "G magnitude outside Malofeeva TID window.",
+    "single_model_no_sigma": "Single checkpoint \u2014 epistemic \u03c3 not estimated."
+  },
+  "formula": {
+    "p_binary": "MLP sigmoid head (primary infer score).",
+    "sigma_epistemic": "Std dev across seed ensemble; 0 with single model.",
+    "p_interval_90": "p_binary \u00b1 1.645 \u00d7 sigma_epistemic, clipped to [0,1].",
+    "trust_score": "Geometric mean of registry tier, separation, collapse, WISE, TID-G.",
+    "rank_pct": "Percentile of p_binary within cluster (for exploratory tiers)."
+  },
+  "clusters": {
+    "melotte_22": {
+      "registry_tier": "validated",
+      "loo_delta_f1_at_0_5": 0.04589559121933223,
+      "test_score_std": 0.008929947446142776,
+      "stability_frac_non_negative": 1.0,
+      "stability_fail": true,
+      "default_threshold": 0.5,
+      "notes": [],
+      "liveDiagnostics": {
+        "cluster_id": "melotte_22",
+        "n_scored": 163,
+        "separation": 0.008929947446142776,
+        "pred_pos_rate": 0.656441717791411,
+        "collapse_positive": false,
+        "collapse_negative": false,
+        "wise_fraction": 0.5398773006134969,
+        "tid_g_fraction": 1.0,
+        "separation_score": 0.8929947446142776,
+        "collapse_score": 1.0,
+        "wise_score": 0.07975460122699385,
+        "tid_g_score": 1.0
+      }
+    },
+    "ngc_1039": {
+      "registry_tier": "exploratory",
+      "loo_delta_f1_at_0_5": 0.023088607594936694,
+      "test_score_std": 0.0019353948467666898,
+      "stability_frac_non_negative": 0.55,
+      "stability_fail": true,
+      "default_threshold": null,
+      "notes": [
+        "High-prevalence Malofeeva baseline F1\u22480.633; \u0394F1 @ t=0.5 knife-edge."
+      ],
+      "auroc_mean": 0.6271293103448276,
+      "primary_metric": "auroc",
+      "liveDiagnostics": {
+        "cluster_id": "ngc_1039",
+        "n_scored": 108,
+        "separation": 0.0019353948467666898,
+        "pred_pos_rate": 0.6944444444444444,
+        "collapse_positive": false,
+        "collapse_negative": false,
+        "wise_fraction": 0.9259259259259259,
+        "tid_g_fraction": 1.0,
+        "separation_score": 0.19353948467666898,
+        "collapse_score": 1.0,
+        "wise_score": 0.8518518518518519,
+        "tid_g_score": 1.0
+      }
+    },
+    "ngc_2632": {
+      "registry_tier": "validated",
+      "loo_delta_f1_at_0_5": 0.10145697710464552,
+      "test_score_std": 0.10850837356981355,
+      "stability_frac_non_negative": 1.0,
+      "stability_fail": true,
+      "default_threshold": 0.5,
+      "notes": [],
+      "liveDiagnostics": {
+        "cluster_id": "ngc_2632",
+        "n_scored": 161,
+        "separation": 0.10850837356981355,
+        "pred_pos_rate": 0.7453416149068323,
+        "collapse_positive": false,
+        "collapse_negative": false,
+        "wise_fraction": 0.6521739130434783,
+        "tid_g_fraction": 1.0,
+        "separation_score": 1.0,
+        "collapse_score": 1.0,
+        "wise_score": 0.30434782608695654,
+        "tid_g_score": 1.0
+      }
+    }
+  }
+}

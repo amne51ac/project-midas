@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "schema": "credence_validation_registry",
+  "primary_model": "credence-mlp-v10d-routed",
+  "tier_definitions": {
+    "validated": "LOO \u0394F1>0; \u226590% shared-seed stability; score std \u22650.008",
+    "provisional": "Positive tuned LOO but stability or separation marginal",
+    "exploratory": "Collapsed scores or failed stability \u2014 ranking only",
+    "unknown": "No benchmark run"
+  },
+  "thresholds": {
+    "kappa_ref": 0.01,
+    "kappa_low": 0.005,
+    "kappa_collapse": 0.003,
+    "trust_tier_validated": 0.7,
+    "trust_tier_provisional": 0.4
+  },
+  "clusters": {
+    "melotte_22": {
+      "registry_tier": "validated",
+      "loo_delta_f1_at_0_5": 0.04589559121933223,
+      "test_score_std": 0.008929947446142776,
+      "stability_frac_non_negative": 1.0,
+      "stability_fail": true,
+      "default_threshold": 0.5,
+      "notes": []
+    },
+    "ngc_1039": {
+      "registry_tier": "exploratory",
+      "loo_delta_f1_at_0_5": 0.023088607594936694,
+      "test_score_std": 0.0019353948467666898,
+      "stability_frac_non_negative": 0.55,
+      "stability_fail": true,
+      "default_threshold": null,
+      "notes": [
+        "High-prevalence Malofeeva baseline F1\u22480.633; \u0394F1 @ t=0.5 knife-edge."
+      ],
+      "auroc_mean": 0.6271293103448276,
+      "primary_metric": "auroc"
+    },
+    "ngc_2632": {
+      "registry_tier": "validated",
+      "loo_delta_f1_at_0_5": 0.10145697710464552,
+      "test_score_std": 0.10850837356981355,
+      "stability_frac_non_negative": 1.0,
+      "stability_fail": true,
+      "default_threshold": 0.5,
+      "notes": []
+    }
+  }
+}

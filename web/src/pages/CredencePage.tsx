@@ -4,6 +4,7 @@ import { CREDENCE, CREDENCE_LINKS, GITHUB_REPO } from '../data/credence';
 import m34Science from '../data/credenceM34Science.json';
 import t1Pilot from '../data/credenceT1Pilot.json';
 import { T0, T1 } from '../utils/tierLabel';
+import { trustTierClass, trustTierLabel } from '../utils/credenceTrust';
 
 function VerdictBadge({ verdict }: { verdict: 'recommended' | 'future' | 'not-recommended' }) {
   const labels = {
@@ -12,6 +13,10 @@ function VerdictBadge({ verdict }: { verdict: 'recommended' | 'future' | 'not-re
     'not-recommended': 'Not recommended',
   };
   return <span className={`credence-verdict credence-verdict--${verdict}`}>{labels[verdict]}</span>;
+}
+
+function TrustTierBadge({ tier }: { tier: string }) {
+  return <span className={trustTierClass(tier)}>{trustTierLabel(tier)}</span>;
 }
 
 export function CredencePage() {
@@ -26,6 +31,7 @@ export function CredencePage() {
     dataScope,
     membership,
     infer,
+    trust,
     display,
     software,
     midasLink,
@@ -545,6 +551,110 @@ export function CredencePage() {
             <a href={CREDENCE_LINKS.docs}>CREDENCE.md</a>
             {' · '}
             <a href={CREDENCE_LINKS.validateScript}>validate_credence.py</a>
+          </p>
+        </section>
+
+        <section className="section section--rule" id="trust">
+          <h2 className="section__subhead">{trust.title}</h2>
+          <p className="section__prose">{trust.lede}</p>
+          <ul className="findings-section__list section__prose">
+            {trust.bullets.map((b) => (
+              <li key={b.slice(0, 32)}>{b}</li>
+            ))}
+          </ul>
+
+          <h3 className="credence-section__title">Per-cluster validation registry</h3>
+          <p className="section__prose">
+            Offline tiers from LOO benchmarks and 20-seed stability ({trust.schema}). Runtime batch
+            diagnostics (score std, collapse) can downgrade trust. Inference uses{' '}
+            <strong>per-cluster v10d LOO checkpoints</strong> routed by <code>cluster_id</code> — not a
+            single global finetune.
+          </p>
+          <div className="credence-table-wrap">
+            <table className="credence-table credence-table--wide">
+              <thead>
+                <tr>
+                  <th scope="col">Cluster</th>
+                  <th scope="col">Registry tier</th>
+                  <th scope="col">LOO ΔF1 @0.5</th>
+                  <th scope="col">Score std</th>
+                  <th scope="col">Live separation</th>
+                  <th scope="col">Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                {trust.clusters.map((row) => (
+                  <tr key={row.clusterId}>
+                    <th scope="row">{row.clusterId}</th>
+                    <td>
+                      <TrustTierBadge tier={row.registryTier} />
+                    </td>
+                    <td>
+                      {row.looDeltaF1 != null
+                        ? `${row.looDeltaF1 >= 0 ? '+' : ''}${row.looDeltaF1.toFixed(3)}`
+                        : '—'}
+                    </td>
+                    <td>{row.scoreStd != null ? row.scoreStd.toFixed(4) : '—'}</td>
+                    <td>{row.separation != null ? row.separation.toFixed(4) : '—'}</td>
+                    <td>
+                      <code>{row.recommendedUse}</code>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <h3 className="credence-section__title">Output fields</h3>
+          <div className="credence-design-grid">
+            <article className="credence-section">
+              <h4 className="credence-section__title">Infer score</h4>
+              <ul className="findings-section__list section__prose">
+                <li>
+                  <code>p_binary</code> — {trust.formula.p_binary}
+                </li>
+                <li>
+                  <code>sigma_epistemic</code> — {trust.formula.sigma_epistemic}
+                </li>
+                <li>
+                  <code>p_interval_90</code> — {trust.formula.p_interval_90}
+                </li>
+              </ul>
+            </article>
+            <article className="credence-section">
+              <h4 className="credence-section__title">Trust metadata</h4>
+              <ul className="findings-section__list section__prose">
+                <li>
+                  <code>trust_score</code> — {trust.formula.trust_score}
+                </li>
+                <li>
+                  <code>trust_tier</code> — validated · provisional · exploratory
+                </li>
+                <li>
+                  <code>rank_pct</code> — {trust.formula.rank_pct}
+                </li>
+              </ul>
+            </article>
+          </div>
+
+          <dl className="findings-glance">
+            {Object.entries(trust.tierDefinitions).map(([tier, def]) => (
+              <div key={tier} className="findings-glance__item">
+                <dt>
+                  <TrustTierBadge tier={tier} />
+                </dt>
+                <dd>
+                  <span className="findings-glance__detail">{def}</span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <p className="findings-section__link">
+            <a href={`${GITHUB_REPO}/blob/main/research/midas/credence/trust.py`}>midas/credence/trust.py</a>
+            {' · '}
+            <a href={`${GITHUB_REPO}/blob/main/research/docs/CREDENCE.md#trust-and-uncertainty`}>
+              CREDENCE.md § trust
+            </a>
           </p>
         </section>
 

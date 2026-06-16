@@ -112,7 +112,7 @@ def tune_ngc_1039_pos_weight(seed: int, weights: list[float]) -> tuple[float, fl
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--phase", choices=("sweep", "tune", "loo", "all"), default="all")
+    p.add_argument("--phase", choices=("sweep", "tune", "loo", "ship", "all"), default="all")
     p.add_argument("--seeds", type=int, default=20)
     args = p.parse_args()
 
@@ -141,6 +141,29 @@ def main() -> None:
             text = re.sub(r'"pos_weight": [0-9.]+,', f'"pos_weight": {best_pw},', text, count=1)
             defaults_path.write_text(text)
             print(f"Updated v10d_defaults: ngc_1039 seed={best_seed} pos_weight={best_pw}")
+
+    if args.phase in ("ship",):
+        from midas.credence.engine import ship_credence_v10d_t0, write_credence_benchmark_headline
+        from midas.credence.v10d_routed import verify_routed_live_separation
+
+        print("=== v10d routed ship (per-cluster LOO checkpoints) ===")
+        shipped = ship_credence_v10d_t0()
+        print(f"Manifest → {shipped['manifest']}")
+        print(f"LOO mean ΔF1: {shipped['headline_mean_delta_f1']:+.3f}")
+        print(f"Primary tier ΔF1: {shipped.get('primary_tier_mean_delta_f1', 0):+.3f}")
+        for f in shipped.get("folds", []):
+            print(
+                f"  {f['holdout']}: Δ={f['delta_f1']:+.3f} std={f['test_score_std']:.4f} "
+                f"seed={f['seed']}"
+            )
+
+        live = verify_routed_live_separation()
+        for cid, m in live.items():
+            print(f"  live {cid}: std={m['score_std']:.4f} pos_rate={m['pred_pos_rate']:.2f}")
+
+        bench = write_credence_benchmark_headline(V10C_BENCHMARK_JSON)
+        print(f"Benchmark primary tier: {bench.get('primary_tier_mean_delta_f1'):+.3f}")
+        print(f"→ {V10C_BENCHMARK_JSON}")
 
     if args.phase in ("loo", "all"):
         # Re-import after patch

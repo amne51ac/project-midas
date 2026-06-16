@@ -1,5 +1,14 @@
 {
-  "primary_model": "credence-mlp-v10d-t0",
+  "primary_model": "credence-mlp-v10d-routed",
+  "deploy_artifact": "credence_v10d_routed_manifest.json",
+  "primary_tier_mean_delta_f1": 0.07367628416198888,
+  "primary_tier_cluster_ids": [
+    "melotte_22",
+    "ngc_2632"
+  ],
+  "exploratory_cluster_ids": [
+    "ngc_1039"
+  ],
   "primary_headline_mean_delta_f1": 0.05681372530630482,
   "primary_transfer_mean_delta_f1": 0.04911752277465925,
   "best_single_seed_sweep_mean": 0.03381899236821517,
@@ -479,7 +488,8 @@
     "n_clusters": 1432
   },
   "open_issues": [
-    "ngc_1039: high-prevalence baseline (F1=0.633); primary metric t=0.5 is knife-edge",
+    "ngc_1039: exploratory tier \u2014 AUROC ~0.63; use ranking not fixed-threshold \u0394F1",
+    "Deploy uses per-cluster LOO checkpoints (credence_v10d_routed_manifest.json)",
     "T1 ingest: 1423/1611 clusters synced; 188 Azure tasks failed"
   ]
 }

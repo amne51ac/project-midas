@@ -21,6 +21,13 @@ from midas.credence.engine import (
     train_model,
 )
 from midas.credence.model import MODEL_VERSION, CredenceInferModel
+from midas.credence.trust import (
+    StarTrust,
+    annotate_batch,
+    cluster_diagnostics,
+    load_registry,
+    write_validation_registry,
+)
 
 __all__ = [
     "CREDENCE_CHECKPOINT",
@@ -33,12 +40,17 @@ __all__ = [
     "DEFAULT_EPOCHS",
     "JOIN_IR_CSV",
     "MODEL_VERSION",
+    "StarTrust",
+    "annotate_batch",
+    "cluster_diagnostics",
     "ensure_model",
     "infer_vectors",
     "load_credence_rows",
     "load_model",
+    "load_registry",
     "load_rows_with_q",
     "print_credence_report",
     "run_credence",
     "train_model",
+    "write_validation_registry",
 ]
